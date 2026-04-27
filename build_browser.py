@@ -1,8 +1,8 @@
 """Generate a self-contained HTML browser for match_index_*.csv comparisons.
 
-One row per unique (matchup, date) across all files; a column per model with
-a checkmark when that model has the row. Includes search and agreement-count
-filters. Open compare_browser.html in a browser.
+One row per unique (matchup, page, date) across all files; a column per model
+with a checkmark when that model has the row. Includes search and agreement-
+count filters. Open compare_browser.html in a browser.
 """
 
 import csv
@@ -19,18 +19,19 @@ def label(path: str) -> str:
     return base.removeprefix("match_index_").removesuffix(".csv")
 
 
-def load_rows(path: str) -> dict[tuple[str, str], dict]:
-    """Return {(norm_matchup, date): row_dict_with_original_fields}."""
-    out: dict[tuple[str, str], dict] = {}
+def load_rows(path: str) -> dict[tuple[str, str, str], dict]:
+    """Return {(norm_matchup, page, date): row_dict_with_original_fields}."""
+    out: dict[tuple[str, str, str], dict] = {}
     with open(path, newline="", encoding="utf-8") as f:
         reader = csv.DictReader(f)
         for row in reader:
             matchup = normalize_matchup(row.get("matchup", ""))
+            page = (row.get("page") or "").strip()
             date = normalize_date(row.get("date", ""))
             if matchup and date:
-                out[(matchup, date)] = {
+                out[(matchup, page, date)] = {
                     "matchup": (row.get("matchup") or "").strip(),
-                    "page": (row.get("page") or "").strip(),
+                    "page": page,
                     "content_type": (row.get("content_type") or "").strip(),
                     "collection": (row.get("collection") or "").strip(),
                     "record_id": (row.get("record_id") or "").strip(),
@@ -47,14 +48,19 @@ def main() -> None:
     names = [label(p) for p in files]
     per_model = {label(p): load_rows(p) for p in files}
 
-    union: set[tuple[str, str]] = set()
+    union: set[tuple[str, str, str]] = set()
     for d in per_model.values():
         union.update(d.keys())
 
+    def page_sort(key):
+        try:
+            return (int(key[1]), key[2], key[0])
+        except ValueError:
+            return (10**9, key[2], key[0])
+
     rows = []
-    for key in sorted(union):
-        norm_matchup, date = key
-        # Pick a display matchup from the first model that has it.
+    for key in sorted(union, key=page_sort):
+        norm_matchup, page_num, date = key
         display_matchup = norm_matchup
         details: dict[str, dict] = {}
         present = []
@@ -67,6 +73,7 @@ def main() -> None:
         rows.append(
             {
                 "matchup": display_matchup,
+                "page": page_num,
                 "date": date,
                 "present": present,
                 "count": len(present),
@@ -129,7 +136,9 @@ const MODELS = DATA.models;
 const ROWS = DATA.rows;
 
 const head = document.getElementById('head');
+const PAGE_URL = 'https://archive.acscricket.com/research/tw/tw_newspaper_cuttings_1895/{page}/index.html';
 const cols = [
+  {key:'page', label:'Page', cls:'num'},
   {key:'matchup', label:'Matchup'},
   {key:'date', label:'Date'},
   {key:'count', label:'#', cls:'num'},
@@ -156,7 +165,7 @@ for (const m of MODELS) {
   modelSel.appendChild(o);
 }
 
-let sortKey = 'matchup', sortDir = 1;
+let sortKey = 'page', sortDir = 1;
 head.addEventListener('click', e => {
   const th = e.target.closest('th'); if (!th) return;
   const k = th.dataset.key;
@@ -177,7 +186,7 @@ function render() {
   const onlyModel = modelSel.value;
 
   let rows = ROWS.filter(r => {
-    if (term && !((r.matchup + ' ' + r.date).toLowerCase().includes(term))) return false;
+    if (term && !((r.matchup + ' ' + r.date + ' ' + r.page).toLowerCase().includes(term))) return false;
     if (ag === 'unique' && r.count !== 1) return false;
     if (ag === 'all-agree' && r.count !== MODELS.length) return false;
     if (ag === 'disagree' && r.count === MODELS.length) return false;
@@ -191,6 +200,10 @@ function render() {
       const m = sortKey.slice(2);
       av = a.present.includes(m) ? 1 : 0;
       bv = b.present.includes(m) ? 1 : 0;
+    } else if (sortKey === 'page') {
+      av = parseInt(a.page, 10); bv = parseInt(b.page, 10);
+      if (Number.isNaN(av)) av = Infinity;
+      if (Number.isNaN(bv)) bv = Infinity;
     } else {
       av = a[sortKey]; bv = b[sortKey];
     }
@@ -202,15 +215,22 @@ function render() {
   body.innerHTML = '';
   for (const r of rows) {
     const tr = document.createElement('tr');
-    tr.dataset.key = r.matchup + '|' + r.date;
+    tr.dataset.key = r.matchup + '|' + r.page + '|' + r.date;
+    const pageCell = r.page
+      ? '<td class="num"><a href="' + PAGE_URL.replace('{page}', encodeURIComponent(r.page)) + '" target="_blank" rel="noopener">' + escapeHtml(r.page) + '</a></td>'
+      : '<td class="num"></td>';
     tr.innerHTML =
+      pageCell +
       '<td>' + escapeHtml(r.matchup) + '</td>' +
       '<td>' + escapeHtml(r.date) + '</td>' +
       '<td class="num">' + r.count + '/' + MODELS.length + '</td>' +
       MODELS.map(m => r.present.includes(m)
         ? '<td class="check yes">✓</td>'
         : '<td class="check no">·</td>').join('');
-    tr.addEventListener('click', () => toggleDetail(tr, r));
+    tr.addEventListener('click', e => {
+      if (e.target.closest('a')) return;
+      toggleDetail(tr, r);
+    });
     body.appendChild(tr);
   }
   meta.textContent = rows.length + ' of ' + ROWS.length + ' rows';
@@ -225,7 +245,7 @@ function toggleDetail(tr, r) {
   const dr = document.createElement('tr');
   dr.className = 'detail-row';
   const td = document.createElement('td');
-  td.colSpan = 3 + MODELS.length;
+  td.colSpan = 4 + MODELS.length;
   const blocks = MODELS.map(m => {
     const d = r.details[m];
     if (!d) return '<div><span class="pill">' + m + '</span><em>not present</em></div>';
