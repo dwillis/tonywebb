@@ -230,11 +230,14 @@ def main():
 
     model = llm.get_model(args.model)
 
-    with csv_path.open("w", newline="", encoding="utf-8") as f:
-        writer = csv.writer(f)
-        writer.writerow(["matchup", "page", "date", "content_type", "collection", "record_id"])
+    appending = bool(page_filter)
+    if not appending or not csv_path.exists():
+        with csv_path.open("w", newline="", encoding="utf-8") as f:
+            writer = csv.writer(f)
+            writer.writerow(["matchup", "page", "date", "content_type", "collection", "record_id"])
 
-    raw_log_path.write_text("", encoding="utf-8")
+    if not appending:
+        raw_log_path.write_text("", encoding="utf-8")
 
     total_matches = 0
     total_errors = 0
