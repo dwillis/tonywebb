@@ -6,5 +6,6 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "llm>=0.31",
+    "llm-ollama>=0.16.0",
     "requests>=2.33.1",
 ]
