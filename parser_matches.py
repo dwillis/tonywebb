@@ -140,10 +140,23 @@ def _parse_response(raw: str) -> list[dict]:
     return matches
 
 
+def _no_thinking_kwargs(model) -> dict:
+    """Return prompt kwargs that disable thinking for models that support it."""
+    model_id: str = getattr(model, "model_id", "") or ""
+    model_type = type(model).__module__ or ""
+    if "ollama" in model_type:
+        # llm-ollama exposes thinking as `think`
+        return {"think": False}
+    if any(x in model_id.lower() for x in ("claude", "opus", "sonnet", "haiku")):
+        # Anthropic extended thinking: budget_tokens=0 disables it
+        return {"budget_tokens": 0}
+    return {}
+
+
 def extract_matches(model, page_num: int, page_text: str) -> tuple[list[dict], str]:
     """Returns (matches, raw_response_text). Raises JSONExtractError on bad shape."""
     prompt = build_user_prompt(page_num, page_text)
-    response = model.prompt(prompt, system=SYSTEM_PROMPT)
+    response = model.prompt(prompt, system=SYSTEM_PROMPT, **_no_thinking_kwargs(model))
     raw = response.text()
     return _parse_response(raw), raw
 
@@ -228,7 +241,12 @@ def main():
     else:
         print(f"Pages : {len(pages)} total")
 
-    model = llm.get_model(args.model)
+    try:
+        model = llm.get_model(args.model)
+    except llm.UnknownModelError:
+        # Ollama (and some other) plugins register models lazily; force-load them.
+        llm.get_models()
+        model = llm.get_model(args.model)
 
     appending = bool(page_filter)
     if not appending or not csv_path.exists():
