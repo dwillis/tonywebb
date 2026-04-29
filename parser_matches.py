@@ -241,12 +241,12 @@ def main():
     else:
         print(f"Pages : {len(pages)} total")
 
+    # Force all plugins (e.g. llm-ollama) to register their models before lookup.
+    llm.get_models()
     try:
         model = llm.get_model(args.model)
     except llm.UnknownModelError:
-        # Ollama (and some other) plugins register models lazily; force-load them.
-        llm.get_models()
-        model = llm.get_model(args.model)
+        raise SystemExit(f"Unknown model: {args.model!r}. Run 'llm models' to see available models.")
 
     appending = bool(page_filter)
     if not appending or not csv_path.exists():
