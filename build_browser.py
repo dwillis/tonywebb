@@ -1,8 +1,8 @@
 """Generate a self-contained HTML browser for match_index_*.csv comparisons.
 
-One row per unique (matchup, page, date) across all files; a column per model
-with a checkmark when that model has the row. Includes search and agreement-
-count filters. Open compare_browser.html in a browser.
+One row per unique (matchup, page, date, content_type) across all files; a
+column per model with a checkmark when that model has the row. Includes search
+and agreement-count filters. Open compare_browser.html in a browser.
 """
 
 import csv
@@ -11,7 +11,7 @@ import html
 import json
 import os
 
-from normalize import matchup_key as normalize_matchup, normalize_date
+from normalize import matchup_key, normalize_date, title_key
 
 
 def label(path: str) -> str:
@@ -19,20 +19,25 @@ def label(path: str) -> str:
     return base.removeprefix("match_index_").removesuffix(".csv")
 
 
-def load_rows(path: str) -> dict[tuple[str, str, str], dict]:
-    """Return {(norm_matchup, page, date): row_dict_with_original_fields}."""
-    out: dict[tuple[str, str, str], dict] = {}
+def load_rows(path: str) -> dict[tuple[str, str, str, str], dict]:
+    """Return {(norm_key, page, date, content_type): row_dict_with_original_fields}."""
+    out: dict[tuple[str, str, str, str], dict] = {}
     with open(path, newline="", encoding="utf-8") as f:
         reader = csv.DictReader(f)
         for row in reader:
-            matchup = normalize_matchup(row.get("matchup", ""))
+            content_type = (row.get("content_type") or "match information").strip().lower()
+            raw_title = row.get("matchup", "")
+            if content_type == "match information":
+                key = matchup_key(raw_title)
+            else:
+                key = title_key(raw_title)
             page = (row.get("page") or "").strip()
             date = normalize_date(row.get("date", ""))
-            if matchup and date:
-                out[(matchup, page, date)] = {
+            if key and date:
+                out[(key, page, date, content_type)] = {
                     "matchup": (row.get("matchup") or "").strip(),
                     "page": page,
-                    "content_type": (row.get("content_type") or "").strip(),
+                    "content_type": content_type,
                     "collection": (row.get("collection") or "").strip(),
                     "record_id": (row.get("record_id") or "").strip(),
                 }
@@ -48,7 +53,7 @@ def main() -> None:
     names = [label(p) for p in files]
     per_model = {label(p): load_rows(p) for p in files}
 
-    union: set[tuple[str, str, str]] = set()
+    union: set[tuple[str, str, str, str]] = set()
     for d in per_model.values():
         union.update(d.keys())
 
@@ -60,15 +65,15 @@ def main() -> None:
 
     rows = []
     for key in sorted(union, key=page_sort):
-        norm_matchup, page_num, date = key
-        display_matchup = norm_matchup
+        norm_key, page_num, date, content_type = key
+        display_matchup = norm_key
         details: dict[str, dict] = {}
         present = []
         for n in names:
             if key in per_model[n]:
                 present.append(n)
                 details[n] = per_model[n][key]
-                if display_matchup == norm_matchup:
+                if display_matchup == norm_key:
                     display_matchup = per_model[n][key]["matchup"]
         rows.append(
             {

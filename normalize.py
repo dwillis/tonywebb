@@ -1,7 +1,9 @@
-"""Shared normalization for cricket match index entries.
+"""Shared normalization for cricket index entries.
 
 Used by parser_matches.py (post-extraction cleanup), compare_matches.py
-(comparison key), and build_browser.py (display key).
+(comparison key), and build_browser.py (display key).  Handles both
+matchup-style titles ("Team A v Team B") and free-form titles used by
+non-match content types (statistics, biography, etc.).
 """
 
 from __future__ import annotations
@@ -17,11 +19,11 @@ _PRESERVE = {
     "IV": "IV",
 }
 
-# Honorifics / abbreviations kept with a trailing dot.
-_HONORIFICS = {"mr", "mrs", "st", "rev", "dr"}
+# Honorifics / abbreviations — no trailing dot per ACS Style Guide.
+_HONORIFICS = {"mr", "mrs", "st", "rev", "dr", "capt", "maj", "col", "lt", "sgt"}
 
-# Initial-style tokens (e.g. "C.E.", "T.W.") detected by pattern instead.
-_INITIALS_RE = re.compile(r"^(?:[A-Z]\.){1,4}$", re.IGNORECASE)
+# Initial-style tokens: dotted ("C.E.", "T.W.") or 2-4 uppercase ("CE", "TW").
+_INITIALS_RE = re.compile(r"^(?:(?:[A-Z]\.){1,4}|[A-Z]{2,4})$")
 
 _MONTHS = {
     "january": 1, "february": 2, "march": 3, "april": 4, "may": 5, "june": 6,
@@ -38,15 +40,14 @@ _WEEKDAYS = {
 # ── Matchup normalization ────────────────────────────────────────────────────
 
 def _title_token(tok: str) -> str:
-    upper = tok.upper()
+    upper = tok.upper().replace(".", "")
     if upper in _PRESERVE:
         return _PRESERVE[upper]
-    if _INITIALS_RE.match(tok):
-        return tok.upper()
     bare = tok.rstrip(".").lower()
     if bare in _HONORIFICS:
-        return bare.capitalize() + "."
-    # Words like "and", "of", "the" inside team names — keep title case for simplicity.
+        return bare.capitalize()
+    if _INITIALS_RE.match(tok):
+        return upper
     return tok[:1].upper() + tok[1:].lower() if tok else tok
 
 
@@ -98,6 +99,28 @@ def matchup_key(matchup: str) -> str:
     return re.sub(r"\s+", " ", s).strip()
 
 
+def normalize_title(title: str) -> str:
+    """Normalize a non-match title (statistics, team info, biography, etc.).
+
+    Lighter than normalize_matchup: strips trailing CC/Cricket Club,
+    collapses whitespace, strips punctuation, but preserves original casing.
+    """
+    if not title:
+        return ""
+    s = title.strip()
+    s = re.sub(r"[,\s]+(?:C\.?\s*C\.?|Cricket\s+Club)\.?\s*$", "", s, flags=re.IGNORECASE)
+    s = re.sub(r"\s+", " ", s).strip()
+    s = s.strip(",;:")
+    return s
+
+
+def title_key(title: str) -> str:
+    """Lowercase, punctuation-stripped key for non-match title comparisons."""
+    s = normalize_title(title).lower()
+    s = s.replace(".", "").replace("'", "")
+    return re.sub(r"\s+", " ", s).strip()
+
+
 # ── Date normalization ───────────────────────────────────────────────────────
 
 _DATE_RE = re.compile(r"^(\d{4})(\d{2})(\d{2})$")
@@ -105,9 +128,11 @@ _DATE_RE = re.compile(r"^(\d{4})(\d{2})(\d{2})$")
 
 def normalize_date(s: str) -> str:
     """Return a YYYYMMDD string. '' if unparseable; partial allowed (year/month only)."""
+    if s is None:
+        return ""
+    s = str(s).strip()
     if not s:
         return ""
-    s = s.strip()
     m = _DATE_RE.match(s)
     if not m:
         # Tolerate hyphens and slashes
