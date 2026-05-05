@@ -1,23 +1,28 @@
-"""Compare match_index_*.csv files on (matchup, date) and build an agreement matrix."""
+"""Compare match_index_*.csv files on (matchup, date, content_type) and build an agreement matrix."""
 
 import csv
 import glob
 import os
 from itertools import combinations
 
-from normalize import matchup_key, normalize_date
+from normalize import matchup_key, normalize_date, title_key
 
 
-def load_keys(path: str) -> set[tuple[str, str, str]]:
+def load_keys(path: str) -> set[tuple[str, str, str, str]]:
     keys = set()
     with open(path, newline="", encoding="utf-8") as f:
         reader = csv.DictReader(f)
         for row in reader:
-            matchup = matchup_key(row.get("matchup", ""))
+            content_type = (row.get("content_type") or "match information").strip().lower()
+            raw_title = row.get("matchup", "")
+            if content_type == "match information":
+                key = matchup_key(raw_title)
+            else:
+                key = title_key(raw_title)
             page = (row.get("page") or "").strip()
             date = normalize_date(row.get("date", ""))
-            if matchup and date:
-                keys.add((matchup, page, date))
+            if key and date:
+                keys.add((key, page, date, content_type))
     return keys
 
 
@@ -32,8 +37,8 @@ def write_markdown(sets: dict, names: list, union_all: set, intersection_all: se
     lines.append("# Match Index Comparison Results\n")
 
     lines.append("## Files Loaded\n")
-    lines.append("| File | Unique (matchup, page, date) rows |")
-    lines.append("|------|-----------------------------------|")
+    lines.append("| File | Unique (matchup, page, date, content_type) rows |")
+    lines.append("|------|---------------------------------------------------|")
     for n in names:
         lines.append(f"| {n} | {len(sets[n])} |")
     lines.append("")
@@ -42,7 +47,7 @@ def write_markdown(sets: dict, names: list, union_all: set, intersection_all: se
     lines.append("")
 
     lines.append("---\n")
-    lines.append("## Pairwise Shared (matchup, page, date) Counts\n")
+    lines.append("## Pairwise Shared (matchup, page, date, content_type) Counts\n")
     header_cols = "| " + " | ".join([""] + names) + " |"
     sep_cols = "| " + " | ".join(["--"] + ["--:"] * len(names)) + " |"
     lines.append(header_cols)
@@ -79,7 +84,7 @@ def write_markdown(sets: dict, names: list, union_all: set, intersection_all: se
 
     lines.append("---\n")
     lines.append("## Agreement Distribution\n")
-    lines.append("How many of the 7 files agree on each unique (matchup, page, date) key:\n")
+    lines.append("How many of the 7 files agree on each unique (matchup, page, date, content_type) key:\n")
     lines.append("| Files agreeing | Count of keys |")
     lines.append("|---------------:|--------------:|")
     for c in sorted(coverage):
@@ -102,7 +107,7 @@ def main() -> None:
 
     print(f"Loaded {len(names)} files:")
     for n in names:
-        print(f"  {n:30s} {len(sets[n]):5d} unique (matchup, page, date) rows")
+        print(f"  {n:30s} {len(sets[n]):5d} unique (matchup, page, date, content_type) rows")
     print()
 
     union_all = set().union(*sets.values())
@@ -114,7 +119,7 @@ def main() -> None:
     # Pairwise agreement matrix: count of shared keys.
     width = max(len(n) for n in names)
     header = " " * (width + 2) + "  ".join(f"{n:>{width}}" for n in names)
-    print("Pairwise shared (matchup, page, date) counts:")
+    print("Pairwise shared (matchup, page, date, content_type) counts:")
     print(header)
     for a in names:
         row = [f"{a:<{width}}"]
