@@ -5,37 +5,43 @@
 | File | Unique (matchup, page, date, content_type) rows |
 |------|---------------------------------------------------|
 | deepseek-v4-pro | 2056 |
+| gemma4-31b | 1943 |
+| glm-5.1 | 2104 |
 | kimi-k2.6 | 2306 |
 | mistral-large-3:675b-cloud | 2396 |
 | qwen3.5_cloud | 2120 |
 | willis | 388 |
 
-- **Union across all files:** 5,012
-- **Intersection across all files:** 120
+- **Union across all files:** 5,984
+- **Intersection across all files:** 110
 
 ---
 
 ## Pairwise Shared (matchup, page, date, content_type) Counts
 
-|  | deepseek-v4-pro | kimi-k2.6 | mistral-large-3:675b-cloud | qwen3.5_cloud | willis |
-| -- | --: | --: | --: | --: | --: |
-| **deepseek-v4-pro** | 2056 | 1193 | 1180 | 1070 | 169 |
-| **kimi-k2.6** | 1193 | 2306 | 1198 | 1067 | 185 |
-| **mistral-large-3:675b-cloud** | 1180 | 1198 | 2396 | 1156 | 172 |
-| **qwen3.5_cloud** | 1070 | 1067 | 1156 | 2120 | 158 |
-| **willis** | 169 | 185 | 172 | 158 | 388 |
+|  | deepseek-v4-pro | gemma4-31b | glm-5.1 | kimi-k2.6 | mistral-large-3:675b-cloud | qwen3.5_cloud | willis |
+| -- | --: | --: | --: | --: | --: | --: | --: |
+| **deepseek-v4-pro** | 2056 | 1069 | 1189 | 1193 | 1180 | 1070 | 169 |
+| **gemma4-31b** | 1069 | 1943 | 1101 | 1072 | 1079 | 1000 | 186 |
+| **glm-5.1** | 1189 | 1101 | 2104 | 1170 | 1236 | 1088 | 193 |
+| **kimi-k2.6** | 1193 | 1072 | 1170 | 2306 | 1198 | 1067 | 185 |
+| **mistral-large-3:675b-cloud** | 1180 | 1079 | 1236 | 1198 | 2396 | 1156 | 172 |
+| **qwen3.5_cloud** | 1070 | 1000 | 1088 | 1067 | 1156 | 2120 | 158 |
+| **willis** | 169 | 186 | 193 | 185 | 172 | 158 | 388 |
 
 ---
 
 ## Pairwise Jaccard Similarity (|A∩B| / |A∪B|)
 
-|  | deepseek-v4-pro | kimi-k2.6 | mistral-large-3:675b-cloud | qwen3.5_cloud | willis |
-| -- | --: | --: | --: | --: | --: |
-| **deepseek-v4-pro** | 1.000 | 0.376 | 0.361 | 0.344 | 0.074 |
-| **kimi-k2.6** | 0.376 | 1.000 | 0.342 | 0.318 | 0.074 |
-| **mistral-large-3:675b-cloud** | 0.361 | 0.342 | 1.000 | 0.344 | 0.066 |
-| **qwen3.5_cloud** | 0.344 | 0.318 | 0.344 | 1.000 | 0.067 |
-| **willis** | 0.074 | 0.074 | 0.066 | 0.067 | 1.000 |
+|  | deepseek-v4-pro | gemma4-31b | glm-5.1 | kimi-k2.6 | mistral-large-3:675b-cloud | qwen3.5_cloud | willis |
+| -- | --: | --: | --: | --: | --: | --: | --: |
+| **deepseek-v4-pro** | 1.000 | 0.365 | 0.400 | 0.376 | 0.361 | 0.344 | 0.074 |
+| **gemma4-31b** | 0.365 | 1.000 | 0.374 | 0.337 | 0.331 | 0.326 | 0.087 |
+| **glm-5.1** | 0.400 | 0.374 | 1.000 | 0.361 | 0.379 | 0.347 | 0.084 |
+| **kimi-k2.6** | 0.376 | 0.337 | 0.361 | 1.000 | 0.342 | 0.318 | 0.074 |
+| **mistral-large-3:675b-cloud** | 0.361 | 0.331 | 0.379 | 0.342 | 1.000 | 0.344 | 0.066 |
+| **qwen3.5_cloud** | 0.344 | 0.326 | 0.347 | 0.318 | 0.344 | 1.000 | 0.067 |
+| **willis** | 0.074 | 0.087 | 0.084 | 0.074 | 0.066 | 0.067 | 1.000 |
 
 ---
 
@@ -45,10 +51,21 @@ Rows present in one file but not the other:
 
 | Pair | Only in A | Only in B |
 |------|----------:|----------:|
+| deepseek-v4-pro vs gemma4-31b | 987 | 874 |
+| deepseek-v4-pro vs glm-5.1 | 867 | 915 |
 | deepseek-v4-pro vs kimi-k2.6 | 863 | 1113 |
 | deepseek-v4-pro vs mistral-large-3:675b-cloud | 876 | 1216 |
 | deepseek-v4-pro vs qwen3.5_cloud | 986 | 1050 |
 | deepseek-v4-pro vs willis | 1887 | 219 |
+| gemma4-31b vs glm-5.1 | 842 | 1003 |
+| gemma4-31b vs kimi-k2.6 | 871 | 1234 |
+| gemma4-31b vs mistral-large-3:675b-cloud | 864 | 1317 |
+| gemma4-31b vs qwen3.5_cloud | 943 | 1120 |
+| gemma4-31b vs willis | 1757 | 202 |
+| glm-5.1 vs kimi-k2.6 | 934 | 1136 |
+| glm-5.1 vs mistral-large-3:675b-cloud | 868 | 1160 |
+| glm-5.1 vs qwen3.5_cloud | 1016 | 1032 |
+| glm-5.1 vs willis | 1911 | 195 |
 | kimi-k2.6 vs mistral-large-3:675b-cloud | 1108 | 1198 |
 | kimi-k2.6 vs qwen3.5_cloud | 1239 | 1053 |
 | kimi-k2.6 vs willis | 2121 | 203 |
@@ -64,8 +81,10 @@ How many of the 7 files agree on each unique (matchup, page, date, content_type)
 
 | Files agreeing | Count of keys |
 |---------------:|--------------:|
-| 1 / 5 | 3007 |
-| 2 / 5 | 681 |
-| 3 / 5 | 519 |
-| 4 / 5 | 685 |
-| 5 / 5 | 120 |
+| 1 / 7 | 3477 |
+| 2 / 7 | 800 |
+| 3 / 7 | 377 |
+| 4 / 7 | 315 |
+| 5 / 7 | 355 |
+| 6 / 7 | 550 |
+| 7 / 7 | 110 |
