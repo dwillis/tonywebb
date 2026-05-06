@@ -27,6 +27,7 @@ from pathlib import Path
 import llm
 
 from normalize import (
+    ClubRegistry,
     detect_publication_date,
     matchup_key,
     normalize_date,
@@ -35,6 +36,8 @@ from normalize import (
     relative_dates,
     title_key,
 )
+
+_club_registry = ClubRegistry("clubs.csv") if Path("clubs.csv").exists() else None
 
 # ── Defaults ──────────────────────────────────────────────────────────────────
 
@@ -191,6 +194,47 @@ IMPORTANT RULES:
   "statistics" means end-of-season averages tables for a team.
 - If a page contains a team's fixture list AND that team's batting/bowling
   averages, create BOTH a "team information" entry AND a "statistics" entry.
+- Do NOT create "fixture information" entries for lists of upcoming or
+  unplayed fixtures. Only create entries for matches that have RESULTS.
+- If a match report continues from a previous page (starts mid-scorecard
+  with no header), do NOT create a new entry for it. Only create entries
+  for content that BEGINS on this page.
+- A typical page has 2-8 entries. If you find more than 12, reconsider
+  whether you are splitting single match reports into multiple entries.
+- Drop "Mr", "Mr." and other honorifics from personal XI names:
+  use "F Gentle's XI" not "Mr F Gentle's XI".
+- Drop trailing "OC" from team names unless it is clearly part of the
+  official team name (e.g., use "Waterlow's" not "Waterlow's OC").
+
+KEY 1895 DATES (for resolving historical date references):
+- Whit-Monday (Bank Holiday): 27 May 1895
+- Whit-Tuesday: 28 May 1895
+- Good Friday: 12 April 1895
+- Easter Monday: 15 April 1895
+- August Bank Holiday: 5 August 1895
+When the text says "Whit-Monday", "Bank Holiday", etc., use these dates.
+The PUBLICATION DATE is NOT the match date — matches are typically
+reported days after they were played.
+
+EXAMPLES OF CORRECT EXTRACTION:
+
+Example 1 — Match report with a date reference:
+  Text: "KENSWORTH v. DUNSTABLE VICTORIA.--Played on Whit-Monday..."
+  (Publication date: Saturday 8 June 1895)
+  Correct: {{"title": "Kensworth v Dunstable Victoria",
+             "date": "18950527", "content_type": "match information"}}
+  Note: "Whit-Monday" in 1895 was 27 May. Do NOT use the publication
+  date (8 June) as the match date.
+
+Example 2 — Match report with scorecard:
+  A match header followed by detailed batting and bowling figures is
+  ONE "match information" entry. Do NOT create separate "statistics"
+  entries for the individual scores within a match report.
+
+Example 3 — Resolving "on Friday":
+  (Publication date: Saturday 8 June 1895)
+  Text: "The match was played on Friday"
+  Correct date: "18950607" (the Friday before the Saturday publication)
 
 Return ONLY a JSON object with a single key "entries" (array). If no
 cricket content is found, return {{"entries": []}}.
@@ -275,7 +319,7 @@ def normalize_and_dedup(
         date = normalize_date(entry.get("date", ""))
 
         if content_type == "match information":
-            title = normalize_matchup(raw_title)
+            title = normalize_matchup(raw_title, registry=_club_registry)
             if not title:
                 continue
             key = matchup_key(title)

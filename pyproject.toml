@@ -11,3 +11,8 @@ dependencies = [
     "llm-ollama>=0.16.0",
     "requests>=2.33.1",
 ]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0",
+]

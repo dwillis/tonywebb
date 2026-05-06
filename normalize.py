@@ -8,8 +8,10 @@ non-match content types (statistics, biography, etc.).
 
 from __future__ import annotations
 
+import csv
 import re
 from datetime import date, timedelta
+from pathlib import Path
 
 # Tokens preserved verbatim (case-sensitive) when title-casing matchups.
 _PRESERVE = {
@@ -56,7 +58,7 @@ def _title_case_team(name: str) -> str:
     return "".join(_title_token(p) if p.strip() and p != "-" else p for p in parts)
 
 
-def _normalize_team(team: str) -> str:
+def _normalize_team(team: str, registry: ClubRegistry | None = None) -> str:
     s = team.strip()
     # Drop trailing C.C. / Cricket Club
     s = re.sub(r"[,\s]+(?:C\.?\s*C\.?|Cricket\s+Club)\.?\s*$", "", s, flags=re.IGNORECASE)
@@ -72,10 +74,15 @@ def _normalize_team(team: str) -> str:
     s = re.sub(r"\s+", " ", s).strip()
     # Strip surrounding punctuation
     s = s.strip(",;:")
-    return _title_case_team(s)
+    s = _title_case_team(s)
+    if registry:
+        resolved = registry.resolve(s)
+        if resolved:
+            return resolved
+    return s
 
 
-def normalize_matchup(matchup: str) -> str:
+def normalize_matchup(matchup: str, registry: ClubRegistry | None = None) -> str:
     """Canonicalize a 'Team A v Team B' string. Returns '' for unparseable input."""
     if not matchup:
         return ""
@@ -86,10 +93,9 @@ def normalize_matchup(matchup: str) -> str:
     s = re.sub(r"\s+", " ", s).strip()
     parts = re.split(r"\s+v\s+", s, maxsplit=1)
     if len(parts) != 2:
-        # Fall back: best-effort cleanup of the whole string
-        return _normalize_team(s)
+        return _normalize_team(s, registry=registry)
     left, right = parts
-    return f"{_normalize_team(left)} v {_normalize_team(right)}"
+    return f"{_normalize_team(left, registry=registry)} v {_normalize_team(right, registry=registry)}"
 
 
 def matchup_key(matchup: str) -> str:
@@ -191,3 +197,52 @@ def relative_dates(pub: date) -> dict[str, str]:
             delta = 7  # "on Monday" in a Monday paper means a week prior
         out[name] = (pub - timedelta(days=delta)).isoformat()
     return out
+
+
+# ── Club Registry ───────────────────────────────────────────────────────────
+
+def _registry_key(name: str) -> str:
+    s = name.strip().lower()
+    s = re.sub(r"[^a-z0-9 ]", "", s)
+    s = re.sub(r"\s+", " ", s).strip()
+    return s
+
+
+class ClubRegistry:
+    """Resolves team names to canonical forms using clubs.csv."""
+
+    def __init__(self, csv_path: str | Path = "clubs.csv"):
+        self._canonical: dict[str, str] = {}  # registry_key -> canonical name
+        path = Path(csv_path)
+        if not path.exists():
+            return
+        with path.open(newline="", encoding="utf-8") as f:
+            for row in csv.DictReader(f):
+                canon = row["canonical_name"].strip()
+                if not canon:
+                    continue
+                self._canonical[_registry_key(canon)] = canon
+                for alias in (row.get("aliases") or "").split("|"):
+                    alias = alias.strip()
+                    if alias:
+                        self._canonical[_registry_key(alias)] = canon
+
+    def resolve(self, name: str) -> str | None:
+        key = _registry_key(name)
+        if key in self._canonical:
+            return self._canonical[key]
+        # Try without trailing "cc" or "oc"
+        stripped = re.sub(r"\s+(cc|oc)$", "", key)
+        if stripped != key and stripped in self._canonical:
+            return self._canonical[stripped]
+        # Try without leading "mr"
+        no_mr = re.sub(r"^mr\s+", "", key)
+        if no_mr != key and no_mr in self._canonical:
+            return self._canonical[no_mr]
+        return None
+
+    def is_known(self, name: str) -> bool:
+        return self.resolve(name) is not None
+
+    def __len__(self) -> int:
+        return len(set(self._canonical.values()))
