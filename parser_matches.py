@@ -26,6 +26,12 @@ from pathlib import Path
 
 import llm
 
+from llm_common import (
+    JSONExtractError,
+    load_pages_from_dir,
+    no_thinking_kwargs,
+    parse_json_object,
+)
 from normalize import (
     ClubRegistry,
     detect_publication_date,
@@ -245,21 +251,11 @@ PAGE {page_num} TEXT:
 
 # ── LLM extraction ───────────────────────────────────────────────────────────
 
-class JSONExtractError(Exception):
-    """Raised when the model's response can't be parsed as the expected JSON shape."""
-
-
 def _parse_response(raw: str) -> list[dict]:
-    text = raw.strip()
-    text = re.sub(r"^```(?:json)?\s*", "", text)
-    text = re.sub(r"\s*```$", "", text)
-    try:
-        parsed = json.loads(text)
-    except json.JSONDecodeError as e:
-        raise JSONExtractError(f"invalid JSON: {e}") from e
-    if not isinstance(parsed, dict):
-        raise JSONExtractError("response is not a JSON object")
-    entries = parsed.get("entries") or parsed.get("matches")
+    parsed = parse_json_object(raw)
+    entries = parsed.get("entries")
+    if entries is None:
+        entries = parsed.get("matches")
     if entries is None:
         raise JSONExtractError("missing 'entries' (or 'matches') key")
     if not isinstance(entries, list):
@@ -275,23 +271,10 @@ def _parse_response(raw: str) -> list[dict]:
     return entries
 
 
-def _no_thinking_kwargs(model) -> dict:
-    """Return prompt kwargs that disable thinking for models that support it."""
-    model_id: str = getattr(model, "model_id", "") or ""
-    model_type = type(model).__module__ or ""
-    if "ollama" in model_type:
-        # llm-ollama exposes thinking as `think`
-        return {"think": False}
-    if any(x in model_id.lower() for x in ("claude", "opus", "sonnet", "haiku")):
-        # Anthropic extended thinking: budget_tokens=0 disables it
-        return {"budget_tokens": 0}
-    return {}
-
-
 def extract_entries(model, page_num: int, page_text: str) -> tuple[list[dict], str]:
     """Returns (entries, raw_response_text). Raises JSONExtractError on bad shape."""
     prompt = build_user_prompt(page_num, page_text)
-    response = model.prompt(prompt, system=SYSTEM_PROMPT, **_no_thinking_kwargs(model))
+    response = model.prompt(prompt, system=SYSTEM_PROMPT, **no_thinking_kwargs(model))
     raw = response.text()
     return _parse_response(raw), raw
 
@@ -302,17 +285,31 @@ def normalize_and_dedup(
     entries: list[dict],
     page_num: int,
     allowed_types: set[str] | None = None,
-) -> list[dict]:
-    """Normalize title/date and drop duplicates within a page."""
+) -> tuple[list[dict], list[dict]]:
+    """Normalize title/date and drop duplicates within a page.
+
+    Returns (kept, discarded). Each discarded item records the reason and the
+    original entry so dropped data stays visible in the raw-responses log.
+    """
     seen: set[tuple[str, str, str]] = set()
     out: list[dict] = []
+    discarded: list[dict] = []
+
+    def discard(reason: str, entry) -> None:
+        discarded.append({
+            "reason": reason,
+            "entry": entry if isinstance(entry, dict) else str(entry),
+        })
+
     for entry in entries:
         if not isinstance(entry, dict):
+            discard("not a dict", entry)
             continue
         content_type = (entry.get("content_type") or "match information").strip().lower()
         if content_type not in VALID_CONTENT_TYPES:
             content_type = "match information"
         if allowed_types and content_type not in allowed_types:
+            discard("filtered content type", entry)
             continue
 
         raw_title = entry.get("matchup", "") or entry.get("title", "")
@@ -321,16 +318,19 @@ def normalize_and_dedup(
         if content_type == "match information":
             title = normalize_matchup(raw_title, registry=_club_registry)
             if not title:
+                discard("empty title", entry)
                 continue
             key = matchup_key(title)
         else:
             title = normalize_title(raw_title)
             if not title:
+                discard("empty title", entry)
                 continue
             key = title_key(title)
 
         dedup = (key, date, content_type)
         if dedup in seen:
+            discard("duplicate", entry)
             continue
         seen.add(dedup)
         out.append(
@@ -343,17 +343,29 @@ def normalize_and_dedup(
                 "record_id": (entry.get("record_id") or "").strip(),
             }
         )
-    return out
+    return out, discarded
 
 
-def load_pages_from_dir(directory: Path) -> list[tuple[int, str]]:
-    """Load per-page .txt files from a directory, sorted by page number."""
-    pages = []
-    for f in directory.glob("*.txt"):
-        m = re.search(r"_(\d+)\.txt$", f.name)
-        if m:
-            pages.append((int(m.group(1)), f.read_text(encoding="utf-8").strip()))
-    return sorted(pages, key=lambda x: x[0])
+def _row_key(matchup: str, date: str, content_type: str) -> tuple[str, str, str]:
+    key = matchup_key(matchup) if content_type == "match information" else title_key(matchup)
+    return (key, date, content_type)
+
+
+def track_cross_page(global_seen: dict, rows: list[dict]) -> list[dict]:
+    """Track entries across pages; return rows already seen on an earlier page.
+
+    Cross-page duplicates are reported, not dropped — the same fixture can
+    legitimately appear in consecutive issues, so a human decides.
+    """
+    dupes: list[dict] = []
+    for row in rows:
+        key = _row_key(row["matchup"], row["date"], row["content_type"])
+        first_page = global_seen.get(key)
+        if first_page is not None and first_page != row["page"]:
+            dupes.append({**row, "first_page": first_page})
+        else:
+            global_seen.setdefault(key, row["page"])
+    return dupes
 
 
 # ── Main ─────────────────────────────────────────────────────────────────────
@@ -435,17 +447,26 @@ def main():
         raise SystemExit(f"Unknown model: {args.model!r}. Run 'llm models' to see available models.")
     model = all_models[args.model]
 
-    # Load already-processed pages from existing CSV to allow resuming
+    # Load already-processed pages from existing CSV to allow resuming;
+    # also seed cross-page duplicate tracking from prior rows.
     processed_pages: set[int] = set()
+    global_seen: dict[tuple[str, str, str], int] = {}
     if csv_path.exists():
         try:
             with csv_path.open(newline="", encoding="utf-8") as f:
                 reader = csv.DictReader(f)
                 for row in reader:
                     try:
-                        processed_pages.add(int(row["page"]))
+                        page = int(row["page"])
                     except (KeyError, ValueError):
-                        pass
+                        continue
+                    processed_pages.add(page)
+                    key = _row_key(
+                        row.get("matchup", ""),
+                        row.get("date", ""),
+                        (row.get("content_type") or "match information").strip().lower(),
+                    )
+                    global_seen.setdefault(key, page)
         except Exception:
             pass
     if processed_pages:
@@ -458,6 +479,7 @@ def main():
 
     total_entries = 0
     total_errors = 0
+    cross_page_dupes: list[dict] = []
 
     for page_num, page_text in pages:
         if page_num in processed_pages:
@@ -466,6 +488,7 @@ def main():
         print(f"  Processing page {page_num} …", end=" ", flush=True)
         entries: list[dict] | None = None
         normalized: list[dict] = []
+        discarded: list[dict] = []
         raw = ""
         error: str | None = None
 
@@ -486,9 +509,11 @@ def main():
                     entries = []
                     break
 
-            normalized = normalize_and_dedup(
+            normalized, discarded = normalize_and_dedup(
                 entries or [], page_num, allowed_types=content_filter,
             )
+            page_dupes = track_cross_page(global_seen, normalized)
+            cross_page_dupes.extend(page_dupes)
 
             if normalized:
                 with csv_path.open("a", newline="", encoding="utf-8") as f:
@@ -510,6 +535,7 @@ def main():
                     "raw": raw,
                     "parsed_count": len(entries or []),
                     "kept_count": len(normalized),
+                    "discarded": discarded,
                     "error": error,
                 }, ensure_ascii=False) + "\n")
 
@@ -517,11 +543,16 @@ def main():
                 total_errors += 1
                 print(f"ERROR: {error}")
             else:
-                print(f"{len(normalized)} entry(ies)" if normalized else "no entries")
+                note = f" ({len(page_dupes)} also on earlier page)" if page_dupes else ""
+                print((f"{len(normalized)} entry(ies)" if normalized else "no entries") + note)
         finally:
             time.sleep(RATE_LIMIT_DELAY)
 
     print(f"\nDone. {total_entries} entries written to {csv_path}; {total_errors} page error(s).")
+    if cross_page_dupes:
+        print(f"{len(cross_page_dupes)} entry(ies) also appear on an earlier page (kept; review manually):")
+        for d in cross_page_dupes:
+            print(f"  page {d['page']}: {d['matchup']} [{d['date']}] first seen on page {d['first_page']}")
 
 
 if __name__ == "__main__":

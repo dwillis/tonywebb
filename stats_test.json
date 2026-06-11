@@ -1,0 +1,1562 @@
+{
+  "metadata": {
+    "collection": "Tony Webb minor counties collection",
+    "season": "1895",
+    "model": "qwen3.5:397b-cloud",
+    "pages_processed": 1,
+    "total_teams": 5,
+    "total_players": 112
+  },
+  "teams": [
+    {
+      "name": "Liverpool",
+      "season": "1895",
+      "page": 58,
+      "matches": {
+        "played": 86,
+        "won": 33,
+        "lost": 17,
+        "drawn": 36
+      },
+      "runs_scored": {
+        "for": {
+          "runs": 6951,
+          "wickets": 311,
+          "average_per_wicket": 22.35
+        },
+        "against": {
+          "runs": 5580,
+          "wickets": 342,
+          "average_per_wicket": 16.32
+        }
+      },
+      "players": [
+        {
+          "name": "H Leach",
+          "batting": {
+            "innings": 36,
+            "not_outs": 2,
+            "runs": 1205,
+            "highest_score": "114",
+            "average": 35.15
+          }
+        },
+        {
+          "name": "H G Stott",
+          "batting": {
+            "innings": 24,
+            "not_outs": 1,
+            "runs": 463,
+            "highest_score": "114",
+            "average": 21.11
+          }
+        },
+        {
+          "name": "W Hilton",
+          "batting": {
+            "innings": 15,
+            "not_outs": 2,
+            "runs": 278,
+            "highest_score": "114*",
+            "average": 21.5
+          },
+          "bowling": {
+            "overs": 125,
+            "maidens": 28,
+            "runs": 307,
+            "wickets": 13,
+            "average": 23.8,
+            "best": null
+          }
+        },
+        {
+          "name": "A L Melly",
+          "batting": {
+            "innings": 7,
+            "not_outs": 1,
+            "runs": 148,
+            "highest_score": "74",
+            "average": 24.6
+          },
+          "bowling": {
+            "overs": 82.4,
+            "maidens": 28,
+            "runs": 153,
+            "wickets": 12,
+            "average": 12.9,
+            "best": null
+          }
+        },
+        {
+          "name": "H R Stott",
+          "batting": {
+            "innings": 21,
+            "not_outs": 0,
+            "runs": 420,
+            "highest_score": "108",
+            "average": 20.0
+          },
+          "bowling": {
+            "overs": 183,
+            "maidens": 48,
+            "runs": 489,
+            "wickets": 18,
+            "average": 27.16,
+            "best": null
+          }
+        },
+        {
+          "name": "W H Stoddart",
+          "batting": {
+            "innings": 19,
+            "not_outs": 6,
+            "runs": 293,
+            "highest_score": "42*",
+            "average": 22.7
+          },
+          "bowling": {
+            "overs": 129,
+            "maidens": 27,
+            "runs": 401,
+            "wickets": 28,
+            "average": 14.9,
+            "best": null
+          }
+        },
+        {
+          "name": "F Hancox",
+          "batting": {
+            "innings": 23,
+            "not_outs": 4,
+            "runs": 405,
+            "highest_score": "42",
+            "average": 21.3
+          }
+        },
+        {
+          "name": "J Graham, jun",
+          "batting": {
+            "innings": 17,
+            "not_outs": 0,
+            "runs": 354,
+            "highest_score": "121",
+            "average": 20.7
+          },
+          "bowling": {
+            "overs": 158.4,
+            "maidens": 21,
+            "runs": 527,
+            "wickets": 18,
+            "average": 29.7,
+            "best": null
+          }
+        },
+        {
+          "name": "Rev H H Highley",
+          "batting": {
+            "innings": 6,
+            "not_outs": 0,
+            "runs": 102,
+            "highest_score": "33",
+            "average": 17.0
+          }
+        },
+        {
+          "name": "Sharp",
+          "batting": {
+            "innings": 10,
+            "not_outs": 1,
+            "runs": 163,
+            "highest_score": "81",
+            "average": 18.1
+          },
+          "bowling": {
+            "overs": 50.3,
+            "maidens": 18,
+            "runs": 121,
+            "wickets": 12,
+            "average": 10.1,
+            "best": null
+          }
+        },
+        {
+          "name": "H O Pilkington",
+          "batting": {
+            "innings": 5,
+            "not_outs": 0,
+            "runs": 82,
+            "highest_score": "32",
+            "average": 16.2
+          },
+          "bowling": {
+            "overs": 61,
+            "maidens": 27,
+            "runs": 124,
+            "wickets": 10,
+            "average": 12.4,
+            "best": null
+          }
+        },
+        {
+          "name": "Rev H Highley",
+          "batting": {
+            "innings": 15,
+            "not_outs": 3,
+            "runs": 261,
+            "highest_score": "55",
+            "average": 17.4
+          },
+          "bowling": {
+            "overs": 74.4,
+            "maidens": 14,
+            "runs": 196,
+            "wickets": 11,
+            "average": 17.8,
+            "best": null
+          }
+        },
+        {
+          "name": "A G Steel",
+          "batting": {
+            "innings": 6,
+            "not_outs": 0,
+            "runs": 86,
+            "highest_score": "51",
+            "average": 17.2
+          },
+          "bowling": {
+            "overs": 117.3,
+            "maidens": 34,
+            "runs": 352,
+            "wickets": 32,
+            "average": 11.0,
+            "best": null
+          }
+        },
+        {
+          "name": "E C Hornby",
+          "batting": {
+            "innings": 15,
+            "not_outs": 1,
+            "runs": 237,
+            "highest_score": "65",
+            "average": 16.13
+          },
+          "bowling": {
+            "overs": 134,
+            "maidens": 29,
+            "runs": 318,
+            "wickets": 12,
+            "average": 26.6,
+            "best": null
+          }
+        },
+        {
+          "name": "F Melly",
+          "batting": {
+            "innings": 18,
+            "not_outs": 1,
+            "runs": 280,
+            "highest_score": "48",
+            "average": 16.8
+          }
+        },
+        {
+          "name": "A G Melly",
+          "batting": {
+            "innings": 7,
+            "not_outs": 1,
+            "runs": 63,
+            "highest_score": "35*",
+            "average": 10.3
+          }
+        },
+        {
+          "name": "G M Kinnear",
+          "batting": {
+            "innings": 7,
+            "not_outs": 0,
+            "runs": 100,
+            "highest_score": "41",
+            "average": 14.2
+          }
+        },
+        {
+          "name": "Bulmer",
+          "batting": {
+            "innings": 5,
+            "not_outs": 0,
+            "runs": 70,
+            "highest_score": "36",
+            "average": 14.0
+          },
+          "bowling": {
+            "overs": 39,
+            "maidens": 11,
+            "runs": 93,
+            "wickets": 8,
+            "average": 11.5,
+            "best": null
+          }
+        },
+        {
+          "name": "F Edmondson",
+          "batting": {
+            "innings": 7,
+            "not_outs": 2,
+            "runs": 65,
+            "highest_score": "28",
+            "average": 13.0
+          }
+        },
+        {
+          "name": "Goodwin",
+          "batting": {
+            "innings": 11,
+            "not_outs": 5,
+            "runs": 62,
+            "highest_score": "28*",
+            "average": 12.4
+          },
+          "bowling": {
+            "overs": 409.3,
+            "maidens": 145,
+            "runs": 839,
+            "wickets": 85,
+            "average": 9.74,
+            "best": null
+          }
+        },
+        {
+          "name": "A T Kemble",
+          "batting": {
+            "innings": 10,
+            "not_outs": 2,
+            "runs": 88,
+            "highest_score": "27*",
+            "average": 11.0
+          },
+          "fielding": {
+            "catches": 41,
+            "stumpings": 0
+          }
+        },
+        {
+          "name": "M E Ashcroft",
+          "batting": {
+            "innings": 6,
+            "not_outs": 1,
+            "runs": 44,
+            "highest_score": "18",
+            "average": 8.3
+          },
+          "bowling": {
+            "overs": 158.2,
+            "maidens": 43,
+            "runs": 400,
+            "wickets": 22,
+            "average": 18.18,
+            "best": null
+          }
+        },
+        {
+          "name": "Ringrose",
+          "batting": {
+            "innings": 6,
+            "not_outs": 2,
+            "runs": 25,
+            "highest_score": "21",
+            "average": 6.1
+          },
+          "bowling": {
+            "overs": 147,
+            "maidens": 44,
+            "runs": 364,
+            "wickets": 29,
+            "average": 12.16,
+            "best": null
+          }
+        },
+        {
+          "name": "B K Wilson",
+          "batting": {
+            "innings": 5,
+            "not_outs": 1,
+            "runs": 118,
+            "highest_score": "102*",
+            "average": 29.2
+          }
+        },
+        {
+          "name": "H Garnett",
+          "batting": {
+            "innings": 5,
+            "not_outs": 2,
+            "runs": 84,
+            "highest_score": "70*",
+            "average": 28.0
+          }
+        },
+        {
+          "name": "E A Kidman",
+          "batting": {
+            "innings": 7,
+            "not_outs": 1,
+            "runs": 192,
+            "highest_score": "86*",
+            "average": 32.0
+          }
+        },
+        {
+          "name": "A H Gaskell",
+          "batting": {
+            "innings": 7,
+            "not_outs": 2,
+            "runs": 176,
+            "highest_score": "46*",
+            "average": 35.1
+          }
+        },
+        {
+          "name": "S Bingham",
+          "batting": {
+            "innings": 14,
+            "not_outs": 1,
+            "runs": 372,
+            "highest_score": "136",
+            "average": 28.8
+          },
+          "bowling": {
+            "overs": 46,
+            "maidens": 5,
+            "runs": 140,
+            "wickets": 4,
+            "average": 35.0,
+            "best": null
+          }
+        },
+        {
+          "name": "J Bingham, jun",
+          "batting": {
+            "innings": 9,
+            "not_outs": 1,
+            "runs": 238,
+            "highest_score": "98*",
+            "average": 29.3
+          }
+        },
+        {
+          "name": "J B Clayton",
+          "batting": {
+            "innings": 9,
+            "not_outs": 2,
+            "runs": 170,
+            "highest_score": "81*",
+            "average": 24.2
+          }
+        },
+        {
+          "name": "P H Howard, jun",
+          "batting": {
+            "innings": 9,
+            "not_outs": 1,
+            "runs": 189,
+            "highest_score": "92*",
+            "average": 23.5
+          }
+        },
+        {
+          "name": "A B Rowley, jun",
+          "batting": {
+            "innings": 7,
+            "not_outs": 1,
+            "runs": 142,
+            "highest_score": "44",
+            "average": 23.4
+          },
+          "bowling": {
+            "overs": 64.4,
+            "maidens": 7,
+            "runs": 188,
+            "wickets": 6,
+            "average": 31.2,
+            "best": null
+          }
+        },
+        {
+          "name": "G S Parker",
+          "batting": {
+            "innings": 10,
+            "not_outs": 2,
+            "runs": 154,
+            "highest_score": "43",
+            "average": 19.2
+          }
+        },
+        {
+          "name": "D B Nott",
+          "batting": {
+            "innings": 6,
+            "not_outs": 0,
+            "runs": 104,
+            "highest_score": "62",
+            "average": 17.2
+          }
+        },
+        {
+          "name": "J H Daniel",
+          "batting": {
+            "innings": 4,
+            "not_outs": 0,
+            "runs": 64,
+            "highest_score": "44",
+            "average": 16.0
+          }
+        },
+        {
+          "name": "J T Dingle",
+          "batting": {
+            "innings": 5,
+            "not_outs": 1,
+            "runs": 49,
+            "highest_score": "19*",
+            "average": 12.1
+          }
+        },
+        {
+          "name": "G A Kemble",
+          "batting": {
+            "innings": 11,
+            "not_outs": 1,
+            "runs": 112,
+            "highest_score": "38",
+            "average": 11.2
+          },
+          "bowling": {
+            "overs": 145,
+            "maidens": 37,
+            "runs": 327,
+            "wickets": 26,
+            "average": 12.15,
+            "best": null
+          }
+        },
+        {
+          "name": "H P Harrison",
+          "batting": {
+            "innings": 5,
+            "not_outs": 0,
+            "runs": 56,
+            "highest_score": "22",
+            "average": 11.2
+          },
+          "bowling": {
+            "overs": 46,
+            "maidens": 13,
+            "runs": 134,
+            "wickets": 7,
+            "average": 19.1,
+            "best": null
+          }
+        },
+        {
+          "name": "G L Toope",
+          "batting": {
+            "innings": 11,
+            "not_outs": 1,
+            "runs": 119,
+            "highest_score": "39",
+            "average": 11.9
+          },
+          "bowling": {
+            "overs": 134.1,
+            "maidens": 36,
+            "runs": 312,
+            "wickets": 27,
+            "average": 11.15,
+            "best": null
+          }
+        },
+        {
+          "name": "R H Marshall",
+          "batting": {
+            "innings": 6,
+            "not_outs": 1,
+            "runs": 44,
+            "highest_score": "24",
+            "average": 8.4
+          }
+        },
+        {
+          "name": "C T Knowles",
+          "batting": {
+            "innings": 6,
+            "not_outs": 0,
+            "runs": 73,
+            "highest_score": "19*",
+            "average": 12.1
+          }
+        },
+        {
+          "name": "A M Robinson",
+          "batting": {
+            "innings": 8,
+            "not_outs": 0,
+            "runs": 81,
+            "highest_score": "19",
+            "average": 10.1
+          }
+        },
+        {
+          "name": "A Bevan",
+          "batting": {
+            "innings": 11,
+            "not_outs": 1,
+            "runs": 91,
+            "highest_score": "30",
+            "average": 9.1
+          }
+        },
+        {
+          "name": "W Bateson",
+          "batting": {
+            "innings": 11,
+            "not_outs": 0,
+            "runs": 81,
+            "highest_score": "17",
+            "average": 7.4
+          }
+        },
+        {
+          "name": "H E Edmondson",
+          "batting": {
+            "innings": 8,
+            "not_outs": 1,
+            "runs": 46,
+            "highest_score": "25",
+            "average": 6.5
+          }
+        },
+        {
+          "name": "K B Thomson",
+          "batting": {
+            "innings": 8,
+            "not_outs": 2,
+            "runs": 28,
+            "highest_score": "14",
+            "average": 4.4
+          },
+          "bowling": {
+            "overs": 32.2,
+            "maidens": 2,
+            "runs": 60,
+            "wickets": 4,
+            "average": 15.0,
+            "best": null
+          }
+        },
+        {
+          "name": "A B Robinson",
+          "bowling": {
+            "overs": 67,
+            "maidens": 21,
+            "runs": 174,
+            "wickets": 10,
+            "average": 17.4,
+            "best": null
+          }
+        },
+        {
+          "name": "R H Tinsler",
+          "batting": {
+            "innings": 3,
+            "not_outs": 1,
+            "runs": 54,
+            "highest_score": "36",
+            "average": 27.0
+          }
+        },
+        {
+          "name": "E C Harrison",
+          "batting": {
+            "innings": 11,
+            "not_outs": 2,
+            "runs": 194,
+            "highest_score": "53",
+            "average": 21.5
+          },
+          "bowling": {
+            "overs": 35,
+            "maidens": 5,
+            "runs": 112,
+            "wickets": 6,
+            "average": 18.4,
+            "best": null
+          }
+        },
+        {
+          "name": "W M Wakefield",
+          "batting": {
+            "innings": 6,
+            "not_outs": 1,
+            "runs": 75,
+            "highest_score": "35*",
+            "average": 15.0
+          }
+        },
+        {
+          "name": "S H Gaskell, jun",
+          "batting": {
+            "innings": 5,
+            "not_outs": 1,
+            "runs": 54,
+            "highest_score": "16*",
+            "average": 13.2
+          }
+        },
+        {
+          "name": "H M Gaskell",
+          "batting": {
+            "innings": 14,
+            "not_outs": 2,
+            "runs": 112,
+            "highest_score": "30*",
+            "average": 9.4
+          }
+        },
+        {
+          "name": "F Eiland",
+          "batting": {
+            "innings": 1,
+            "not_outs": 0,
+            "runs": 113,
+            "highest_score": "113",
+            "average": 113.0
+          }
+        }
+      ]
+    },
+    {
+      "name": "Northern",
+      "season": "1895",
+      "page": 58,
+      "matches": {
+        "played": 30,
+        "won": 10,
+        "lost": 9,
+        "drawn": 11
+      },
+      "players": [
+        {
+          "name": "F G Thompson",
+          "batting": {
+            "innings": 25,
+            "not_outs": 2,
+            "runs": 597,
+            "highest_score": "104*",
+            "average": 25.22
+          },
+          "bowling": {
+            "overs": 31,
+            "maidens": 6,
+            "runs": 73,
+            "wickets": 8,
+            "average": 9.12,
+            "best": null
+          }
+        },
+        {
+          "name": "Henson",
+          "batting": {
+            "innings": 30,
+            "not_outs": 4,
+            "runs": 608,
+            "highest_score": "60*",
+            "average": 23.38
+          },
+          "bowling": {
+            "overs": 481.2,
+            "maidens": 160,
+            "runs": 1003,
+            "wickets": 86,
+            "average": 11.66,
+            "best": null
+          }
+        },
+        {
+          "name": "E Tunnicliffe",
+          "batting": {
+            "innings": 18,
+            "not_outs": 4,
+            "runs": 326,
+            "highest_score": "53*",
+            "average": 23.28
+          },
+          "bowling": {
+            "overs": 63.1,
+            "maidens": 9,
+            "runs": 188,
+            "wickets": 11,
+            "average": 17.09,
+            "best": null
+          }
+        },
+        {
+          "name": "W K Fernie",
+          "batting": {
+            "innings": 27,
+            "not_outs": 4,
+            "runs": 560,
+            "highest_score": "90*",
+            "average": 24.34
+          }
+        },
+        {
+          "name": "S E Job",
+          "batting": {
+            "innings": 18,
+            "not_outs": 7,
+            "runs": 179,
+            "highest_score": "36",
+            "average": 16.27
+          },
+          "bowling": {
+            "overs": 351,
+            "maidens": 115,
+            "runs": 888,
+            "wickets": 68,
+            "average": 13.05,
+            "best": null
+          }
+        },
+        {
+          "name": "R K Fernie",
+          "batting": {
+            "innings": 28,
+            "not_outs": 4,
+            "runs": 386,
+            "highest_score": "53",
+            "average": 16.08
+          }
+        },
+        {
+          "name": "C Tyerman",
+          "batting": {
+            "innings": 9,
+            "not_outs": 3,
+            "runs": 83,
+            "highest_score": "29",
+            "average": 13.83
+          },
+          "bowling": {
+            "overs": 115.4,
+            "maidens": 14,
+            "runs": 363,
+            "wickets": 18,
+            "average": 20.16,
+            "best": null
+          }
+        },
+        {
+          "name": "A Durandu",
+          "batting": {
+            "innings": 22,
+            "not_outs": 3,
+            "runs": 231,
+            "highest_score": "30",
+            "average": 12.15
+          },
+          "bowling": {
+            "overs": 4,
+            "maidens": 0,
+            "runs": 20,
+            "wickets": 0,
+            "average": null,
+            "best": null
+          }
+        },
+        {
+          "name": "G W Fraser",
+          "batting": {
+            "innings": 14,
+            "not_outs": 2,
+            "runs": 130,
+            "highest_score": "27",
+            "average": 10.83
+          }
+        },
+        {
+          "name": "W D Lloyd",
+          "batting": {
+            "innings": 6,
+            "not_outs": 1,
+            "runs": 46,
+            "highest_score": "18",
+            "average": 9.2
+          }
+        },
+        {
+          "name": "J R Garnett",
+          "batting": {
+            "innings": 20,
+            "not_outs": 0,
+            "runs": 153,
+            "highest_score": "37",
+            "average": 7.65
+          }
+        },
+        {
+          "name": "G A Fogei",
+          "batting": {
+            "innings": 21,
+            "not_outs": 2,
+            "runs": 144,
+            "highest_score": "35",
+            "average": 7.57
+          }
+        },
+        {
+          "name": "F Routledge",
+          "batting": {
+            "innings": 8,
+            "not_outs": 1,
+            "runs": 36,
+            "highest_score": "19",
+            "average": 5.14
+          }
+        },
+        {
+          "name": "T R Job",
+          "batting": {
+            "innings": 6,
+            "not_outs": 1,
+            "runs": 25,
+            "highest_score": "21",
+            "average": 5.0
+          }
+        },
+        {
+          "name": "G F Durandu",
+          "batting": {
+            "innings": 7,
+            "not_outs": 1,
+            "runs": 16,
+            "highest_score": "4",
+            "average": 2.66
+          },
+          "bowling": {
+            "overs": 30,
+            "maidens": 6,
+            "runs": 78,
+            "wickets": 3,
+            "average": 26.0,
+            "best": null
+          }
+        },
+        {
+          "name": "A Edwards",
+          "batting": {
+            "innings": 9,
+            "not_outs": 0,
+            "runs": 3,
+            "highest_score": "1",
+            "average": 0.33
+          },
+          "bowling": {
+            "overs": 61,
+            "maidens": 12,
+            "runs": 171,
+            "wickets": 4,
+            "average": 42.75,
+            "best": null
+          }
+        },
+        {
+          "name": "G Holt",
+          "bowling": {
+            "overs": 140,
+            "maidens": 46,
+            "runs": 344,
+            "wickets": 28,
+            "average": 12.28,
+            "best": null
+          }
+        }
+      ]
+    },
+    {
+      "name": "Birkenhead Victoria",
+      "season": "1895",
+      "page": 58,
+      "matches": {
+        "played": 35,
+        "won": 4,
+        "lost": 9,
+        "drawn": 17
+      },
+      "players": [
+        {
+          "name": "J Wylde",
+          "batting": {
+            "innings": 18,
+            "not_outs": 1,
+            "runs": 414,
+            "highest_score": "61",
+            "average": 24.35
+          },
+          "bowling": {
+            "overs": 55,
+            "maidens": 11,
+            "runs": 228,
+            "wickets": 13,
+            "average": 17.53,
+            "best": null
+          }
+        },
+        {
+          "name": "S O Moore",
+          "batting": {
+            "innings": 4,
+            "not_outs": 0,
+            "runs": 93,
+            "highest_score": "32",
+            "average": 23.25
+          }
+        },
+        {
+          "name": "W T Davies",
+          "batting": {
+            "innings": 20,
+            "not_outs": 3,
+            "runs": 410,
+            "highest_score": "77*",
+            "average": 24.11
+          }
+        },
+        {
+          "name": "F Wright",
+          "batting": {
+            "innings": 10,
+            "not_outs": 0,
+            "runs": 154,
+            "highest_score": "37",
+            "average": 15.4
+          },
+          "bowling": {
+            "overs": 184,
+            "maidens": 2,
+            "runs": 81,
+            "wickets": 5,
+            "average": 16.2,
+            "best": null
+          }
+        },
+        {
+          "name": "W Routledge",
+          "batting": {
+            "innings": 10,
+            "not_outs": 1,
+            "runs": 168,
+            "highest_score": "70",
+            "average": 18.66
+          }
+        },
+        {
+          "name": "J Macdonald",
+          "batting": {
+            "innings": 9,
+            "not_outs": 1,
+            "runs": 139,
+            "highest_score": "46",
+            "average": 17.37
+          }
+        },
+        {
+          "name": "J West",
+          "batting": {
+            "innings": 8,
+            "not_outs": 2,
+            "runs": 93,
+            "highest_score": "31",
+            "average": 15.5
+          },
+          "bowling": {
+            "overs": 36,
+            "maidens": 3,
+            "runs": 96,
+            "wickets": 7,
+            "average": 13.71,
+            "best": null
+          }
+        },
+        {
+          "name": "J Brocklebank",
+          "batting": {
+            "innings": 24,
+            "not_outs": 1,
+            "runs": 328,
+            "highest_score": "60",
+            "average": 14.26
+          },
+          "bowling": {
+            "overs": 258.4,
+            "maidens": 70,
+            "runs": 480,
+            "wickets": 42,
+            "average": 11.42,
+            "best": null
+          }
+        },
+        {
+          "name": "F H Galloway",
+          "batting": {
+            "innings": 16,
+            "not_outs": 3,
+            "runs": 189,
+            "highest_score": "42",
+            "average": 14.53
+          }
+        },
+        {
+          "name": "T Fish",
+          "batting": {
+            "innings": 20,
+            "not_outs": 4,
+            "runs": 178,
+            "highest_score": "51",
+            "average": 11.12
+          },
+          "bowling": {
+            "overs": 128.1,
+            "maidens": 20,
+            "runs": 304,
+            "wickets": 27,
+            "average": 11.25,
+            "best": null
+          }
+        },
+        {
+          "name": "E Brocklebank",
+          "batting": {
+            "innings": 16,
+            "not_outs": 3,
+            "runs": 113,
+            "highest_score": "35",
+            "average": 8.69
+          }
+        },
+        {
+          "name": "W Brocklebank",
+          "batting": {
+            "innings": 19,
+            "not_outs": 1,
+            "runs": 134,
+            "highest_score": "34",
+            "average": 7.44
+          }
+        },
+        {
+          "name": "E H Carter",
+          "batting": {
+            "innings": 13,
+            "not_outs": 2,
+            "runs": 83,
+            "highest_score": "23",
+            "average": 7.54
+          },
+          "bowling": {
+            "overs": 99,
+            "maidens": 19,
+            "runs": 274,
+            "wickets": 14,
+            "average": 19.57,
+            "best": null
+          }
+        },
+        {
+          "name": "M Sproat",
+          "batting": {
+            "innings": 7,
+            "not_outs": 2,
+            "runs": 35,
+            "highest_score": "9",
+            "average": 7.0
+          },
+          "bowling": {
+            "overs": 96.2,
+            "maidens": 17,
+            "runs": 271,
+            "wickets": 16,
+            "average": 16.93,
+            "best": null
+          }
+        },
+        {
+          "name": "H Hascock",
+          "batting": {
+            "innings": 11,
+            "not_outs": 1,
+            "runs": 46,
+            "highest_score": "12",
+            "average": 4.6
+          }
+        },
+        {
+          "name": "W H Routledge",
+          "bowling": {
+            "overs": 90,
+            "maidens": 17,
+            "runs": 237,
+            "wickets": 12,
+            "average": 19.75,
+            "best": null
+          }
+        }
+      ]
+    },
+    {
+      "name": "Prescot",
+      "season": "1895",
+      "page": 58,
+      "matches": {
+        "played": 22,
+        "won": 6,
+        "lost": 5,
+        "drawn": 8
+      },
+      "players": [
+        {
+          "name": "J Player",
+          "batting": {
+            "innings": 12,
+            "not_outs": 1,
+            "runs": 210,
+            "highest_score": "63",
+            "average": 19.09
+          }
+        },
+        {
+          "name": "R Davies",
+          "batting": {
+            "innings": 12,
+            "not_outs": 2,
+            "runs": 166,
+            "highest_score": "40",
+            "average": 16.6
+          }
+        },
+        {
+          "name": "Jos Stott",
+          "batting": {
+            "innings": 16,
+            "not_outs": 4,
+            "runs": 159,
+            "highest_score": "25",
+            "average": 13.25
+          },
+          "bowling": {
+            "overs": 51,
+            "maidens": 21,
+            "runs": 152,
+            "wickets": 19,
+            "average": 8.0,
+            "best": null
+          }
+        },
+        {
+          "name": "J Scholfield",
+          "batting": {
+            "innings": 17,
+            "not_outs": 1,
+            "runs": 195,
+            "highest_score": "41",
+            "average": 12.18
+          }
+        },
+        {
+          "name": "J Whitfield",
+          "batting": {
+            "innings": 19,
+            "not_outs": 0,
+            "runs": 229,
+            "highest_score": "44",
+            "average": 12.05
+          },
+          "bowling": {
+            "overs": 115,
+            "maidens": 16,
+            "runs": 302,
+            "wickets": 16,
+            "average": 18.87,
+            "best": null
+          }
+        },
+        {
+          "name": "W Stott",
+          "batting": {
+            "innings": 19,
+            "not_outs": 2,
+            "runs": 206,
+            "highest_score": "45",
+            "average": 12.11
+          }
+        },
+        {
+          "name": "G Prescott",
+          "batting": {
+            "innings": 17,
+            "not_outs": 1,
+            "runs": 164,
+            "highest_score": "60",
+            "average": 10.25
+          }
+        },
+        {
+          "name": "J Evans",
+          "batting": {
+            "innings": 20,
+            "not_outs": 1,
+            "runs": 176,
+            "highest_score": "35",
+            "average": 9.26
+          }
+        },
+        {
+          "name": "F Allen",
+          "batting": {
+            "innings": 11,
+            "not_outs": 3,
+            "runs": 74,
+            "highest_score": "27",
+            "average": 9.25
+          }
+        },
+        {
+          "name": "W Sephton",
+          "batting": {
+            "innings": 16,
+            "not_outs": 0,
+            "runs": 148,
+            "highest_score": "23",
+            "average": 9.25
+          }
+        },
+        {
+          "name": "T Crossley",
+          "batting": {
+            "innings": 11,
+            "not_outs": 3,
+            "runs": 47,
+            "highest_score": "12",
+            "average": 5.87
+          },
+          "bowling": {
+            "overs": 157,
+            "maidens": 39,
+            "runs": 424,
+            "wickets": 37,
+            "average": 11.45,
+            "best": null
+          }
+        },
+        {
+          "name": "Clarke",
+          "batting": {
+            "innings": 14,
+            "not_outs": 4,
+            "runs": 40,
+            "highest_score": "17",
+            "average": 4.0
+          },
+          "bowling": {
+            "overs": 218,
+            "maidens": 67,
+            "runs": 386,
+            "wickets": 46,
+            "average": 8.39,
+            "best": null
+          }
+        },
+        {
+          "name": "Jno Evans",
+          "bowling": {
+            "overs": 117,
+            "maidens": 16,
+            "runs": 379,
+            "wickets": 34,
+            "average": 11.14,
+            "best": null
+          }
+        }
+      ]
+    },
+    {
+      "name": "Formby",
+      "season": "1895",
+      "page": 58,
+      "matches": {
+        "played": 22,
+        "won": 7,
+        "lost": 5,
+        "drawn": 10
+      },
+      "players": [
+        {
+          "name": "J S Rimmer",
+          "batting": {
+            "innings": 18,
+            "not_outs": 1,
+            "runs": 392,
+            "highest_score": "87",
+            "average": 23.05
+          },
+          "bowling": {
+            "overs": 311,
+            "maidens": 54,
+            "runs": 691,
+            "wickets": 47,
+            "average": 14.7,
+            "best": null
+          }
+        },
+        {
+          "name": "R H Thompson",
+          "batting": {
+            "innings": 18,
+            "not_outs": 1,
+            "runs": 340,
+            "highest_score": "63",
+            "average": 20.0
+          }
+        },
+        {
+          "name": "Rt A Rockliff",
+          "batting": {
+            "innings": 18,
+            "not_outs": 1,
+            "runs": 275,
+            "highest_score": "65",
+            "average": 16.17
+          }
+        },
+        {
+          "name": "M Formby",
+          "batting": {
+            "innings": 14,
+            "not_outs": 3,
+            "runs": 176,
+            "highest_score": "34",
+            "average": 16.0
+          }
+        },
+        {
+          "name": "H Houghton",
+          "batting": {
+            "innings": 16,
+            "not_outs": 1,
+            "runs": 215,
+            "highest_score": "65",
+            "average": 14.33
+          }
+        },
+        {
+          "name": "J E Twining",
+          "batting": {
+            "innings": 11,
+            "not_outs": 1,
+            "runs": 103,
+            "highest_score": "34",
+            "average": 10.3
+          }
+        },
+        {
+          "name": "Rd A Rockliff",
+          "batting": {
+            "innings": 12,
+            "not_outs": 0,
+            "runs": 106,
+            "highest_score": "19",
+            "average": 8.83
+          }
+        },
+        {
+          "name": "J C P Conolly",
+          "batting": {
+            "innings": 17,
+            "not_outs": 0,
+            "runs": 211,
+            "highest_score": "70",
+            "average": 12.41
+          }
+        },
+        {
+          "name": "Madden",
+          "batting": {
+            "innings": 16,
+            "not_outs": 4,
+            "runs": 107,
+            "highest_score": "23",
+            "average": 8.91
+          },
+          "bowling": {
+            "overs": 486.3,
+            "maidens": 164,
+            "runs": 899,
+            "wickets": 65,
+            "average": 13.83,
+            "best": null
+          }
+        },
+        {
+          "name": "W D Miller",
+          "batting": {
+            "innings": 15,
+            "not_outs": 5,
+            "runs": 76,
+            "highest_score": "22",
+            "average": 7.6
+          },
+          "bowling": {
+            "overs": 69,
+            "maidens": 15,
+            "runs": 182,
+            "wickets": 10,
+            "average": 18.2,
+            "best": null
+          }
+        },
+        {
+          "name": "A M Spink",
+          "batting": {
+            "innings": 6,
+            "not_outs": 0,
+            "runs": 19,
+            "highest_score": "19",
+            "average": 3.16
+          }
+        },
+        {
+          "name": "E W A Jeffery",
+          "batting": {
+            "innings": 9,
+            "not_outs": 3,
+            "runs": 38,
+            "highest_score": "14",
+            "average": 6.33
+          }
+        },
+        {
+          "name": "J L Ainsworth",
+          "bowling": {
+            "overs": 71,
+            "maidens": 9,
+            "runs": 206,
+            "wickets": 15,
+            "average": 13.73,
+            "best": null
+          }
+        }
+      ]
+    }
+  ]
+}

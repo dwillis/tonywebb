@@ -10,6 +10,7 @@ from parser_matches import (
     build_user_prompt,
     normalize_and_dedup,
     split_pages,
+    track_cross_page,
     JSONExtractError,
 )
 
@@ -60,6 +61,11 @@ class TestParseResponse:
         assert "matchup" in entries[0]
         assert "title" not in entries[0]
 
+    def test_empty_entries_list_is_valid(self):
+        # The prompt instructs the model to return {"entries": []} when a
+        # page has no cricket content — that must parse, not error.
+        assert _parse_response(json.dumps({"entries": []})) == []
+
     def test_matches_key_accepted(self):
         raw = json.dumps({"matches": [{"title": "X v Y", "content_type": "match information"}]})
         entries = _parse_response(raw)
@@ -101,7 +107,7 @@ class TestNormalizeAndDedup:
             {"matchup": "Team A v Team B", "date": "18950527", "content_type": "match information"},
             {"matchup": "Team A v Team B", "date": "18950527", "content_type": "match information"},
         ]
-        result = normalize_and_dedup(entries, page_num=1)
+        result, _ = normalize_and_dedup(entries, page_num=1)
         assert len(result) == 1
 
     def test_different_dates_not_deduped(self):
@@ -109,7 +115,7 @@ class TestNormalizeAndDedup:
             {"matchup": "Team A v Team B", "date": "18950527", "content_type": "match information"},
             {"matchup": "Team A v Team B", "date": "18950603", "content_type": "match information"},
         ]
-        result = normalize_and_dedup(entries, page_num=1)
+        result, _ = normalize_and_dedup(entries, page_num=1)
         assert len(result) == 2
 
     def test_content_type_filter(self):
@@ -117,30 +123,100 @@ class TestNormalizeAndDedup:
             {"matchup": "Team A v Team B", "date": "18950527", "content_type": "match information"},
             {"title": "Reading School", "date": "18950527", "content_type": "statistics"},
         ]
-        result = normalize_and_dedup(entries, page_num=1, allowed_types={"match information"})
+        result, _ = normalize_and_dedup(entries, page_num=1, allowed_types={"match information"})
         assert len(result) == 1
         assert result[0]["content_type"] == "match information"
 
     def test_collection_name_set(self):
         entries = [{"matchup": "A v B", "date": "18950527", "content_type": "match information"}]
-        result = normalize_and_dedup(entries, page_num=5)
+        result, _ = normalize_and_dedup(entries, page_num=5)
         assert result[0]["collection"] == "Tony Webb minor counties collection"
         assert result[0]["page"] == 5
 
     def test_empty_matchup_skipped(self):
         entries = [{"matchup": "", "date": "18950527", "content_type": "match information"}]
-        result = normalize_and_dedup(entries, page_num=1)
+        result, _ = normalize_and_dedup(entries, page_num=1)
         assert len(result) == 0
 
     def test_non_dict_entries_skipped(self):
         entries = ["not a dict", 42, None]
-        result = normalize_and_dedup(entries, page_num=1)
+        result, _ = normalize_and_dedup(entries, page_num=1)
         assert len(result) == 0
 
     def test_invalid_content_type_defaults_to_match(self):
         entries = [{"matchup": "A v B", "date": "18950527", "content_type": "bogus"}]
-        result = normalize_and_dedup(entries, page_num=1)
+        result, _ = normalize_and_dedup(entries, page_num=1)
         assert result[0]["content_type"] == "match information"
+
+
+class TestNormalizeAndDedupDiscards:
+    def test_no_discards_for_clean_entries(self):
+        entries = [{"matchup": "A v B", "date": "18950527", "content_type": "match information"}]
+        _, discarded = normalize_and_dedup(entries, page_num=1)
+        assert discarded == []
+
+    def test_empty_title_discard_recorded(self):
+        entries = [{"matchup": "", "date": "18950527", "content_type": "match information"}]
+        _, discarded = normalize_and_dedup(entries, page_num=1)
+        assert len(discarded) == 1
+        assert discarded[0]["reason"] == "empty title"
+
+    def test_filtered_content_type_discard_recorded(self):
+        entries = [{"title": "Reading School", "date": "18950527", "content_type": "statistics"}]
+        _, discarded = normalize_and_dedup(entries, page_num=1, allowed_types={"match information"})
+        assert len(discarded) == 1
+        assert discarded[0]["reason"] == "filtered content type"
+
+    def test_non_dict_discard_recorded(self):
+        _, discarded = normalize_and_dedup(["not a dict"], page_num=1)
+        assert len(discarded) == 1
+        assert discarded[0]["reason"] == "not a dict"
+
+    def test_duplicate_discard_recorded(self):
+        entries = [
+            {"matchup": "A v B", "date": "18950527", "content_type": "match information"},
+            {"matchup": "A v B", "date": "18950527", "content_type": "match information"},
+        ]
+        _, discarded = normalize_and_dedup(entries, page_num=1)
+        assert len(discarded) == 1
+        assert discarded[0]["reason"] == "duplicate"
+
+    def test_discard_includes_original_entry(self):
+        entries = [{"matchup": "", "date": "18950527", "content_type": "match information"}]
+        _, discarded = normalize_and_dedup(entries, page_num=1)
+        assert discarded[0]["entry"]["date"] == "18950527"
+
+
+# ── Cross-page duplicate tracking ──────────────────────────────────────────
+
+
+def _row(matchup, page, date="18950527", content_type="match information"):
+    return {"matchup": matchup, "page": page, "date": date, "content_type": content_type}
+
+
+class TestTrackCrossPage:
+    def test_same_entry_on_later_page_reported(self):
+        seen: dict = {}
+        assert track_cross_page(seen, [_row("Team A v Team B", 1)]) == []
+        dupes = track_cross_page(seen, [_row("Team A v Team B", 5)])
+        assert len(dupes) == 1
+        assert dupes[0]["page"] == 5
+        assert dupes[0]["first_page"] == 1
+
+    def test_different_dates_not_reported(self):
+        seen: dict = {}
+        track_cross_page(seen, [_row("Team A v Team B", 1, date="18950527")])
+        assert track_cross_page(seen, [_row("Team A v Team B", 5, date="18950603")]) == []
+
+    def test_first_occurrence_not_reported(self):
+        assert track_cross_page({}, [_row("Team A v Team B", 1)]) == []
+
+    def test_normalization_applied_to_key(self):
+        # Punctuation differences shouldn't defeat cross-page matching
+        seen: dict = {}
+        track_cross_page(seen, [_row("Waterlow's v East Finchley", 1)])
+        dupes = track_cross_page(seen, [_row("Waterlows v East Finchley", 9)])
+        assert len(dupes) == 1
 
 
 # ── Prompt building ────────────────────────────────────────────────────────

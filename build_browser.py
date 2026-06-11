@@ -37,7 +37,7 @@ def load_rows(path: str) -> dict[tuple[str, str, str, str], dict]:
                 key = title_key(raw_title)
             page = (row.get("page") or "").strip()
             date = normalize_date(row.get("date", ""))
-            if key and date:
+            if key:
                 out[(key, page, date, content_type)] = {
                     "matchup": (row.get("matchup") or "").strip(),
                     "page": page,
@@ -49,19 +49,29 @@ def load_rows(path: str) -> dict[tuple[str, str, str, str], dict]:
     return out
 
 
+# Confidence factor weights (must sum to 1.0)
+W_AGREE = 0.50  # how many models found this entry
+W_DATE = 0.30   # date consensus among those models
+W_TEXT = 0.20   # matchup text similarity among those models
+
+# Minimum agreement score when the Willis ground truth contains the entry —
+# ground-truth presence shouldn't be drowned out by models that missed it.
+WILLIS_AGREE_FLOOR = 0.5
+
+
 def compute_confidence(present, details, total_models):
     count = len(present)
     has_willis = "willis" in present
 
-    # Factor 1: model agreement (0.50)
+    # Factor 1: model agreement
     if total_models <= 1:
         agree = 1.0
     else:
         agree = (count - 1) / (total_models - 1)
     if has_willis:
-        agree = min(1.0, agree * 1.2)
+        agree = min(1.0, max(agree, WILLIS_AGREE_FLOOR) * 1.2)
 
-    # Factor 2: date consensus (0.30)
+    # Factor 2: date consensus
     dates_seen: dict[str, int] = {}
     for m in present:
         d = details[m]["date"]
@@ -72,7 +82,7 @@ def compute_confidence(present, details, total_models):
     else:
         date_score = 0.0
 
-    # Factor 3: matchup text similarity (0.20)
+    # Factor 3: matchup text similarity
     matchup_texts = [details[m]["matchup"] for m in present]
     if count <= 1:
         text_score = 0.0
@@ -91,7 +101,7 @@ def compute_confidence(present, details, total_models):
                 )
         text_score = sum(sims) / len(sims) if sims else 1.0
 
-    return round(0.50 * agree + 0.30 * date_score + 0.20 * text_score, 3)
+    return round(W_AGREE * agree + W_DATE * date_score + W_TEXT * text_score, 3)
 
 
 def main() -> None:

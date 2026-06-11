@@ -94,6 +94,24 @@ class TestComputeConfidence:
         )
         assert conf_yes > conf_no
 
+    def test_willis_only_not_near_zero(self):
+        # An entry confirmed by the Willis ground truth should never score
+        # near zero just because the models all missed it.
+        present = ["willis"]
+        details = {"willis": {"date": "18950527", "matchup": "A v B"}}
+        conf = compute_confidence(present, details, total_models=6)
+        assert conf >= 0.5
+
+    def test_willis_only_outscores_single_model(self):
+        details = {"date": "18950527", "matchup": "A v B"}
+        conf_willis = compute_confidence(["willis"], {"willis": details}, total_models=6)
+        conf_model = compute_confidence(["m1"], {"m1": details}, total_models=6)
+        assert conf_willis > conf_model
+
+    def test_weights_sum_to_one(self):
+        from build_browser import W_AGREE, W_DATE, W_TEXT
+        assert W_AGREE + W_DATE + W_TEXT == 1.0
+
     def test_confidence_between_0_and_1(self):
         for count in [1, 2, 3, 6]:
             present = [f"m{i}" for i in range(count)]
@@ -139,12 +157,25 @@ class TestLoadRows:
         bio_keys = [k for k in rows if k[3] == "biography"]
         assert len(bio_keys) == 1
 
-    def test_empty_date_excluded(self, tmp_path):
+    def test_empty_date_kept(self, tmp_path):
+        # A missing date should surface in the review browser (as a date
+        # conflict), not silently drop the row.
         csv_path = tmp_path / "match_index_empty.csv"
         with csv_path.open("w", newline="") as f:
             writer = csv.writer(f)
             writer.writerow(["matchup", "page", "date", "content_type", "collection", "record_id"])
             writer.writerow(["A v B", "1", "", "match information", "col", ""])
+        rows = load_rows(str(csv_path))
+        assert len(rows) == 1
+        (key,) = rows
+        assert key[2] == ""  # date slot empty, row retained
+
+    def test_empty_matchup_still_excluded(self, tmp_path):
+        csv_path = tmp_path / "match_index_blank.csv"
+        with csv_path.open("w", newline="") as f:
+            writer = csv.writer(f)
+            writer.writerow(["matchup", "page", "date", "content_type", "collection", "record_id"])
+            writer.writerow(["", "1", "18950527", "match information", "col", ""])
         rows = load_rows(str(csv_path))
         assert len(rows) == 0
 
