@@ -1,38 +1,22 @@
 """
 Cricket Content Extractor
 ==========================
-Reads pre-transcribed full text from a model output file, then sends each
-page's text to an LLM to extract structured cricket content: match reports,
-statistics, team information, player information, biographies, and newspaper
-cuttings.
-
-Usage:
-    python parser_matches.py
-    python parser_matches.py --model gpt-4o
-    python parser_matches.py --input full_text_output_gemini31pro.txt --output match_index_new.csv
-    python parser_matches.py --content-types "match information,statistics"
+Reads pre-transcribed page text, then sends each page's text to an LLM to
+extract structured cricket content: match reports, statistics, team
+information, player information, biographies, and newspaper cuttings.
 
 Outputs:
     match_index_<model>.csv  — one row per entry found (post-normalized + deduped)
     raw_responses_<model>.jsonl  — per-page raw LLM output for diagnostics
 """
 
-import argparse
 import csv
-import json
-import re
-import time
+import logging
 from pathlib import Path
 
-import llm
-
-from llm_common import (
-    JSONExtractError,
-    load_pages_from_dir,
-    no_thinking_kwargs,
-    parse_json_object,
-)
-from normalize import (
+from . import config
+from .llm_common import JSONExtractError, no_thinking_kwargs, parse_json_object
+from .normalize import (
     ClubRegistry,
     detect_publication_date,
     matchup_key,
@@ -42,40 +26,11 @@ from normalize import (
     relative_dates,
     title_key,
 )
+from .pipeline import RawResponseLog, load_pages, parse_page_spec, resolve_model, run_pages
 
-_club_registry = ClubRegistry("clubs.csv") if Path("clubs.csv").exists() else None
+logger = logging.getLogger(__name__)
 
-# ── Defaults ──────────────────────────────────────────────────────────────────
-
-DEFAULT_INPUT_FILE = "full_text_output_gemini31pro.txt"
-DEFAULT_MODEL_ID = "qwen3.5:397b-cloud"
-COLLECTION_NAME = "Tony Webb minor counties collection"
-VALID_CONTENT_TYPES = {
-    "article",
-    "award information",
-    "biography",
-    "fixture information",
-    "ground information",
-    "laws",
-    "league information",
-    "match information",
-    "newspaper cuttings",
-    "obituary",
-    "organisation information",
-    "photograph",
-    "player information",
-    "season information",
-    "scorer information",
-    "statistics",
-    "team information",
-    "tour information",
-    "umpire information",
-    "updates",
-}
-
-RATE_LIMIT_DELAY = 1.5
-RETRY_ATTEMPTS = 1  # one retry on transient errors (not on JSON parse errors)
-RETRY_BACKOFF = 5.0
+VALID_CONTENT_TYPES = config.VALID_CONTENT_TYPES
 
 SYSTEM_PROMPT = (
     "You are an expert at reading historical cricket newspaper cuttings "
@@ -84,25 +39,6 @@ SYSTEM_PROMPT = (
     "sketches, general cricket commentary, and player information. "
     "Respond ONLY with a JSON object — no markdown fences, no prose."
 )
-
-
-# ── Page parsing ─────────────────────────────────────────────────────────────
-
-PAGE_SEPARATOR = re.compile(
-    r"={10,}\s*\nPAGE\s+(\d+)\s*\n={10,}",
-    re.MULTILINE,
-)
-
-
-def split_pages(text: str) -> list[tuple[int, str]]:
-    pages = []
-    matches = list(PAGE_SEPARATOR.finditer(text))
-    for i, m in enumerate(matches):
-        page_num = int(m.group(1))
-        start = m.end()
-        end = matches[i + 1].start() if i + 1 < len(matches) else len(text)
-        pages.append((page_num, text[start:end].strip()))
-    return pages
 
 
 # ── Prompt building ──────────────────────────────────────────────────────────
@@ -285,6 +221,7 @@ def normalize_and_dedup(
     entries: list[dict],
     page_num: int,
     allowed_types: set[str] | None = None,
+    registry: ClubRegistry | None = None,
 ) -> tuple[list[dict], list[dict]]:
     """Normalize title/date and drop duplicates within a page.
 
@@ -316,7 +253,7 @@ def normalize_and_dedup(
         date = normalize_date(entry.get("date", ""))
 
         if content_type == "match information":
-            title = normalize_matchup(raw_title, registry=_club_registry)
+            title = normalize_matchup(raw_title, registry=registry)
             if not title:
                 discard("empty title", entry)
                 continue
@@ -339,7 +276,7 @@ def normalize_and_dedup(
                 "page": page_num,
                 "date": date,
                 "content_type": content_type,
-                "collection": COLLECTION_NAME,
+                "collection": config.COLLECTION_NAME,
                 "record_id": (entry.get("record_id") or "").strip(),
             }
         )
@@ -368,58 +305,45 @@ def track_cross_page(global_seen: dict, rows: list[dict]) -> list[dict]:
     return dupes
 
 
-# ── Main ─────────────────────────────────────────────────────────────────────
+# ── CLI ──────────────────────────────────────────────────────────────────────
 
-def main():
-    parser = argparse.ArgumentParser(
-        description="Extract cricket content from pre-transcribed page text."
+def register_parser(subparsers):
+    p = subparsers.add_parser(
+        "extract-matches",
+        help="Extract match/content index entries from transcribed page text.",
     )
-    parser.add_argument("--input", "-i", default=DEFAULT_INPUT_FILE)
-    parser.add_argument("--model", "-m", default=DEFAULT_MODEL_ID)
-    parser.add_argument("--output", "-o", default=None)
-    parser.add_argument(
+    p.add_argument("--input", "-i", default=config.DEFAULT_TEXT_INPUT)
+    p.add_argument("--model", "-m", default=config.DEFAULT_EXTRACT_MATCHES_MODEL)
+    p.add_argument("--output", "-o", default=None)
+    p.add_argument(
         "--pages",
         default=None,
         help="Comma-separated page numbers or ranges, e.g. '1,3,5-10'",
     )
-    parser.add_argument(
+    p.add_argument(
         "--content-types",
         default=None,
         help="Comma-separated content types to include (default: all). "
              "Common types: 'match information', 'statistics', 'team information', "
-             "'newspaper cuttings', 'player information', 'biography'. "
-             "See VALID_CONTENT_TYPES for the full list.",
+             "'newspaper cuttings', 'player information', 'biography'.",
     )
-    args = parser.parse_args()
+    p.set_defaults(func=run)
+    return p
 
+
+def run(args) -> None:
     input_path = Path(args.input)
     if not input_path.exists():
         raise SystemExit(f"Input not found: {input_path}")
 
-    if input_path.is_dir():
-        pages = load_pages_from_dir(input_path)
-        if not pages:
-            raise SystemExit(f"No .txt files found in {input_path}")
-    else:
-        full_text = input_path.read_text(encoding="utf-8")
-        pages = split_pages(full_text)
-        if not pages:
-            raise SystemExit("No pages found. Check the PAGE separator format.")
+    pages = load_pages(input_path)
 
-    safe_model = re.sub(r"[^\w\-.]", "_", args.model)
+    safe_model = config.safe_model_name(args.model)
     csv_path = Path(args.output) if args.output else Path(f"match_index_{safe_model}.csv")
     raw_log_path = Path(f"raw_responses_{safe_model}.jsonl")
+    raw_log = RawResponseLog(raw_log_path)
 
-    page_filter: set[int] | None = None
-    if args.pages:
-        page_filter = set()
-        for part in args.pages.split(","):
-            part = part.strip()
-            if "-" in part:
-                lo, hi = part.split("-", 1)
-                page_filter.update(range(int(lo), int(hi) + 1))
-            elif part:
-                page_filter.add(int(part))
+    page_filter = parse_page_spec(args.pages)
 
     content_filter: set[str] | None = None
     if args.content_types:
@@ -441,11 +365,8 @@ def main():
     else:
         print(f"Pages : {len(pages)} total")
 
-    # Refresh all plugins on every run and look up model directly from the list.
-    all_models = {m.model_id: m for m in llm.get_models()}
-    if args.model not in all_models:
-        raise SystemExit(f"Unknown model: {args.model!r}. Run 'llm models' to see available models.")
-    model = all_models[args.model]
+    model = resolve_model(args.model)
+    registry = ClubRegistry(config.CLUBS_CSV_PATH) if Path(config.CLUBS_CSV_PATH).exists() else None
 
     # Load already-processed pages from existing CSV to allow resuming;
     # also seed cross-page duplicate tracking from prior rows.
@@ -458,7 +379,7 @@ def main():
                 for row in reader:
                     try:
                         page = int(row["page"])
-                    except (KeyError, ValueError):
+                    except (KeyError, ValueError, TypeError):
                         continue
                     processed_pages.add(page)
                     key = _row_key(
@@ -467,8 +388,8 @@ def main():
                         (row.get("content_type") or "match information").strip().lower(),
                     )
                     global_seen.setdefault(key, page)
-        except Exception:
-            pass
+        except (OSError, csv.Error) as e:
+            logger.warning("Could not read existing %s for resume: %s", csv_path, e)
     if processed_pages:
         print(f"Resuming: {len(processed_pages)} page(s) already in {csv_path}")
 
@@ -481,79 +402,55 @@ def main():
     total_errors = 0
     cross_page_dupes: list[dict] = []
 
-    for page_num, page_text in pages:
-        if page_num in processed_pages:
-            print(f"  Skipping page {page_num} (already processed)")
-            continue
-        print(f"  Processing page {page_num} …", end=" ", flush=True)
-        entries: list[dict] | None = None
-        normalized: list[dict] = []
-        discarded: list[dict] = []
-        raw = ""
-        error: str | None = None
+    def extract_fn(page_num: int, page_text: str) -> tuple[list[dict], str]:
+        return extract_entries(model, page_num, page_text)
 
-        try:
-            for attempt in range(RETRY_ATTEMPTS + 1):
-                try:
-                    entries, raw = extract_entries(model, page_num, page_text)
-                    break
-                except JSONExtractError as e:
-                    error = str(e)
-                    entries = []
-                    break  # don't retry — model output is the problem
-                except Exception as e:  # transient API/network
-                    error = str(e)
-                    if attempt < RETRY_ATTEMPTS:
-                        time.sleep(RETRY_BACKOFF)
-                        continue
-                    entries = []
-                    break
+    def on_result(page_result) -> None:
+        nonlocal total_entries, total_errors
+        entries = page_result.result[0] if page_result.result else []
+        raw = page_result.result[1] if page_result.result else ""
+        error = page_result.error
 
-            normalized, discarded = normalize_and_dedup(
-                entries or [], page_num, allowed_types=content_filter,
-            )
-            page_dupes = track_cross_page(global_seen, normalized)
-            cross_page_dupes.extend(page_dupes)
+        normalized, discarded = normalize_and_dedup(
+            entries or [], page_result.page, allowed_types=content_filter, registry=registry,
+        )
+        page_dupes = track_cross_page(global_seen, normalized)
+        cross_page_dupes.extend(page_dupes)
 
-            if normalized:
-                with csv_path.open("a", newline="", encoding="utf-8") as f:
-                    writer = csv.writer(f)
-                    for row in normalized:
-                        writer.writerow([
-                            row["matchup"],
-                            row["page"],
-                            row["date"],
-                            row["content_type"],
-                            row["collection"],
-                            row["record_id"],
-                        ])
-                total_entries += len(normalized)
+        if normalized:
+            with csv_path.open("a", newline="", encoding="utf-8") as f:
+                writer = csv.writer(f)
+                for row in normalized:
+                    writer.writerow([
+                        row["matchup"],
+                        row["page"],
+                        row["date"],
+                        row["content_type"],
+                        row["collection"],
+                        row["record_id"],
+                    ])
+            total_entries += len(normalized)
 
-            with raw_log_path.open("a", encoding="utf-8") as logf:
-                logf.write(json.dumps({
-                    "page": page_num,
-                    "raw": raw,
-                    "parsed_count": len(entries or []),
-                    "kept_count": len(normalized),
-                    "discarded": discarded,
-                    "error": error,
-                }, ensure_ascii=False) + "\n")
+        raw_log.write(
+            page_result.page,
+            raw,
+            parsed_count=len(entries or []),
+            kept_count=len(normalized),
+            discarded=discarded,
+            error=error,
+        )
 
-            if error:
-                total_errors += 1
-                print(f"ERROR: {error}")
-            else:
-                note = f" ({len(page_dupes)} also on earlier page)" if page_dupes else ""
-                print((f"{len(normalized)} entry(ies)" if normalized else "no entries") + note)
-        finally:
-            time.sleep(RATE_LIMIT_DELAY)
+        if error:
+            total_errors += 1
+            print(f"ERROR: {error}")
+        else:
+            note = f" ({len(page_dupes)} also on earlier page)" if page_dupes else ""
+            print((f"{len(normalized)} entry(ies)" if normalized else "no entries") + note)
+
+    run_pages(pages, processed_pages, extract_fn, on_result)
 
     print(f"\nDone. {total_entries} entries written to {csv_path}; {total_errors} page error(s).")
     if cross_page_dupes:
         print(f"{len(cross_page_dupes)} entry(ies) also appear on an earlier page (kept; review manually):")
         for d in cross_page_dupes:
             print(f"  page {d['page']}: {d['matchup']} [{d['date']}] first seen on page {d['first_page']}")
-
-
-if __name__ == "__main__":
-    main()

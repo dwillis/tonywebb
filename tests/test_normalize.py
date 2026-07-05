@@ -7,7 +7,7 @@ from pathlib import Path
 
 import pytest
 
-from normalize import (
+from tonywebb.normalize import (
     ClubRegistry,
     _normalize_team,
     detect_publication_date,

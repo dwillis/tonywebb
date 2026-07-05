@@ -4,8 +4,8 @@ import json
 
 import pytest
 
-from llm_common import JSONExtractError
-from parser_stats import (
+from tonywebb.llm_common import JSONExtractError
+from tonywebb.extract_stats import (
     _normalize_player,
     _normalize_team_entry,
     _parse_response,

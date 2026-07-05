@@ -9,7 +9,7 @@ from unittest.mock import patch
 
 import pytest
 
-from build_browser import compute_confidence, load_rows, label
+from tonywebb.build_browser import compute_confidence, load_rows, label
 
 
 # ── Label extraction ───────────────────────────────────────────────────────
@@ -109,7 +109,7 @@ class TestComputeConfidence:
         assert conf_willis > conf_model
 
     def test_weights_sum_to_one(self):
-        from build_browser import W_AGREE, W_DATE, W_TEXT
+        from tonywebb.build_browser import W_AGREE, W_DATE, W_TEXT
         assert W_AGREE + W_DATE + W_TEXT == 1.0
 
     def test_confidence_between_0_and_1(self):
@@ -197,8 +197,8 @@ class TestBuildBrowserIntegration:
                     writer.writerow(["Team A v Team B", "1", "18950603", "match information", "coll", ""])
 
         monkeypatch.chdir(tmp_path)
-        import build_browser
-        build_browser.main()
+        from tonywebb import build_browser
+        build_browser.run_browser()
 
         html_path = tmp_path / "compare_browser.html"
         assert html_path.exists()
@@ -219,8 +219,8 @@ class TestBuildBrowserIntegration:
             writer.writerow(["X v Y", "1", "18950527", "match information", "coll", ""])
 
         monkeypatch.chdir(tmp_path)
-        import build_browser
-        build_browser.main()
+        from tonywebb import build_browser
+        build_browser.run_browser()
 
         html = (tmp_path / "compare_browser.html").read_text()
         # Extract JSON from script tag

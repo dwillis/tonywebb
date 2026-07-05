@@ -1,4 +1,4 @@
-"""Shared helpers for the LLM extraction scripts (parser_matches.py, parser_stats.py)."""
+"""Shared helpers for the LLM extraction commands (extract_matches, extract_stats, scorecards)."""
 
 import json
 import re
@@ -69,3 +69,25 @@ def load_pages_from_dir(directory: Path) -> list[tuple[int, str]]:
         if m:
             pages.append((int(m.group(1)), f.read_text(encoding="utf-8").strip()))
     return sorted(pages, key=lambda x: x[0])
+
+
+# ── Concatenated-file page splitting ─────────────────────────────────────────
+# Used when the input is a single file with "PAGE N" separators
+# (e.g. full_text_output_*.txt) rather than a directory of per-page files.
+
+PAGE_SEPARATOR = re.compile(
+    r"={10,}\s*\nPAGE\s+(\d+)\s*\n={10,}",
+    re.MULTILINE,
+)
+
+
+def split_pages(text: str) -> list[tuple[int, str]]:
+    """Split a concatenated transcription file into (page_num, page_text) pairs."""
+    pages = []
+    matches = list(PAGE_SEPARATOR.finditer(text))
+    for i, m in enumerate(matches):
+        page_num = int(m.group(1))
+        start = m.end()
+        end = matches[i + 1].start() if i + 1 < len(matches) else len(text)
+        pages.append((page_num, text[start:end].strip()))
+    return pages

@@ -1,48 +1,25 @@
 """
 Cricket Player Statistics Extractor
 =====================================
-Reads pre-transcribed full text from a model output file, then sends each
-page's text to an LLM to extract cumulative player statistics: batting
-averages, bowling averages, and fielding figures from end-of-season tables.
-
-Usage:
-    python parser_stats.py
-    python parser_stats.py --model gpt-4o
-    python parser_stats.py --input full_text_output_gemini31pro.txt --output player_stats_new.json
+Reads pre-transcribed page text, then sends each page's text to an LLM to
+extract cumulative player statistics: batting averages, bowling averages,
+and fielding figures from end-of-season tables.
 
 Outputs:
     player_stats_<model>.json   — cumulative player statistics across all pages
     raw_responses_stats_<model>.jsonl  — per-page raw LLM output for diagnostics
 """
 
-import argparse
 import json
-import re
-import time
+import logging
 from pathlib import Path
 
-import llm
+from . import config
+from .llm_common import JSONExtractError, no_thinking_kwargs, parse_json_object
+from .normalize import normalize_title, title_key
+from .pipeline import RawResponseLog, load_pages, parse_page_spec, resolve_model, run_pages
 
-from llm_common import (
-    JSONExtractError,
-    load_pages_from_dir,
-    no_thinking_kwargs,
-    parse_json_object,
-)
-from normalize import (
-    normalize_title,
-    title_key,
-)
-
-# ── Defaults ──────────────────────────────────────────────────────────────────
-
-DEFAULT_INPUT_FILE = "full_text_output_gemini31pro.txt"
-DEFAULT_MODEL_ID = "qwen3.5:397b-cloud"
-COLLECTION_NAME = "Tony Webb minor counties collection"
-
-RATE_LIMIT_DELAY = 1.5
-RETRY_ATTEMPTS = 1
-RETRY_BACKOFF = 5.0
+logger = logging.getLogger(__name__)
 
 SYSTEM_PROMPT = (
     "You are an expert at reading historical cricket newspaper cuttings "
@@ -53,25 +30,6 @@ SYSTEM_PROMPT = (
     "runs, wickets, average, best figures), and fielding figures (catches, "
     "stumpings). Respond ONLY with a JSON object — no markdown fences, no prose."
 )
-
-
-# ── Page parsing ──────────────────────────────────────────────────────────────
-
-PAGE_SEPARATOR = re.compile(
-    r"={10,}\s*\nPAGE\s+(\d+)\s*\n={10,}",
-    re.MULTILINE,
-)
-
-
-def split_pages(text: str) -> list[tuple[int, str]]:
-    pages = []
-    matches = list(PAGE_SEPARATOR.finditer(text))
-    for i, m in enumerate(matches):
-        page_num = int(m.group(1))
-        start = m.end()
-        end = matches[i + 1].start() if i + 1 < len(matches) else len(text)
-        pages.append((page_num, text[start:end].strip()))
-    return pages
 
 
 # ── Prompt building ───────────────────────────────────────────────────────────
@@ -209,7 +167,7 @@ def _normalize_team_entry(entry: dict, page_num: int) -> dict | None:
 
     out: dict = {
         "name": name,
-        "season": "1895",
+        "season": config.SEASON,
         "page": page_num,
     }
 
@@ -274,52 +232,38 @@ def merge_teams(
     return existing, added
 
 
+# ── CLI ──────────────────────────────────────────────────────────────────────
 
-
-# ── Main ──────────────────────────────────────────────────────────────────────
-
-def main():
-    parser = argparse.ArgumentParser(
-        description="Extract cumulative player statistics from pre-transcribed page text."
+def register_parser(subparsers):
+    p = subparsers.add_parser(
+        "extract-stats",
+        help="Extract end-of-season player/team statistics from transcribed page text.",
     )
-    parser.add_argument("--input", "-i", default=DEFAULT_INPUT_FILE)
-    parser.add_argument("--model", "-m", default=DEFAULT_MODEL_ID)
-    parser.add_argument("--output", "-o", default=None)
-    parser.add_argument(
+    p.add_argument("--input", "-i", default=config.DEFAULT_TEXT_INPUT)
+    p.add_argument("--model", "-m", default=config.DEFAULT_EXTRACT_STATS_MODEL)
+    p.add_argument("--output", "-o", default=None)
+    p.add_argument(
         "--pages",
         default=None,
         help="Comma-separated page numbers or ranges, e.g. '1,3,5-10'",
     )
-    args = parser.parse_args()
+    p.set_defaults(func=run)
+    return p
 
+
+def run(args) -> None:
     input_path = Path(args.input)
     if not input_path.exists():
         raise SystemExit(f"Input not found: {input_path}")
 
-    if input_path.is_dir():
-        pages = load_pages_from_dir(input_path)
-        if not pages:
-            raise SystemExit(f"No .txt files found in {input_path}")
-    else:
-        full_text = input_path.read_text(encoding="utf-8")
-        pages = split_pages(full_text)
-        if not pages:
-            raise SystemExit("No pages found. Check the PAGE separator format.")
+    pages = load_pages(input_path)
 
-    safe_model = re.sub(r"[^\w\-.]", "_", args.model)
+    safe_model = config.safe_model_name(args.model)
     json_path = Path(args.output) if args.output else Path(f"player_stats_{safe_model}.json")
     raw_log_path = Path(f"raw_responses_stats_{safe_model}.jsonl")
+    raw_log = RawResponseLog(raw_log_path)
 
-    page_filter: set[int] | None = None
-    if args.pages:
-        page_filter = set()
-        for part in args.pages.split(","):
-            part = part.strip()
-            if "-" in part:
-                lo, hi = part.split("-", 1)
-                page_filter.update(range(int(lo), int(hi) + 1))
-            elif part:
-                page_filter.add(int(part))
+    page_filter = parse_page_spec(args.pages)
 
     print(f"Input : {input_path}")
     print(f"Model : {args.model}")
@@ -332,10 +276,7 @@ def main():
     else:
         print(f"Pages : {len(pages)} total")
 
-    all_models = {m.model_id: m for m in llm.get_models()}
-    if args.model not in all_models:
-        raise SystemExit(f"Unknown model: {args.model!r}. Run 'llm models' to see available models.")
-    model = all_models[args.model]
+    model = resolve_model(args.model)
 
     # Load existing output to allow resuming
     processed_pages: set[int] = set()
@@ -350,76 +291,59 @@ def main():
                 processed_pages.update(t.get("pages_seen", []))
             print(f"Resuming: {len(processed_pages)} page(s) already processed, "
                   f"{len(all_teams)} team(s) loaded")
-        except Exception:
-            pass
+        except (OSError, json.JSONDecodeError, KeyError) as e:
+            logger.warning("Could not read existing %s for resume: %s", json_path, e)
 
     total_added = 0
     total_errors = 0
 
-    for page_num, page_text in pages:
-        if page_num in processed_pages:
-            print(f"  Skipping page {page_num} (already processed)")
-            continue
-        print(f"  Processing page {page_num} …", end=" ", flush=True)
-        teams_raw: list[dict] = []
-        raw = ""
-        error: str | None = None
+    def extract_fn(page_num: int, page_text: str) -> tuple[list[dict], str]:
+        return extract_teams(model, page_num, page_text)
 
-        try:
-            for attempt in range(RETRY_ATTEMPTS + 1):
-                try:
-                    teams_raw, raw = extract_teams(model, page_num, page_text)
-                    break
-                except JSONExtractError as e:
-                    error = str(e)
-                    teams_raw = []
-                    break
-                except Exception as e:
-                    error = str(e)
-                    if attempt < RETRY_ATTEMPTS:
-                        time.sleep(RETRY_BACKOFF)
-                        continue
-                    teams_raw = []
-                    break
+    def on_result(page_result) -> None:
+        nonlocal all_teams, total_added, total_errors
+        teams_raw = page_result.result[0] if page_result.result else []
+        raw = page_result.result[1] if page_result.result else ""
+        error = page_result.error
 
-            all_teams, added = merge_teams(all_teams, teams_raw, page_num)
-            total_added += added
+        all_teams, added = merge_teams(all_teams, teams_raw or [], page_result.page)
+        total_added += added
 
-            # Write full JSON after every page so progress is never lost
-            json_path.write_text(
-                json.dumps(
-                    {
-                        "metadata": {
-                            "collection": COLLECTION_NAME,
-                            "season": "1895",
-                            "model": args.model,
-                            "pages_processed": len(processed_pages) + 1,
-                        },
-                        "teams": all_teams,
+        processed_pages.add(page_result.page)
+
+        # Write full JSON after every page so progress is never lost
+        json_path.write_text(
+            json.dumps(
+                {
+                    "metadata": {
+                        "collection": config.COLLECTION_NAME,
+                        "season": config.SEASON,
+                        "model": args.model,
+                        "pages_processed": len(processed_pages),
                     },
-                    indent=2,
-                    ensure_ascii=False,
-                ),
-                encoding="utf-8",
-            )
-            processed_pages.add(page_num)
+                    "teams": all_teams,
+                },
+                indent=2,
+                ensure_ascii=False,
+            ),
+            encoding="utf-8",
+        )
 
-            with raw_log_path.open("a", encoding="utf-8") as logf:
-                logf.write(json.dumps({
-                    "page": page_num,
-                    "raw": raw,
-                    "parsed_count": len(teams_raw),
-                    "added_count": added,
-                    "error": error,
-                }, ensure_ascii=False) + "\n")
+        raw_log.write(
+            page_result.page,
+            raw,
+            parsed_count=len(teams_raw or []),
+            added_count=added,
+            error=error,
+        )
 
-            if error:
-                total_errors += 1
-                print(f"ERROR: {error}")
-            else:
-                print(f"{added} team(s) added" if added else "no new teams")
-        finally:
-            time.sleep(RATE_LIMIT_DELAY)
+        if error:
+            total_errors += 1
+            print(f"ERROR: {error}")
+        else:
+            print(f"{added} team(s) added" if added else "no new teams")
+
+    run_pages(pages, processed_pages, extract_fn, on_result)
 
     # Final write with accurate pages_processed count
     total_players = sum(len(t.get("players", [])) for t in all_teams)
@@ -427,8 +351,8 @@ def main():
         json.dumps(
             {
                 "metadata": {
-                    "collection": COLLECTION_NAME,
-                    "season": "1895",
+                    "collection": config.COLLECTION_NAME,
+                    "season": config.SEASON,
                     "model": args.model,
                     "pages_processed": len(processed_pages),
                     "total_teams": len(all_teams),
@@ -443,7 +367,3 @@ def main():
     )
 
     print(f"\nDone. {total_added} team(s) added to {json_path}; {total_errors} page error(s).")
-
-
-if __name__ == "__main__":
-    main()

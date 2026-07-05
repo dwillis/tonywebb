@@ -5,7 +5,7 @@ import glob
 import os
 from itertools import combinations
 
-from normalize import matchup_key, normalize_date, title_key
+from .normalize import matchup_key, normalize_date, title_key
 
 
 def load_keys(path: str) -> set[tuple[str, str, str, str]]:
@@ -84,7 +84,7 @@ def write_markdown(sets: dict, names: list, union_all: set, intersection_all: se
 
     lines.append("---\n")
     lines.append("## Agreement Distribution\n")
-    lines.append("How many of the 7 files agree on each unique (matchup, page, date, content_type) key:\n")
+    lines.append(f"How many of the {len(names)} files agree on each unique (matchup, page, date, content_type) key:\n")
     lines.append("| Files agreeing | Count of keys |")
     lines.append("|---------------:|--------------:|")
     for c in sorted(coverage):
@@ -96,10 +96,10 @@ def write_markdown(sets: dict, names: list, union_all: set, intersection_all: se
     print(f"Results written to {output_path}")
 
 
-def main() -> None:
-    files = sorted(glob.glob("match_index_*.csv"))
+def run_compare(pattern: str = "match_index_*.csv", output_path: str = "compare_results.md") -> None:
+    files = sorted(glob.glob(pattern))
     if not files:
-        print("No match_index_*.csv files found.")
+        print(f"No {pattern} files found.")
         return
 
     sets = {label(p): load_keys(p) for p in files}
@@ -116,7 +116,6 @@ def main() -> None:
     print(f"Intersection across all files: {len(intersection_all)}")
     print()
 
-    # Pairwise agreement matrix: count of shared keys.
     width = max(len(n) for n in names)
     header = " " * (width + 2) + "  ".join(f"{n:>{width}}" for n in names)
     print("Pairwise shared (matchup, page, date, content_type) counts:")
@@ -128,7 +127,6 @@ def main() -> None:
         print("  ".join(row))
     print()
 
-    # Pairwise Jaccard similarity.
     print("Pairwise Jaccard similarity (|A∩B| / |A∪B|):")
     print(header)
     for a in names:
@@ -141,7 +139,6 @@ def main() -> None:
         print("  ".join(row))
     print()
 
-    # Per-pair disagreements summary.
     print("Pair disagreements (rows present in one but not the other):")
     for a, b in combinations(names, 2):
         only_a = sets[a] - sets[b]
@@ -149,7 +146,6 @@ def main() -> None:
         print(f"  {a} vs {b}: only in {a}={len(only_a)}, only in {b}={len(only_b)}")
     print()
 
-    # Coverage: how many files agree on each unique key.
     coverage: dict[int, int] = {}
     for key in union_all:
         c = sum(1 for s in sets.values() if key in s)
@@ -158,8 +154,21 @@ def main() -> None:
     for c in sorted(coverage):
         print(f"  agreed by {c}/{len(names)}: {coverage[c]}")
 
-    write_markdown(sets, names, union_all, intersection_all, coverage)
+    write_markdown(sets, names, union_all, intersection_all, coverage, output_path)
 
 
-if __name__ == "__main__":
-    main()
+# ── CLI ──────────────────────────────────────────────────────────────────────
+
+def register_parser(subparsers):
+    p = subparsers.add_parser(
+        "compare",
+        help="Compare match_index_*.csv files and write an agreement matrix.",
+    )
+    p.add_argument("--pattern", default="match_index_*.csv")
+    p.add_argument("--output", "-o", default="compare_results.md")
+    p.set_defaults(func=run)
+    return p
+
+
+def run(args) -> None:
+    run_compare(args.pattern, args.output)

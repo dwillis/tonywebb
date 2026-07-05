@@ -4,7 +4,7 @@ import json
 
 import pytest
 
-from llm_common import JSONExtractError, parse_json_object
+from tonywebb.llm_common import JSONExtractError, parse_json_object
 
 
 class TestParseJsonObject:

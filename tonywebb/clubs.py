@@ -86,10 +86,10 @@ def guess_type(name: str) -> str:
     return "club"
 
 
-def main():
-    csvs = sorted(Path(".").glob("match_index_*.csv"))
+def generate_clubs(pattern: str = "match_index_*.csv", output_path: str = "clubs.csv") -> None:
+    csvs = sorted(Path(".").glob(pattern))
     if not csvs:
-        raise SystemExit("No match_index_*.csv files found.")
+        raise SystemExit(f"No {pattern} files found.")
 
     all_teams: dict[str, set[str]] = {}  # source -> set of raw names
     for p in csvs:
@@ -143,7 +143,7 @@ def main():
             "type": club_type,
         })
 
-    out = Path("clubs.csv")
+    out = Path(output_path)
     with out.open("w", newline="", encoding="utf-8") as f:
         writer = csv.DictWriter(f, fieldnames=["canonical_name", "aliases", "location", "type"])
         writer.writeheader()
@@ -160,5 +160,18 @@ def main():
         print(f"  {t}: {c}")
 
 
-if __name__ == "__main__":
-    main()
+# ── CLI ──────────────────────────────────────────────────────────────────────
+
+def register_parser(subparsers):
+    p = subparsers.add_parser(
+        "clubs",
+        help="Generate clubs.csv (canonical team names + aliases) from match_index_*.csv files.",
+    )
+    p.add_argument("--pattern", default="match_index_*.csv")
+    p.add_argument("--output", "-o", default="clubs.csv")
+    p.set_defaults(func=run)
+    return p
+
+
+def run(args) -> None:
+    generate_clubs(args.pattern, args.output)

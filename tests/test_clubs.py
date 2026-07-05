@@ -5,7 +5,7 @@ from pathlib import Path
 
 import pytest
 
-from generate_clubs import (
+from tonywebb.clubs import (
     canonical_key,
     extract_teams_from_csv,
     guess_type,

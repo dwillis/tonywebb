@@ -15,7 +15,8 @@ from collections import Counter, defaultdict
 from difflib import SequenceMatcher
 from pathlib import Path
 
-from normalize import ClubRegistry, matchup_key, normalize_date, title_key
+from . import config
+from .normalize import ClubRegistry, matchup_key, normalize_date, title_key
 
 
 def label(path: str) -> str:
@@ -104,10 +105,10 @@ def compute_confidence(present, details, total_models):
     return round(W_AGREE * agree + W_DATE * date_score + W_TEXT * text_score, 3)
 
 
-def main() -> None:
-    files = sorted(glob.glob("match_index_*.csv"))
+def run_browser(pattern: str = "match_index_*.csv", output_path: str = "compare_browser.html") -> None:
+    files = sorted(glob.glob(pattern))
     if not files:
-        print("No match_index_*.csv files found.")
+        print(f"No {pattern} files found.")
         return
 
     names = [label(p) for p in files]
@@ -115,7 +116,7 @@ def main() -> None:
     total_models = len(names)
 
     # Load club registry for unknown-team flagging
-    registry = ClubRegistry("clubs.csv") if Path("clubs.csv").exists() else None
+    registry = ClubRegistry(config.CLUBS_CSV_PATH) if Path(config.CLUBS_CSV_PATH).exists() else None
 
     # Collect all entries grouped by (norm_key, page, content_type) ignoring date
     groups: dict[tuple[str, str, str], list[tuple[str, str, dict]]] = defaultdict(list)
@@ -188,14 +189,13 @@ def main() -> None:
     )
 
     page = _build_html()
-    out_path = "compare_browser.html"
-    with open(out_path, "w", encoding="utf-8") as f:
+    with open(output_path, "w", encoding="utf-8") as f:
         f.write(page.replace("__DATA__", data_json))
 
     # Stats
     conflict_count = sum(1 for r in rows if r["has_date_conflict"])
     low_conf = sum(1 for r in rows if r["confidence"] < 0.4)
-    print(f"Wrote {out_path} ({len(rows)} rows, {len(names)} models)")
+    print(f"Wrote {output_path} ({len(rows)} rows, {len(names)} models)")
     print(f"  {conflict_count} rows with date conflicts")
     print(f"  {low_conf} low-confidence rows (< 0.4)")
 
@@ -663,5 +663,18 @@ render();
 """
 
 
-if __name__ == "__main__":
-    main()
+# ── CLI ──────────────────────────────────────────────────────────────────────
+
+def register_parser(subparsers):
+    p = subparsers.add_parser(
+        "browse",
+        help="Generate a self-contained HTML browser for match_index_*.csv comparisons.",
+    )
+    p.add_argument("--pattern", default="match_index_*.csv")
+    p.add_argument("--output", "-o", default="compare_browser.html")
+    p.set_defaults(func=run)
+    return p
+
+
+def run(args) -> None:
+    run_browser(args.pattern, args.output)

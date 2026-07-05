@@ -1,18 +1,17 @@
-"""Tests for parser_matches.py — extraction, prompt building, and post-processing."""
+"""Tests for extract_matches.py — extraction, prompt building, and post-processing."""
 
 import json
 
 import pytest
 
-from parser_matches import (
+from tonywebb.extract_matches import (
     VALID_CONTENT_TYPES,
     _parse_response,
     build_user_prompt,
     normalize_and_dedup,
-    split_pages,
     track_cross_page,
-    JSONExtractError,
 )
+from tonywebb.llm_common import JSONExtractError, split_pages
 
 
 # ── Page splitting ─────────────────────────────────────────────────────────

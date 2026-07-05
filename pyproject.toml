@@ -16,6 +16,16 @@ dependencies = [
     "pillow>=10.4.0",
 ]
 
+[project.scripts]
+tonywebb = "tonywebb.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["tonywebb"]
+
 [dependency-groups]
 dev = [
     "pytest>=8.0",
