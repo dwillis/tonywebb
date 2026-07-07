@@ -78,31 +78,45 @@ def call_with_retry(
     attempts: int = config.RETRY_ATTEMPTS,
     backoff: float = config.RETRY_BACKOFF,
 ) -> tuple:
-    """Call fn() with retry-once-on-transient-error semantics.
+    """Call fn() with retry-on-transient-failure semantics.
 
-    Returns (result, error_message). result is None if every attempt failed.
-    JSONExtractError is never retried -- it means the model's output was
-    malformed, not that the call itself failed transiently.
+    fn() must return (items, raw) on success. Returns (items, raw, error_message);
+    items is [] and raw is "" (or whatever could be recovered) if every attempt
+    failed.
+
+    A non-empty-but-malformed response (JSONExtractError with a real raw value)
+    is NOT retried -- that means the model's output was structurally wrong,
+    which a retry is unlikely to fix. A completely EMPTY response is retried
+    like a network error -- some cloud models occasionally return nothing for
+    no discernible reason, and that looks like a transient generation glitch
+    rather than a durable prompt problem.
     """
     error: str | None = None
     for attempt in range(attempts + 1):
         try:
-            return fn(), None
+            items, raw = fn()
+            return items, raw, None
         except JSONExtractError as e:
-            return None, str(e)
+            raw = e.raw or ""
+            error = str(e)
+            if not raw.strip() and attempt < attempts:
+                time.sleep(backoff)
+                continue
+            return [], raw, error
         except Exception as e:  # transient API/network error
             error = str(e)
             if attempt < attempts:
                 time.sleep(backoff)
                 continue
-            return None, error
-    return None, error
+            return [], "", error
+    return [], "", error
 
 
 @dataclass
 class PageResult:
     page: int
-    result: object | None
+    items: list
+    raw: str
     error: str | None
 
 
@@ -128,11 +142,11 @@ def run_pages(
             continue
         print(f"  Processing page {page_num} …", end=" ", flush=True)
         try:
-            result, error = call_with_retry(
+            items, raw, error = call_with_retry(
                 lambda: extract_fn(page_num, page_text),
                 attempts=retry_attempts,
                 backoff=retry_backoff,
             )
-            on_result(PageResult(page=page_num, result=result, error=error))
+            on_result(PageResult(page=page_num, items=items, raw=raw, error=error))
         finally:
             time.sleep(rate_limit)

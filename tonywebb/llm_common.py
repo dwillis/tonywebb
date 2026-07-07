@@ -6,7 +6,17 @@ from pathlib import Path
 
 
 class JSONExtractError(Exception):
-    """Raised when the model's response can't be parsed as the expected JSON shape."""
+    """Raised when the model's response can't be parsed as the expected JSON shape.
+
+    Carries the raw response text (even though parsing failed) so callers can
+    still log it for diagnostics and can distinguish an empty response (likely
+    a transient generation glitch, worth a retry) from a non-empty malformed
+    one (likely a real prompt/model problem, not worth retrying).
+    """
+
+    def __init__(self, message: str, raw: str = ""):
+        super().__init__(message)
+        self.raw = raw
 
 
 def _strip_fences(text: str) -> str:
@@ -25,26 +35,46 @@ def parse_json_object(raw: str) -> dict:
     try:
         parsed = json.loads(text)
     except json.JSONDecodeError as e:
-        parsed = _first_json_object(text, e)
+        try:
+            parsed = _first_json_object(text, e)
+        except JSONExtractError as inner:
+            inner.raw = raw
+            raise
     if not isinstance(parsed, dict):
-        raise JSONExtractError("response is not a JSON object")
+        raise JSONExtractError("response is not a JSON object", raw=raw)
     return parsed
 
 
 def _first_json_object(text: str, original_error: json.JSONDecodeError) -> dict:
-    """Decode the first JSON object embedded in surrounding prose."""
+    """Decode the JSON object embedded in surrounding prose.
+
+    Reasoning models sometimes think out loud before emitting the real
+    payload, and that reasoning often previews individual entries as small,
+    independently-valid JSON fragments (e.g. '1. {"title": "...", ...}\\n2.
+    {"title": "...", ...}') before the actual answer. Picking the FIRST
+    successfully-parsed object risks grabbing one of those preview fragments
+    instead of the real one. Instead, try every '{' position and keep
+    whichever object consumes the most characters from its own start point --
+    the real payload wraps everything else, so it is virtually always the
+    largest self-contained object in the response, regardless of where in
+    the text it appears.
+    """
     decoder = json.JSONDecoder()
+    best: dict | None = None
+    best_span = -1
     idx = text.find("{")
     while idx != -1:
         candidate = _strip_fences(text[idx:].strip())
         try:
-            parsed, _ = decoder.raw_decode(candidate)
+            parsed, end = decoder.raw_decode(candidate)
         except json.JSONDecodeError:
             idx = text.find("{", idx + 1)
             continue
-        if isinstance(parsed, dict):
-            return parsed
+        if isinstance(parsed, dict) and end > best_span:
+            best, best_span = parsed, end
         idx = text.find("{", idx + 1)
+    if best is not None:
+        return best
     raise JSONExtractError(f"invalid JSON: {original_error}") from original_error
 
 

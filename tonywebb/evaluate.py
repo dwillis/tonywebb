@@ -198,6 +198,7 @@ def format_report(
     skipped_truth: list[dict],
     skipped_model: list[dict],
     pages_filter: set[int] | None = None,
+    content_types_filter: set[str] | None = None,
 ) -> str:
     total_truth = sum(1 for r in truth_rows if r.page in set(result.pages_covered))
     n_matched = len(result.matched)
@@ -212,6 +213,12 @@ def format_report(
         lines.append(
             f"**Restricted to pages {sorted(pages_filter)}** (--pages was given) — "
             f"coverage below is scoped to only these pages, not the full Willis set.\n"
+        )
+    if content_types_filter:
+        lines.append(
+            f"**Restricted to content type(s) {sorted(content_types_filter)}** "
+            f"(--content-types was given) — coverage below only counts Willis rows "
+            f"of these type(s), not her full mix of content types.\n"
         )
     lines += [
         f"Willis pages covered: {len(result.pages_covered)} "
@@ -268,10 +275,16 @@ def format_report(
     return "\n".join(lines)
 
 
+_LABEL_PREFIXES = ("match_index_", "stats_index_", "scorecard_index_")
+
+
 def _label(path: str) -> str:
     import os
-    base = os.path.basename(path)
-    return base.removeprefix("match_index_").removesuffix(".csv")
+    base = os.path.basename(path).removesuffix(".csv")
+    for prefix in _LABEL_PREFIXES:
+        if base.startswith(prefix):
+            return base.removeprefix(prefix)
+    return base
 
 
 # ── CLI ──────────────────────────────────────────────────────────────────────
@@ -292,6 +305,13 @@ def register_parser(subparsers):
              "only these pages -- use this for partial/test runs so coverage isn't diluted by "
              "pages you never attempted.",
     )
+    p.add_argument(
+        "--content-types", default=None,
+        help="Comma-separated content types, e.g. 'statistics' or 'match information'. "
+             "Restricts scoring to only Willis rows of these type(s) -- use this when "
+             "evaluating a focused index (stats_index_*.csv, scorecard_index_*.csv) "
+             "against Willis's full mix of content types.",
+    )
     p.set_defaults(func=run)
     return p
 
@@ -310,6 +330,14 @@ def run(args) -> None:
         if not truth_rows:
             raise SystemExit(f"No Willis rows on page(s) {sorted(pages_filter)}.")
         print(f"Restricting to page(s) {sorted(pages_filter)}: {len(truth_rows)} Willis row(s)")
+
+    content_types_filter: set[str] | None = None
+    if args.content_types:
+        content_types_filter = {t.strip().lower() for t in args.content_types.split(",")}
+        truth_rows = [r for r in truth_rows if r.content_type in content_types_filter]
+        if not truth_rows:
+            raise SystemExit(f"No Willis rows with content type in {sorted(content_types_filter)}.")
+        print(f"Restricting to content type(s) {sorted(content_types_filter)}: {len(truth_rows)} Willis row(s)")
 
     if args.all:
         paths = sorted(
@@ -339,7 +367,10 @@ def run(args) -> None:
               f"missed={len(result.missed)} surplus={len(result.surplus)}")
 
         report_path = Path(args.report) if (args.report and not args.all) else Path(f"eval_{label}.md")
-        report = format_report(label, result, truth_rows, skipped_truth, skipped_model, pages_filter=pages_filter)
+        report = format_report(
+            label, result, truth_rows, skipped_truth, skipped_model,
+            pages_filter=pages_filter, content_types_filter=content_types_filter,
+        )
         report_path.write_text(report, encoding="utf-8")
         print(f"  wrote {report_path}")
 

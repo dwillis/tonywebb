@@ -2,8 +2,17 @@
 
 import argparse
 
-from . import build_browser, clubs, compare, evaluate, extract_matches, extract_stats, transcribe
-from .scorecards import extract as extract_scorecards
+from . import (
+    build_browser,
+    clubs,
+    compare,
+    evaluate,
+    extract_matches,
+    extract_stats,
+    index_scorecards,
+    index_stats,
+    transcribe,
+)
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -17,7 +26,8 @@ def build_parser() -> argparse.ArgumentParser:
         transcribe,
         extract_matches,
         extract_stats,
-        extract_scorecards,
+        index_stats,
+        index_scorecards,
         evaluate,
         compare,
         build_browser,

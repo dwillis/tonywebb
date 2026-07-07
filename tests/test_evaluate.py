@@ -2,7 +2,7 @@ import argparse
 import csv
 from pathlib import Path
 
-from tonywebb.evaluate import IndexRow, coverage_by_content_type, evaluate, format_report, load_index, run
+from tonywebb.evaluate import IndexRow, _label, coverage_by_content_type, evaluate, format_report, load_index, run
 
 FIXTURES = Path(__file__).parent / "fixtures"
 WILLIS_SAMPLE = FIXTURES / "willis_sample.csv"
@@ -154,7 +154,8 @@ class TestFormatReportPagesFilter:
 
 def _make_ns(**kwargs) -> argparse.Namespace:
     defaults = dict(
-        csv_path=None, truth=None, fuzzy_threshold=0.8, report=None, all=False, pages=None,
+        csv_path=None, truth=None, fuzzy_threshold=0.8, report=None, all=False,
+        pages=None, content_types=None,
     )
     defaults.update(kwargs)
     return argparse.Namespace(**defaults)
@@ -200,3 +201,72 @@ class TestRunPagesFilterCLI:
         import pytest
         with pytest.raises(SystemExit):
             run(_make_ns(csv_path=str(model_path), truth=str(truth_path), pages="99"))
+
+
+class TestRunContentTypesFilterCLI:
+    def _setup(self, tmp_path: Path) -> tuple[Path, Path]:
+        truth_path = _write_csv(tmp_path, "match_index_willis.csv", [
+            {"matchup": "A v B", "page": "1", "date": "18950527", "content_type": "match information"},
+            {"matchup": "Newbury player statistics", "page": "1", "date": "18950000", "content_type": "statistics"},
+            {"matchup": "Speen player statistics", "page": "2", "date": "18950000", "content_type": "statistics"},
+        ])
+        model_path = _write_csv(tmp_path, "stats_index_test.csv", [
+            {"matchup": "Newbury player statistics", "page": "1", "date": "18950000", "content_type": "statistics"},
+            {"matchup": "Speen player statistics", "page": "2", "date": "18950000", "content_type": "statistics"},
+        ])
+        return truth_path, model_path
+
+    def test_unfiltered_coverage_dilutes_across_all_content_types(self, tmp_path, monkeypatch, capsys):
+        truth_path, model_path = self._setup(tmp_path)
+        monkeypatch.chdir(tmp_path)
+        run(_make_ns(csv_path=str(model_path), truth=str(truth_path)))
+        out = capsys.readouterr().out
+        assert "coverage=66.7% (2/3)" in out
+
+    def test_content_types_filter_restricts_denominator(self, tmp_path, monkeypatch, capsys):
+        truth_path, model_path = self._setup(tmp_path)
+        monkeypatch.chdir(tmp_path)
+        run(_make_ns(csv_path=str(model_path), truth=str(truth_path), content_types="statistics"))
+        out = capsys.readouterr().out
+        assert "coverage=100.0% (2/2)" in out
+
+    def test_content_types_filter_report_has_note(self, tmp_path, monkeypatch):
+        truth_path, model_path = self._setup(tmp_path)
+        monkeypatch.chdir(tmp_path)
+        run(_make_ns(csv_path=str(model_path), truth=str(truth_path), content_types="statistics"))
+        report = (tmp_path / "eval_test.md").read_text()
+        assert "Restricted to content type(s) ['statistics']" in report
+
+    def test_content_types_filter_case_insensitive(self, tmp_path, monkeypatch, capsys):
+        truth_path, model_path = self._setup(tmp_path)
+        monkeypatch.chdir(tmp_path)
+        run(_make_ns(csv_path=str(model_path), truth=str(truth_path), content_types="STATISTICS"))
+        out = capsys.readouterr().out
+        assert "coverage=100.0% (2/2)" in out
+
+    def test_content_types_filter_with_no_matching_truth_rows_exits(self, tmp_path, monkeypatch):
+        truth_path, model_path = self._setup(tmp_path)
+        monkeypatch.chdir(tmp_path)
+        import pytest
+        with pytest.raises(SystemExit):
+            run(_make_ns(csv_path=str(model_path), truth=str(truth_path), content_types="biography"))
+
+    def test_label_strips_stats_index_prefix(self, tmp_path, monkeypatch):
+        truth_path, model_path = self._setup(tmp_path)
+        monkeypatch.chdir(tmp_path)
+        run(_make_ns(csv_path=str(model_path), truth=str(truth_path), content_types="statistics"))
+        assert (tmp_path / "eval_test.md").exists()
+
+
+class TestLabel:
+    def test_strips_match_index_prefix(self):
+        assert _label("match_index_qwen3.5_cloud.csv") == "qwen3.5_cloud"
+
+    def test_strips_stats_index_prefix(self):
+        assert _label("stats_index_qwen3.5_397b-cloud.csv") == "qwen3.5_397b-cloud"
+
+    def test_strips_scorecard_index_prefix(self):
+        assert _label("scorecard_index_glm-5.2_cloud.csv") == "glm-5.2_cloud"
+
+    def test_unknown_prefix_left_as_is(self):
+        assert _label("something_else.csv") == "something_else"

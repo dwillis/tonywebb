@@ -62,21 +62,56 @@ class TestLoadPages:
 
 class TestCallWithRetry:
     def test_success_first_try(self):
-        result, error = call_with_retry(lambda: ("ok", "raw"))
-        assert result == ("ok", "raw")
+        items, raw, error = call_with_retry(lambda: (["ok"], "raw"))
+        assert items == ["ok"]
+        assert raw == "raw"
         assert error is None
 
-    def test_json_extract_error_not_retried(self):
+    def test_non_empty_malformed_json_not_retried(self):
+        # A non-empty-but-wrong-shape response means the model's output was
+        # structurally bad -- a retry is unlikely to fix that, so it isn't tried.
         calls = []
 
         def fn():
             calls.append(1)
-            raise JSONExtractError("bad shape")
+            raise JSONExtractError("bad shape", raw="{\"oops\": true}")
 
-        result, error = call_with_retry(fn, attempts=3, backoff=0)
-        assert result is None
+        items, raw, error = call_with_retry(fn, attempts=3, backoff=0)
+        assert items == []
+        assert raw == '{"oops": true}'
         assert error == "bad shape"
         assert len(calls) == 1
+
+    def test_empty_response_is_retried(self):
+        # A completely empty response looks like a transient generation
+        # glitch (seen in practice with some cloud models), not a durable
+        # prompt problem -- worth one retry, unlike a non-empty malformed one.
+        calls = []
+
+        def fn():
+            calls.append(1)
+            if len(calls) < 2:
+                raise JSONExtractError("missing 'entries' key", raw="")
+            return (["ok"], "raw")
+
+        items, raw, error = call_with_retry(fn, attempts=1, backoff=0)
+        assert items == ["ok"]
+        assert raw == "raw"
+        assert error is None
+        assert len(calls) == 2
+
+    def test_empty_response_exhausts_attempts(self):
+        calls = []
+
+        def fn():
+            calls.append(1)
+            raise JSONExtractError("missing 'entries' key", raw="   ")  # whitespace-only counts as empty
+
+        items, raw, error = call_with_retry(fn, attempts=1, backoff=0)
+        assert items == []
+        assert raw == "   "
+        assert error == "missing 'entries' key"
+        assert len(calls) == 2
 
     def test_transient_error_retried_once(self):
         calls = []
@@ -85,10 +120,11 @@ class TestCallWithRetry:
             calls.append(1)
             if len(calls) < 2:
                 raise ConnectionError("network blip")
-            return ("ok", "raw")
+            return (["ok"], "raw")
 
-        result, error = call_with_retry(fn, attempts=1, backoff=0)
-        assert result == ("ok", "raw")
+        items, raw, error = call_with_retry(fn, attempts=1, backoff=0)
+        assert items == ["ok"]
+        assert raw == "raw"
         assert error is None
         assert len(calls) == 2
 
@@ -99,8 +135,9 @@ class TestCallWithRetry:
             calls.append(1)
             raise ConnectionError("still down")
 
-        result, error = call_with_retry(fn, attempts=1, backoff=0)
-        assert result is None
+        items, raw, error = call_with_retry(fn, attempts=1, backoff=0)
+        assert items == []
+        assert raw == ""
         assert error == "still down"
         assert len(calls) == 2
 
@@ -134,12 +171,12 @@ class TestRunPages:
         )
         assert seen == [2]
 
-    def test_passes_result_and_error(self):
+    def test_passes_items_raw_and_error(self):
         results: list[PageResult] = []
 
         def extract_fn(page_num, page_text):
             if page_num == 2:
-                raise JSONExtractError("bad")
+                raise JSONExtractError("bad", raw="not json")
             return ([page_text], "raw")
 
         run_pages(
@@ -149,7 +186,9 @@ class TestRunPages:
             on_result=lambda r: results.append(r),
             rate_limit=0,
         )
-        assert results[0].result == (["a"], "raw")
+        assert results[0].items == ["a"]
+        assert results[0].raw == "raw"
         assert results[0].error is None
-        assert results[1].result is None
+        assert results[1].items == []
+        assert results[1].raw == "not json"
         assert results[1].error == "bad"

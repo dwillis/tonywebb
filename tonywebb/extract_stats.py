@@ -93,9 +93,9 @@ def _parse_response(raw: str) -> list[dict]:
     parsed = parse_json_object(raw)
     teams = parsed.get("teams")
     if teams is None:
-        raise JSONExtractError("missing 'teams' key")
+        raise JSONExtractError("missing 'teams' key", raw=raw)
     if not isinstance(teams, list):
-        raise JSONExtractError("'teams' is not a list")
+        raise JSONExtractError("'teams' is not a list", raw=raw)
     return teams
 
 
@@ -302,8 +302,8 @@ def run(args) -> None:
 
     def on_result(page_result) -> None:
         nonlocal all_teams, total_added, total_errors
-        teams_raw = page_result.result[0] if page_result.result else []
-        raw = page_result.result[1] if page_result.result else ""
+        teams_raw = page_result.items
+        raw = page_result.raw
         error = page_result.error
 
         all_teams, added = merge_teams(all_teams, teams_raw or [], page_result.page)

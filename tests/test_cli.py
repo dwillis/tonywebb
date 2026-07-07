@@ -8,7 +8,8 @@ EXPECTED_SUBCOMMANDS = {
     "transcribe",
     "extract-matches",
     "extract-stats",
-    "extract-scorecards",
+    "index-stats",
+    "index-scorecards",
     "evaluate",
     "compare",
     "browse",
@@ -46,11 +47,15 @@ class TestBackwardCompatibleDefaults:
         args = parser.parse_args(["extract-stats"])
         assert args.model == "qwen3.5:397b-cloud"
 
-    def test_extract_scorecards_defaults(self):
+    def test_index_stats_default_model(self):
         parser = build_parser()
-        args = parser.parse_args(["extract-scorecards"])
+        args = parser.parse_args(["index-stats"])
         assert args.model == "qwen3.5:397b-cloud"
-        assert args.recheck is False
+
+    def test_index_scorecards_default_model(self):
+        parser = build_parser()
+        args = parser.parse_args(["index-scorecards"])
+        assert args.model == "qwen3.5:397b-cloud"
 
     def test_transcribe_default_model_and_range(self):
         parser = build_parser()
@@ -64,6 +69,7 @@ class TestBackwardCompatibleDefaults:
         args = parser.parse_args(["evaluate", "match_index_foo.csv"])
         assert args.truth == "match_index_willis.csv"
         assert args.pages is None
+        assert args.content_types is None
 
     def test_compare_default_pattern_and_output(self):
         parser = build_parser()
