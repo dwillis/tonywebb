@@ -1,0 +1,254 @@
+matchup,page,date,content_type,collection,record_id,status,confidence,reason
+Truro Cricket Club team information,68,18951003,team information,Tony Webb minor counties collection,,VERIFIED,0.8,Key terms found: ['Truro'; 'Cricket'; 'Club'; 'team']
+Perranworth v Hilston,69,18950705,fixture information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+Cornwall County v Plymouth And District,71,18950720,match information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+Cricket Fixtures August,74,18950800,fixture information,Tony Webb minor counties collection,,VERIFIED,0.8,Fixture info found
+Devon County Asylum v W Newbery's XI,75,18950817,match information,Tony Webb minor counties collection,,VERIFIED,0.6,Team 1 verified; Team 2 partial
+Bournemouth team aggregates,80,18950000,statistics,Tony Webb minor counties collection,,VERIFIED,0.6,Content keyword 'average' found
+Pylewell Park batting averages,80,18950000,statistics,Tony Webb minor counties collection,,VERIFIED,0.8,Key terms found: ['Pylewell'; 'Park'; 'batting'; 'averages']
+Pylewell Park bowling averages,80,18950000,statistics,Tony Webb minor counties collection,,VERIFIED,0.8,Key terms found: ['Pylewell'; 'Park'; 'bowling'; 'averages']
+Fixture Information,81,18950800,fixture information,Tony Webb minor counties collection,,VERIFIED,0.8,Fixture info found
+Arnold College Cricket Club team aggregates,81,18950800,statistics,Tony Webb minor counties collection,,VERIFIED,0.8,Key terms found: ['Arnold'; 'College'; 'Cricket'; 'Club']
+North Durham First v Rookcliff First,83,18950527,match information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:contracted; t2:contracted)
+Hetton Lyons Club pavilion opening,84,18950601,article,Tony Webb minor counties collection,,INVALID,0.3,Could not verify in source
+Hetton Lyons v M Ross' Sixteen,84,18950601,match information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:partial (2/2))
+Sunderland II v South Shields II,85,18950629,fixture information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+A Browne's XI v H J Salmon's XI,91,18950902,match information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+Bewicke's XI v F C R Clayton's XI,91,18950828,match information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+Clayton's XI v R G Mortimer's XI,91,18950829,match information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:normalized)
+Barry v Charles-street,93,18950720,fixture information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+St James v Alpha,93,18950720,fixture information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:normalized; t2:direct)
+YMCA v Cathays,93,18950720,fixture information,Tony Webb minor counties collection,,VERIFIED,0.5,Team 2 verified; Team 1 not fully found
+Cardiff and District League match list,93,18950713,league information,Tony Webb minor counties collection,,INVALID,0.3,Could not verify in source
+Brynmawr match list,96,18950700,fixture information,Tony Webb minor counties collection,,VERIFIED,0.8,Fixture info found
+Hereford Cathedral School match list,96,18950700,fixture information,Tony Webb minor counties collection,,VERIFIED,0.8,Fixture info found
+Hereford County College match list,96,18950700,fixture information,Tony Webb minor counties collection,,VERIFIED,0.8,Fixture info found
+Herefordshire Club and Ground match list,96,18950700,fixture information,Tony Webb minor counties collection,,VERIFIED,0.8,Fixture info found
+Ludlow and South Shropshire match list,96,18950700,fixture information,Tony Webb minor counties collection,,VERIFIED,0.8,Fixture info found
+Lugwardine and Withington match list,96,18950700,fixture information,Tony Webb minor counties collection,,VERIFIED,0.8,Fixture info found
+First-class fixtures July and August,100,18950727,fixture information,Tony Webb minor counties collection,,VERIFIED,0.8,Fixture info found
+First-class matches August 1895,102,18950800,fixture information,Tony Webb minor counties collection,,VERIFIED,0.8,Fixture info found
+Herefordshire Club and Ground fixture list,102,18950800,team information,Tony Webb minor counties collection,,VERIFIED,0.8,Key terms found: ['Herefordshire'; 'Club'; 'and'; 'Ground']
+Glamorganshire v V T Hill's XI,103,18950809,match information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:normalized)
+Lugwardine And Withington v H D L Barker's XI,103,18950810,match information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:normalized)
+Minor counties fixture list,104,18950810,fixture information,Tony Webb minor counties collection,,VERIFIED,0.8,Fixture info found
+Herefordshire Club and Ground fixture list,104,18950810,team information,Tony Webb minor counties collection,,VERIFIED,0.8,Key terms found: ['Herefordshire'; 'Club'; 'and'; 'Ground']
+Worcestershire fixture list,104,18950810,team information,Tony Webb minor counties collection,,VERIFIED,0.8,Key terms found: ['Worcestershire'; 'fixture']
+CR Dansey XI v CE Bagot XI,105,18950820,match information,Tony Webb minor counties collection,,INVALID,0.2,Neither team found
+Leighton Westbury,106,18950819,newspaper cuttings,Tony Webb minor counties collection,,VERIFIED,0.7,Newspaper cutting entry
+Arkley v Barnet,109,18950601,fixture information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+Ashleigh v Hadley,109,18950601,fixture information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+Barnet A v Arkley,109,18950601,fixture information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+Barnet First XI v South Hampstead,109,18950601,fixture information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:contracted; t2:direct)
+Brewery v Roamers,109,18950601,fixture information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+Bushey Grove v Apsley,109,18950601,fixture information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+Bushey Police v Euston Staff,109,18950601,fixture information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+Bushey v Northwood,109,18950601,fixture information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+Cannon Brewery v Harefield,109,18950601,fixture information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+Croxley v Boxmoor,109,18950601,fixture information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+Finchley A v Tottenham,109,18950601,fixture information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+Finchley B v Tottenham Second XI,109,18950601,fixture information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:contracted)
+Melrose v New Bushey,109,18950601,fixture information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+Permanent Way v The Grove,109,18950601,fixture information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+Stareo A v New Southgate,109,18950601,fixture information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+Stereo B v New Southgate Second XI,109,18950601,fixture information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:contracted)
+West Herts v Frogmore,109,18950601,fixture information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+Fleetwood's XI v W Young's XI,119,18950727,match information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:normalized)
+Cannon Brewery v M B Foster and Sons,120,18950805,fixture information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:normalized)
+Gentlemen of Herts v G H Wailes XI,120,18950803,fixture information,Tony Webb minor counties collection,,VERIFIED,0.6,Team 1 verified; Team 2 partial
+Roamers v Abbots Langley,120,18950803,fixture information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+St. Albans match list,121,18950800,team information,Tony Webb minor counties collection,,VERIFIED,0.8,Key terms found: ['St.'; 'Albans'; 'match']
+St Albans Second XI v Frogmore Second XI,122,18950803,match information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:partial (1/2); t2:contracted)
+Abbots Langley,125,18950800,newspaper cuttings,Tony Webb minor counties collection,,VERIFIED,0.7,Newspaper cutting entry
+Bushey,125,18950800,newspaper cuttings,Tony Webb minor counties collection,,VERIFIED,0.7,Newspaper cutting entry
+West Herts,125,18950800,newspaper cuttings,Tony Webb minor counties collection,,VERIFIED,0.7,Newspaper cutting entry
+Bedfordshire v Hertfordshire,127,18950812,match information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+MCC v Hertfordshire,127,18950814,match information,Tony Webb minor counties collection,,VERIFIED,0.5,Team 2 verified; Team 1 not fully found
+Roamers v Pinner,132,18950817,fixture information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+Herts v Surrey,138,18950627,match information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+W H Nicholls' XI v F G Galloway XI,139,18950913,match information,Tony Webb minor counties collection,,VERIFIED,0.6,Team 1 verified; Team 2 partial
+Welwyn C.C. season information,140,18950000,season information,Tony Webb minor counties collection,,VERIFIED,0.6,Season context found
+Baldock C.C. player statistics,140,18950000,statistics,Tony Webb minor counties collection,,VERIFIED,0.8,Key terms found: ['Baldock'; 'C.C.'; 'player']
+Hitchin Blue Cross Temperance Brigade C.C. player statistics,140,18950000,statistics,Tony Webb minor counties collection,,VERIFIED,0.8,Key terms found: ['Hitchin'; 'Blue'; 'Cross'; 'Temperance']
+Hitchin C.C. player statistics,140,18950000,statistics,Tony Webb minor counties collection,,VERIFIED,0.8,Key terms found: ['Hitchin'; 'C.C.'; 'player']
+Welwyn C.C. player statistics,140,18950000,statistics,Tony Webb minor counties collection,,VERIFIED,0.8,Key terms found: ['Welwyn'; 'C.C.'; 'player']
+Baldock C.C. match list,140,18950000,team information,Tony Webb minor counties collection,,VERIFIED,0.8,Key terms found: ['Baldock'; 'C.C.'; 'match'; 'list']
+Hitchin Blue Cross Temperance Brigade C.C. match list,140,18950000,team information,Tony Webb minor counties collection,,VERIFIED,0.8,Key terms found: ['Hitchin'; 'Blue'; 'Cross'; 'Temperance']
+Hitchin C.C. match list,140,18950000,team information,Tony Webb minor counties collection,,VERIFIED,0.8,Key terms found: ['Hitchin'; 'C.C.'; 'match'; 'list']
+Hatfield match list,141,18950000,team information,Tony Webb minor counties collection,,VERIFIED,0.8,Key terms found: ['Hatfield'; 'match'; 'list']
+Hertford Caxtonian match list,141,18950000,team information,Tony Webb minor counties collection,,VERIFIED,0.8,Key terms found: ['Hertford'; 'Caxtonian'; 'match'; 'list']
+Lilley match list,141,18950000,team information,Tony Webb minor counties collection,,VERIFIED,0.8,Key terms found: ['Lilley'; 'match'; 'list']
+Silsoe match list,141,18950000,team information,Tony Webb minor counties collection,,VERIFIED,0.8,Key terms found: ['Silsoe'; 'match'; 'list']
+Rowles's XI v Astill's XI,143,18950613,match information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:eleven; t2:eleven)
+Is E Tomlin to Qualify for Somersetshire,143,18950615,newspaper cuttings,Tony Webb minor counties collection,,VERIFIED,0.7,Newspaper cutting entry
+County Cricket Championship results,144,18950617,league information,Tony Webb minor counties collection,,VERIFIED,0.7,League table structure found
+Lincolnshire fixtures,146,18950000,fixture information,Tony Webb minor counties collection,,VERIFIED,0.8,Fixture info found
+Swinderby And Collingham v Lincoln V Lindum,146,18950601,match information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+Lincoln Lindum A Team v Bishop's Hostel,147,18950622,match information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:normalized; t2:direct)
+Gunton v W E Hansell's XI,149,18950819,match information,Tony Webb minor counties collection,,VERIFIED,0.6,Team 1 verified; Team 2 partial
+Belvoir And District v Grantham Town,153,18950516,match information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+Belvoir v Grantham Town,153,18950822,match information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+Bingham v Grantham Town,153,18950511,match information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+Bottesford Bible Class v Grantham Town,153,18950629,match information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+Bourne v Grantham Town,153,18950525,match information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+Buckminster v Grantham Town,153,18950511,match information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+Easton v Grantham Town,153,18950801,match information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+Eastwood v Grantham Town,153,18950803,match information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+Grantham Amateurs v Grantham Town,153,18950601,match information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+Grantham Grammar School v Grantham Town,153,18950518,match information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+Grantham Post Office v Grantham Town,153,18950613,match information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+Lincoln Lindum v Grantham Town,153,18950608,match information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+Long Bennington v Grantham Town,153,18950615,match information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+Newark v Grantham Town,153,18950518,match information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+Notts Castle v Grantham Town,153,18950601,match information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:normalized; t2:direct)
+Notts St Andrews v Grantham Town,153,18950504,match information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:normalized; t2:direct)
+Sleaford v Grantham Town,153,18950622,match information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+Spalding v Grantham Town,153,18950523,match information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+St Peter's College v Grantham Town,153,18950506,match information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:normalized; t2:direct)
+Stamford Commercial v Grantham Town,153,18950615,match information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+Willoughby Park v Grantham Town,153,18950525,match information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+Woodthorpe v Grantham Town,153,18950815,match information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+Newport Cricket Club player statistics,158,18950900,statistics,Tony Webb minor counties collection,,VERIFIED,0.8,Key terms found: ['Newport'; 'Cricket'; 'Club']
+Newport Cricket Club match list,158,18950907,team information,Tony Webb minor counties collection,,VERIFIED,0.8,Key terms found: ['Newport'; 'Cricket'; 'Club'; 'match']
+Archibald v South Yarmouth,162,18950801,fixture information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+Brinton v Bayfield,162,18950803,fixture information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+Buxton Lamas v Oulton and Blickling,162,18950801,fixture information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+Coltishall v O E Y M S Second,162,18950801,fixture information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+Guild v Westwick,162,18950801,fixture information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+Hethersett v Mulbarton,162,18950803,fixture information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+King's Lynn Second v Dersingham,162,18950803,fixture information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+Kingsley Second v New City,162,18950803,fixture information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+Lowestoft v Yarmouth B A,162,18950803,fixture information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+New City v Eaton,162,18950801,fixture information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+Norwich and London Captain's Eleven v Vice-Captain's Eleven,162,18950801,fixture information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:normalized; t2:direct)
+Oarrow v Drayton,162,18950803,fixture information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+Old Catton v Norman & Beard's,162,18950803,fixture information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+Stanley v Victoria,162,18950801,fixture information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+Sutton Valence Wanderers v Bury and West Suffolk,162,18950803,fixture information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+Sutton Valence Wanderers v Gunton,162,18950801,fixture information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+Thorpe Hamlet v Calay & Son's,162,18950803,fixture information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+Thorpe Village v Cameron-Wellington,162,18950801,fixture information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+Tivetford v Quidenham Park,162,18950803,fixture information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+Trowse v Guild,162,18950803,fixture information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+Upper Sheringham v Overstrand,162,18950803,fixture information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+Wymondham v St Mark's,162,18950803,fixture information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+Yarmouth Mechanics v E N H,162,18950803,fixture information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+Yarmouth Temple v Howlett & White's,162,18950803,fixture information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+O E Y M S v Churchmen,162,18950729,match information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+GL Jessop player statistics,162,18950000,statistics,Tony Webb minor counties collection,,VERIFIED,0.8,Key terms found: ['Jessop'; 'player']
+Field Dalling match list,162,18950000,team information,Tony Webb minor counties collection,,VERIFIED,0.8,Key terms found: ['Field'; 'Dalling'; 'match']
+Oulton And Blo'king v Catfield,163,18950730,match information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+Din's Land v Y M C A,166,18950817,match information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+Hathersett v Guild,166,18950817,match information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+Honingham v St Mark's,166,18950817,match information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+Ladies And Gentlemen Match At Coltishall,166,18950800,match information,Tony Webb minor counties collection,,INVALID,0.3,Could not verify in source
+Lord Grey De Wilton's XI,166,18950800,match information,Tony Webb minor counties collection,,INVALID,0.3,Could not verify in source
+Lowestoft v Mechanics,166,18950817,match information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+Lowestoft v Visitors,166,18950817,match information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+Yarmouth v Diss,166,18950817,match information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+Norwich Week,166,18950800,newspaper cuttings,Tony Webb minor counties collection,,VERIFIED,0.7,Newspaper cutting entry
+Carrow Second v Y M C A,167,18950824,match information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+Norwich Week 1895 Summary,167,18950800,match information,Tony Webb minor counties collection,,INVALID,0.3,Could not verify in source
+Quidenham Park v Diss Second,167,18950824,match information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+South Heigham Institute v Howlett & White's Second,167,18950824,match information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+West Newton v King's Lynn Second,167,18950824,match information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+Yarmouth St Andrew's v Mechanics Second,167,18950824,match information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+Ustrand v Norman And Beard's,169,18950824,match information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:partial (2/2))
+Fixture list,171,18950902,fixture information,Tony Webb minor counties collection,,VERIFIED,0.8,Fixture info found
+Oxfordshire v Burton's XI,171,18950800,match information,Tony Webb minor counties collection,,VERIFIED,0.6,Team 1 verified; Team 2 partial
+Wellingborough Grammar School Boys XI Under 14 team aggregates,174,18950800,statistics,Tony Webb minor counties collection,,VERIFIED,0.8,Key terms found: ['Wellingborough'; 'Grammar'; 'School'; 'Boys']
+Wellingborough Grammar School Second XI team aggregates,174,18950800,statistics,Tony Webb minor counties collection,,VERIFIED,0.8,Key terms found: ['Wellingborough'; 'Grammar'; 'School'; 'Second']
+Wellingborough Grammar School team aggregates,174,18950800,statistics,Tony Webb minor counties collection,,VERIFIED,0.8,Key terms found: ['Wellingborough'; 'Grammar'; 'School']
+Wellingborough Masters team aggregates,174,18950800,statistics,Tony Webb minor counties collection,,VERIFIED,0.8,Key terms found: ['Wellingborough'; 'Masters']
+Wellingborough Grammar School Part Second XI v Present Second XI,175,18950802,match information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:partial (5/5); t2:contracted)
+Bosworth-Smith's XI v Thame,181,18950624,match information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+Jesus College v C H Hull's XI,181,18950622,match information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:normalized)
+Wallingford XI v Aston Rowant,181,18950622,match information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+Abingdon v City,182,18950629,match information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+Bosworth-Smith's XI v Thame,182,18950622,match information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+Clarendon Press v EOCC,182,18950629,match information,Tony Webb minor counties collection,,VERIFIED,0.5,Team 1 verified; Team 2 not fully found
+Corporation v St Barnabas,182,18950629,match information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:normalized)
+Cowley Barracks v Hull's XI,182,18950622,match information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+Jesus College v Thame,182,18950622,match information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+Littlemore Asylum v St Paul's,182,18950629,match information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:normalized)
+Peppard v Henley,182,18950629,match information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+St Barnabas Second XI v Corporation Second XI,182,18950629,match information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:partial (2/2); t2:contracted)
+St Paul's Second XI v Victoria Second XI,182,18950629,match information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:partial (2/2); t2:contracted)
+Star v Cowley St John,182,18950629,match information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:normalized)
+Summertown v Clarendon Second XI,182,18950629,match information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:contracted)
+YMCA v Star Second XI,182,18950629,match information,Tony Webb minor counties collection,,VERIFIED,0.5,Team 2 verified; Team 1 not fully found
+Goring v Moulford Asylum,184,18950720,match information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:partial (1/2))
+Bedfordshire v Oxfordshire,186,18950816,match information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+Burford Orbit v Oriel And Corpus College Servants,186,18950814,match information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+Cheltenham Corporation Employees v Corporation,186,18950810,match information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+Ifley v Star Second XI,186,18950800,match information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:partial (2/2))
+M Langham's XI v Gentlemen Of Wantage,186,18950816,match information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:normalized; t2:direct)
+OCC v Victoria,188,18950817,match information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+DAC v Holloway's XI,190,18950800,match information,Tony Webb minor counties collection,,VERIFIED,0.5,Team 2 verified; Team 1 not fully found
+DAC v St Barnabas,190,18950800,match information,Tony Webb minor counties collection,,VERIFIED,0.5,Team 2 verified; Team 1 not fully found
+EOCC v St Paul's,190,18950822,match information,Tony Webb minor counties collection,,VERIFIED,0.5,Team 2 verified; Team 1 not fully found
+Oxford And Cambridge Servants v Cambridge And Oxford Servants,190,18950822,match information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:partial (3/3))
+Oxford And Cambridge Servants,191,18950800,match information,Tony Webb minor counties collection,,VERIFIED,0.8,Matchup text found in source
+Lord Jersey's XI v City,193,18950824,match information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+Tubb's XI v City,193,18950830,match information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+Sporting Notes,193,18950831,newspaper cuttings,Tony Webb minor counties collection,,VERIFIED,0.7,Newspaper cutting entry
+City Second XI v Clarendon Press,199,18950914,fixture information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:partial (2/2); t2:direct)
+Clarendon Press Second XI v St Paul's Second XI,199,18950914,fixture information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:partial (3/3); t2:partial (2/2))
+College Servants v Corporation,199,18950914,fixture information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+Corporation Second XI v Iffley,199,18950914,fixture information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:contracted; t2:direct)
+Cowley Barracks v Star,199,18950914,fixture information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+DAC v Victoria,199,18950914,fixture information,Tony Webb minor counties collection,,VERIFIED,0.5,Team 2 verified; Team 1 not fully found
+FOLC v EOCO,199,18950914,fixture information,Tony Webb minor counties collection,,INVALID,0.2,Neither team found
+Grandpont v YMCA,199,18950914,fixture information,Tony Webb minor counties collection,,VERIFIED,0.5,Team 1 verified; Team 2 not fully found
+Headington Quarry Second XI v Cowley St John Second XI,199,18950914,fixture information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:contracted; t2:partial (3/3))
+Littlemore Asylum v St Barnabas,199,18950914,fixture information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:normalized)
+St Paul's v Headington Quarry,199,18950914,fixture information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:normalized; t2:direct)
+Star Second XI v Headington United Second XI,199,18950914,fixture information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:contracted; t2:contracted)
+Victoria Second XI v Boulter-street Institute,199,18950914,fixture information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:partial (2/2); t2:direct)
+Thame batting averages,200,18950000,statistics,Tony Webb minor counties collection,,VERIFIED,0.8,Key terms found: ['Thame'; 'batting'; 'averages']
+Thame bowling averages,200,18950000,statistics,Tony Webb minor counties collection,,VERIFIED,0.8,Key terms found: ['Thame'; 'bowling'; 'averages']
+Shropshire Club v Shrewsbury School,202,18950729,match information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+J Thomas's XI v Rev T J Rees's Team,203,18950807,match information,Tony Webb minor counties collection,,VERIFIED,0.6,Team 2 verified; Team 1 partial
+Fuzz-Bellers v Leek,204,18950601,match information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+Porthill Park Second XI v Caverswall,205,18950601,match information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:partial (3/3); t2:direct)
+Silverdale v Unknown Team,205,18950607,match information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:partial (1/2))
+Staffordshire v Hampshire,205,18950000,match information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+Lawton Park match list,205,18950608,team information,Tony Webb minor counties collection,,VERIFIED,0.8,Key terms found: ['Lawton'; 'Park'; 'match'; 'list']
+Alexandra Club financial report,206,18950600,organisation information,Tony Webb minor counties collection,,VERIFIED,0.8,Key terms found: ['Alexandra'; 'Club'; 'financial'; 'report']
+Riley bowling performance,206,18950600,statistics,Tony Webb minor counties collection,,VERIFIED,0.8,Key terms found: ['Riley'; 'bowling'; 'performance']
+League Second Division,207,18950608,league information,Tony Webb minor counties collection,,VERIFIED,0.7,League table structure found
+Central Co-Operative Club v Wilmslow League,207,18950601,match information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:partial (2/2))
+Guilds Reddish v Macclesfield,207,18950601,match information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+Bollington 2nd XI v Macclesfield 2nd XI,209,18950608,match information,Tony Webb minor counties collection,,INVALID,0.2,Neither team found
+Buxton College Second XI v Macclesfield 2nd XI,209,18950612,match information,Tony Webb minor counties collection,,VERIFIED,0.6,Team 1 verified; Team 2 partial
+Burslem Boys Cricket League batting statistics,209,18950615,statistics,Tony Webb minor counties collection,,VERIFIED,0.8,Key terms found: ['Burslem'; 'Boys'; 'Cricket'; 'League']
+Burslem Boys Cricket League bowling statistics,209,18950615,statistics,Tony Webb minor counties collection,,VERIFIED,0.8,Key terms found: ['Burslem'; 'Boys'; 'Cricket'; 'League']
+Clough Hall Thursday Team v Crewe Post-Office,211,18950613,match information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:partial (4/4); t2:direct)
+Leek Club v Stoke Club,211,18950608,match information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:partial (2/2))
+Silverdale Second XI v Tunstall Mission,211,18950614,match information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:partial (2/2); t2:direct)
+North Staffordshire and District League 1st Division standings,212,18950608,league information,Tony Webb minor counties collection,,INVALID,0.3,Could not verify in source
+North Staffordshire and District League 2nd Division standings,212,18950608,league information,Tony Webb minor counties collection,,INVALID,0.3,Could not verify in source
+Bignall End League Team v Audley Football Team,212,18950610,match information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:partial (3/3); t2:direct)
+Church Club v Audley,214,18950727,match information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+Signal End v Chell Hall,214,18950727,match information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+North Staffordshire and District Cricket League team aggregates,214,18950803,statistics,Tony Webb minor counties collection,,VERIFIED,0.8,Key terms found: ['North'; 'Staffordshire'; 'and'; 'District']
+County Championship table,227,18950830,league information,Tony Webb minor counties collection,,VERIFIED,0.7,League table structure found
+Bradford v Deckington,227,18950831,match information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:direct; t2:direct)
+Derbyshire team aggregates,227,18950800,statistics,Tony Webb minor counties collection,,VERIFIED,0.8,Key terms found: ['Derbyshire'; 'team']
+Essex team aggregates,227,18950800,statistics,Tony Webb minor counties collection,,VERIFIED,0.8,Key terms found: ['Essex'; 'team']
+Notts team aggregates,227,18950800,statistics,Tony Webb minor counties collection,,VERIFIED,0.8,Key terms found: ['Notts'; 'team']
+Yorkshire team aggregates,227,18950800,statistics,Tony Webb minor counties collection,,VERIFIED,0.8,Key terms found: ['Yorkshire'; 'team']
+Fixture Information,236,18950810,fixture information,Tony Webb minor counties collection,,VERIFIED,0.8,Fixture info found
+Birmingham League Division I Table,236,18950810,league information,Tony Webb minor counties collection,,INVALID,0.3,Could not verify in source
+Birmingham League Division II Table,236,18950810,league information,Tony Webb minor counties collection,,INVALID,0.3,Could not verify in source
+Stourbridge and District Bowling League Table,236,18950810,league information,Tony Webb minor counties collection,,INVALID,0.3,Could not verify in source
+Birmingham League first division table,239,18950817,league information,Tony Webb minor counties collection,,INVALID,0.3,Could not verify in source
+Birmingham League second division table,239,18950817,league information,Tony Webb minor counties collection,,INVALID,0.3,Could not verify in source
+Birmingham League first division table,240,18950817,league information,Tony Webb minor counties collection,,INVALID,0.3,Could not verify in source
+Birmingham League second division table,240,18950817,league information,Tony Webb minor counties collection,,INVALID,0.3,Could not verify in source
+Wakefield St Michael's YMCA v Royston,245,18950000,match information,Tony Webb minor counties collection,,VERIFIED,0.9,Both teams verified (t1:partial (2/3); t2:direct)
+Airedale and Wharfedale League match list,245,18950518,team information,Tony Webb minor counties collection,,VERIFIED,0.8,Key terms found: ['Airedale'; 'and'; 'Wharfedale'; 'League']
+Barkston Ash League match list,245,18950518,team information,Tony Webb minor counties collection,,VERIFIED,0.8,Key terms found: ['Barkston'; 'Ash'; 'League'; 'match']
+North Yorkshire League match list,245,18950518,team information,Tony Webb minor counties collection,,VERIFIED,0.8,Key terms found: ['North'; 'Yorkshire'; 'League'; 'match']
+Spen Valley League match list,245,18950518,team information,Tony Webb minor counties collection,,VERIFIED,0.8,Key terms found: ['Spen'; 'Valley'; 'League'; 'match']
+Yorkshire Central League match list,245,18950518,team information,Tony Webb minor counties collection,,VERIFIED,0.8,Key terms found: ['Yorkshire'; 'Central'; 'League'; 'match']
