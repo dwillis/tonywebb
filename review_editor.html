@@ -154,37 +154,64 @@ const BASE_URL = "https://archive.acscricket.com/research/tw/tw_newspaper_cuttin
 
 let data = null;
 let originalJSON = "";
+let currentFileName = "data.json";
 
 // ── file loading ──────────────────────────────────────────────────────────────
 
 let fileHandle = null;
+const hasFSA = "showOpenFilePicker" in window;
 
-document.getElementById("btnLoad").addEventListener("click", async () => {
+document.getElementById("btnLoad").addEventListener("click", () => {
+  if (hasFSA) {
+    openViaFSA();
+  } else {
+    openViaInput();
+  }
+});
+
+async function openViaFSA() {
   try {
     [fileHandle] = await window.showOpenFilePicker({
       types: [{ description: "JSON", accept: { "application/json": [".json"] } }],
       multiple: false,
     });
     const file = await fileHandle.getFile();
-    const text = await file.text();
-    try {
-      data = JSON.parse(text);
-      originalJSON = text;
-      status(`Loaded: ${file.name}`);
-      document.getElementById("btnSave").disabled = false;
-      renderEditor();
-      const firstPage = data.teams?.[0]?.page;
-      if (firstPage) {
-        document.getElementById("pageNumInput").value = firstPage;
-        loadImage();
-      }
-    } catch(err) {
-      alert("Invalid JSON: " + err.message);
-    }
+    await loadFile(file);
   } catch(err) {
     if (err.name !== "AbortError") alert("Could not open file: " + err.message);
   }
-});
+}
+
+function openViaInput() {
+  const input = document.createElement("input");
+  input.type = "file";
+  input.accept = ".json,application/json";
+  input.onchange = async () => {
+    const file = input.files?.[0];
+    if (file) await loadFile(file);
+  };
+  input.click();
+}
+
+async function loadFile(file) {
+  const text = await file.text();
+  try {
+    data = JSON.parse(text);
+    originalJSON = text;
+    currentFileName = file.name;
+    fileHandle = null; // FSA handle not available in fallback mode
+    status(`Loaded: ${file.name}`);
+    document.getElementById("btnSave").disabled = false;
+    renderEditor();
+    const firstPage = data.teams?.[0]?.page;
+    if (firstPage) {
+      document.getElementById("pageNumInput").value = firstPage;
+      loadImage();
+    }
+  } catch(err) {
+    alert("Invalid JSON: " + err.message);
+  }
+}
 
 document.getElementById("btnSave").addEventListener("click", saveJSON);
 
@@ -437,10 +464,23 @@ async function saveJSON() {
   }
   const json = JSON.stringify(data, null, 2);
   try {
-    const writable = await fileHandle.createWritable();
-    await writable.write(json);
-    await writable.close();
-    status("Saved ✓");
+    if (fileHandle && "createWritable" in fileHandle) {
+      const writable = await fileHandle.createWritable();
+      await writable.write(json);
+      await writable.close();
+      status("Saved ✓");
+    } else {
+      const blob = new Blob([json], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = currentFileName.replace(/\.json$/i, "") + ".json";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+      status("Downloaded " + a.download);
+    }
   } catch(err) {
     alert("Could not write file: " + err.message);
   }
