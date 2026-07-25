@@ -17,6 +17,7 @@ from tonywebb.normalize import (
     normalize_title,
     relative_dates,
     resolve_date_phrase,
+    symmetric_matchup_key,
     title_key,
 )
 
@@ -106,6 +107,46 @@ class TestMatchupKey:
     def test_same_key_for_variants(self):
         k1 = matchup_key("Waterlow's v East Finchley")
         k2 = matchup_key("Waterlows v East Finchley")
+        assert k1 == k2
+
+    def test_order_sensitive(self):
+        # matchup_key() is deliberately order-sensitive -- extraction/dedup
+        # relies on this so a genuine home-and-away rematch isn't conflated.
+        k1 = matchup_key("Liverpool v Rock Ferry")
+        k2 = matchup_key("Rock Ferry v Liverpool")
+        assert k1 != k2
+
+
+class TestSymmetricMatchupKey:
+    def test_reversed_order_matches(self):
+        k1 = symmetric_matchup_key("Liverpool v Rock Ferry")
+        k2 = symmetric_matchup_key("Rock Ferry v Liverpool")
+        assert k1 == k2
+
+    def test_reversed_order_matches_with_variants(self):
+        # Same-order normalization (CC/OC stripping, apostrophes, case) still applies.
+        k1 = symmetric_matchup_key("Worcestershire v Cheshire")
+        k2 = symmetric_matchup_key("Cheshire v Worcestershire")
+        assert k1 == k2
+
+    def test_same_order_still_matches_itself(self):
+        k1 = symmetric_matchup_key("Dunstable v Luton")
+        k2 = symmetric_matchup_key("Dunstable v Luton")
+        assert k1 == k2
+
+    def test_different_matches_still_differ(self):
+        k1 = symmetric_matchup_key("Liverpool v Rock Ferry")
+        k2 = symmetric_matchup_key("Liverpool v New Brighton")
+        assert k1 != k2
+
+    def test_non_match_string_falls_back_unchanged(self):
+        # No " v " separator (e.g. a non-match title passed in by mistake) --
+        # falls back to the plain matchup_key() output rather than erroring.
+        assert symmetric_matchup_key("Newbury") == matchup_key("Newbury")
+
+    def test_case_and_apostrophe_insensitive_both_orders(self):
+        k1 = symmetric_matchup_key("Waterlow's v East Finchley")
+        k2 = symmetric_matchup_key("East Finchley v Waterlows")
         assert k1 == k2
 
 

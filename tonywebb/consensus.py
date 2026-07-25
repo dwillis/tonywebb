@@ -21,7 +21,7 @@ from pathlib import Path
 
 from . import config
 from .evaluate import IndexRow, load_index
-from .normalize import matchup_key, title_key
+from .normalize import symmetric_matchup_key, title_key
 
 
 def _label(path: str) -> str:
@@ -33,7 +33,10 @@ def _label(path: str) -> str:
 
 
 def _key(row: IndexRow) -> str:
-    return matchup_key(row.matchup) if row.content_type == "match information" else title_key(row.matchup)
+    # Order-insensitive for matches: sources disagree on which team is
+    # listed first (prose word order vs. a manual index's own convention),
+    # and neither is "wrong" -- see symmetric_matchup_key()'s docstring.
+    return symmetric_matchup_key(row.matchup) if row.content_type == "match information" else title_key(row.matchup)
 
 
 @dataclass

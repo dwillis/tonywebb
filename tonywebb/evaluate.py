@@ -15,7 +15,7 @@ from dataclasses import dataclass, field
 from difflib import SequenceMatcher
 from pathlib import Path
 
-from .normalize import matchup_key, normalize_date, title_key
+from .normalize import normalize_date, symmetric_matchup_key, title_key
 from .pipeline import parse_page_spec
 
 
@@ -53,7 +53,10 @@ def load_index(path: Path) -> tuple[list[IndexRow], list[dict]]:
 
 
 def _key(row: IndexRow) -> str:
-    return matchup_key(row.matchup) if row.content_type == "match information" else title_key(row.matchup)
+    # Order-insensitive for matches: sources disagree on which team is
+    # listed first (prose word order vs. a manual index's own convention),
+    # and neither is "wrong" -- see symmetric_matchup_key()'s docstring.
+    return symmetric_matchup_key(row.matchup) if row.content_type == "match information" else title_key(row.matchup)
 
 
 def _similarity(a: IndexRow, b: IndexRow) -> float:

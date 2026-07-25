@@ -74,6 +74,21 @@ class TestPromoteReviewed:
         out = capsys.readouterr().out
         assert "New: 0" in out
 
+    def test_duplicate_detected_despite_reversed_team_order(self, tmp_path, monkeypatch, capsys):
+        # Regression test: a reviewed row shouldn't be treated as new just
+        # because it names the same two teams in the opposite order.
+        truth_path = _write_csv(tmp_path, "match_index_willis.csv", [
+            {"matchup": "Liverpool v Rock Ferry", "page": "54", "date": "18950817", "content_type": "match information"},
+        ])
+        reviewed_path = _write_csv(tmp_path, "match_index_reviewed.csv", [
+            {"matchup": "Rock Ferry v Liverpool", "page": "54", "date": "18950817", "content_type": "match information", "notes": ""},
+        ], extra_fields=["notes"])
+
+        monkeypatch.chdir(tmp_path)
+        run(_make_ns(reviewed=str(reviewed_path), truth=str(truth_path)))
+        out = capsys.readouterr().out
+        assert "New: 0" in out
+
     def test_dry_run_writes_nothing(self, tmp_path, monkeypatch, capsys):
         truth_path = _write_csv(tmp_path, "match_index_willis.csv", [
             {"matchup": "A v B", "page": "1", "date": "18950527", "content_type": "match information"},

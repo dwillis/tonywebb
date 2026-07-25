@@ -108,6 +108,32 @@ def matchup_key(matchup: str) -> str:
     return re.sub(r"\s+", " ", s).strip()
 
 
+def symmetric_matchup_key(matchup: str) -> str:
+    """Like matchup_key(), but order-insensitive: "A v B" and "B v A" produce
+    the same key.
+
+    Sources disagree on team order for the same match -- a prose report
+    ("Rock Ferry were busy replying to Liverpool's challenge") preserves
+    whatever order the sentence happens to name the teams in, while a
+    manual index may consistently list the winner (or home team) first.
+    Neither is "wrong"; there's no canonical order to extract. Use this for
+    MATCHING/comparing rows across sources (evaluate, consensus) where that
+    disagreement would otherwise look like two different matches.
+
+    Extraction and within-run dedup should keep using matchup_key() (order
+    left as printed) so a genuine home-and-away rematch on a different date
+    isn't accidentally conflated -- the date still discriminates those, but
+    there's no reason to introduce order-insensitivity into the pipeline's
+    own output, only into cross-source comparisons.
+    """
+    key = matchup_key(matchup)
+    parts = key.split(" v ")
+    if len(parts) == 2:
+        parts.sort()
+        return " v ".join(parts)
+    return key
+
+
 def normalize_title(title: str) -> str:
     """Normalize a non-match title (statistics, team info, biography, etc.).
 

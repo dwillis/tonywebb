@@ -297,6 +297,26 @@ class TestBuildUserPrompt:
         prompt = build_user_prompt(1, "Some text")
         assert "OC" in prompt
 
+    def test_contains_one_entry_per_team_player_assessments_rule(self):
+        # Regression test: a page with brief one-sentence character
+        # assessments for several players (e.g. "Regarding the abilities of
+        # the players...") must be ONE "player information" entry per team,
+        # not a separate "biography" entry per player mentioned.
+        prompt = build_user_prompt(1, "Some text")
+        assert "Reading School players" in prompt
+        assert "a separate \"biography\" entry for Jackson" in prompt
+        assert "standalone" in prompt.lower()
+
+    def test_contains_one_statistics_entry_per_team_rule(self):
+        # Regression test: a team with separate batting/bowling tables and/or
+        # First XI + Second XI tables must be ONE "player statistics" entry,
+        # not one entry per table (e.g. page 58's Liverpool Cricket Club,
+        # which was split into 6 separate batting/bowling averages entries).
+        prompt = build_user_prompt(1, "Some text")
+        assert "Liverpool player statistics" in prompt
+        assert "ONE \"player statistics\"" in prompt or "ONE entry" in prompt
+        assert "Liverpool batting averages" in prompt  # named as an incorrect example
+
     def test_publication_date_detected(self):
         text = "SATURDAY 8 JUNE 1895\nCricket content"
         prompt = build_user_prompt(1, text)

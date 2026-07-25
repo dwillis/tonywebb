@@ -60,6 +60,18 @@ class TestEvaluate:
         assert len(result.matched) == 1
         assert result.matched[0].kind == "fuzzy"
 
+    def test_reversed_team_order_is_exact_match(self):
+        # Regression test: a prose-derived report and a manual index may
+        # list the same two teams in opposite order (neither is "wrong") --
+        # this must match exactly, not fall to fuzzy or miss entirely.
+        truth = [IndexRow("Liverpool v Rock Ferry", 54, "18950817", "match information")]
+        model = [IndexRow("Rock Ferry v Liverpool", 54, "18950817", "match information")]
+        result = evaluate(truth, model)
+        assert len(result.matched) == 1
+        assert result.matched[0].kind == "exact"
+        assert not result.missed
+        assert not result.surplus
+
     def test_below_threshold_is_missed(self):
         truth = [IndexRow("Kensworth v Dunstable Victoria", 1, "18950527", "match information")]
         model = [IndexRow("Nowhere United v Somewhere Town", 1, "18950527", "match information")]

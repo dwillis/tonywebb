@@ -15,11 +15,14 @@ from pathlib import Path
 
 from . import config
 from .evaluate import IndexRow, load_index
-from .normalize import matchup_key, title_key
+from .normalize import symmetric_matchup_key, title_key
 
 
 def _key(row: IndexRow) -> str:
-    return matchup_key(row.matchup) if row.content_type == "match information" else title_key(row.matchup)
+    # Order-insensitive for matches: a reviewed row shouldn't be treated as
+    # "new" just because it lists the same two teams in the opposite order
+    # from the existing Willis row -- see symmetric_matchup_key()'s docstring.
+    return symmetric_matchup_key(row.matchup) if row.content_type == "match information" else title_key(row.matchup)
 
 
 def register_parser(subparsers):

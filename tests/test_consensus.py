@@ -35,6 +35,19 @@ class TestBuildConsensus:
         assert not c.has_matchup_conflict
         assert set(c.sources) == {"model_a", "model_b"}
 
+    def test_reversed_team_order_groups_together(self):
+        # Regression test: "Rock Ferry v Liverpool" and "Liverpool v Rock
+        # Ferry" are the same match reported with the teams named in
+        # opposite order (prose word order vs. a consistent house style) --
+        # they must merge into one consensus row, not two.
+        rows = {
+            "model_a": [_row("Rock Ferry v Liverpool", 54, "18950817")],
+            "model_b": [_row("Liverpool v Rock Ferry", 54, "18950817")],
+        }
+        consensus = build_consensus(rows)
+        assert len(consensus) == 1
+        assert set(consensus[0].sources) == {"model_a", "model_b"}
+
     def test_date_conflict_majority_wins(self):
         rows = {
             "model_a": [_row("A v B", 1, "18950527")],
