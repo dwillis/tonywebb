@@ -10,7 +10,8 @@ The collection is a 247-page FlippingBook archive of Victorian cricket newspaper
 2. **Extraction** — reads the transcribed text and asks an LLM to pull out structured data:
    - `tonywebb extract-matches` — match/content index entries (match reports, statistics tables, biographies, etc.) into a CSV.
    - `tonywebb extract-stats` — end-of-season player/team averages tables into JSON.
-   - `tonywebb extract-scorecards` — per-match batting/bowling scorecards into JSON, linked back to the match index.
+   - `tonywebb index-stats` — a focused pass that indexes *which pages* have end-of-season statistics tables, ACS-style.
+   - `tonywebb index-scorecards` — a focused pass that indexes *which match reports* include a full scorecard.
 3. **Analysis** — comparing model outputs and scoring them against a manually-built ground truth:
    - `tonywebb compare` / `tonywebb browse` — cross-model agreement.
    - `tonywebb evaluate` — score a model's index against `match_index_willis.csv`.
@@ -97,36 +98,49 @@ uv run tonywebb extract-stats --input full_text_output_gemini31pro.txt --model q
 
 Extracts end-of-season batting/bowling averages tables (not individual match scorecards) into `player_stats_{model}.json`.
 
-## Stage 2c: Extract match scorecards
+## Stage 2c: Index statistics tables and scorecards
+
+Two focused, single-purpose passes that produce ordinary `match_index`-shaped
+CSVs (same 6 columns) rather than a separate data model. An earlier version
+of this project tried to fully *extract* scorecard batting/bowling figures
+into structured JSON (`extract-scorecards`); on a full run, 613/786 (78%) of
+the extracted scorecards scored below a 0.7 confidence threshold, because
+Victorian print quality and transcription noise make figure-level extraction
+unreliable. These two commands instead answer a much more reliable question
+— "does this exist on this page" — which is what an ACS-style index needs.
 
 ```bash
-uv run tonywebb extract-scorecards --input qwen3.5:397b/ --model qwen3.5:397b-cloud --index match_index_qwen3.5_cloud.csv
+uv run tonywebb index-stats      --input qwen3.5:397b/ --model qwen3.5:397b-cloud
+uv run tonywebb index-scorecards --input qwen3.5:397b/ --model qwen3.5:397b-cloud
 ```
 
-Extracts the full batting/bowling scorecard for every match report, as opposed to just the match's existence (which is all `extract-matches` records). Output is `scorecards_{model}.json`: one entry per match with per-innings batting lines (batter, dismissal, bowler, fielder, runs, `raw` verbatim source line), bowling figures (including figures given only in prose, e.g. "Tilley took five wickets for 12 runs"), extras, and totals.
+- `index-stats` finds end-of-season batting/bowling averages tables and
+  writes one `"Team Name player statistics"` row per team per page — even
+  when that team has several separate tables (1st XI, 2nd XI, batting,
+  bowling), matching the Willis convention of one entry per team, not per
+  table. A `"Team Name team aggregates"` row is added when the team also has
+  separate aggregate figures (season record, runs for/against as a team).
+  Output: `stats_index_{model}.csv` + `raw_responses_stats_index_{model}.jsonl`.
+- `index-scorecards` finds match reports that include a full scorecard
+  (individual batting lines with dismissals and runs, plus an innings total)
+  as opposed to a prose-only result, and writes ordinary
+  `"Team A v Team B"` / `match information` rows. The file itself — not a
+  special `content_type`, since the ACS controlled vocabulary has none for
+  this — is what marks "these matches have scorecards."
+  Output: `scorecard_index_{model}.csv` + `raw_responses_scorecard_index_{model}.jsonl`.
 
-Every scorecard is validated on write: batting runs + extras are checked against the stated total, bowler figures are cross-checked against credited dismissals, names are sanity-checked, and the scorecard is linked back to its `match_index` row (exact, then fuzzy match). This produces a `confidence` score and a list of `flags` (e.g. `total_mismatch`, `not_in_index`) — useful for triaging which scorecards need a human look, since Victorian print runs and low-resolution scans reliably scramble numeric columns.
+Both share `extract-matches`' continuation rule (only index content that
+*begins* on the page) and full 1895 date resolution (publication date,
+weekday references, bank holidays).
 
-Scorecards below the confidence threshold (default `0.7`) can be re-verified against the actual page image with a vision model:
-
-```bash
-uv run tonywebb extract-scorecards --recheck --vision-model gemini-3.1-pro-preview --local-dir jpgs/
-```
-
-This re-sends only the flagged pages, and replaces a scorecard only if the recheck's confidence is higher than the original.
-
-**Options**
+**Options** (both commands)
 
 | Flag | Default | Description |
 |------|---------|-------------|
 | `--input` / `-i` | `full_text_output_gemini31pro.txt` | Input file or directory |
 | `--model` / `-m` | `qwen3.5:397b-cloud` | LLM model ID |
-| `--index` | — | `match_index_<model>.csv` to link scorecards against |
-| `--sum-tolerance` | `0` | Allowed discrepancy between computed and stated innings totals |
-| `--recheck` | off | Re-verify low-confidence scorecards against page images |
-| `--vision-model` | `gpt-5.4` | Model used for `--recheck` |
-| `--recheck-threshold` | `0.7` | Confidence cutoff for `--recheck` |
-| `--limit` | — | Max scorecards to recheck in one run |
+| `--output` / `-o` | `stats_index_{model}.csv` / `scorecard_index_{model}.csv` | Output CSV path |
+| `--pages` | — | Specific pages, e.g. `1,3,5-10` |
 
 ## Stage 3: Evaluate against the Willis ground truth
 
@@ -138,6 +152,12 @@ uv run tonywebb evaluate --all   # every match_index_*.csv, plus a leaderboard
 ```
 
 Because Willis is partial, the headline metric is **coverage** (recall against the rows Willis has), not precision — "surplus" model rows on Willis-covered pages are reported as a review list, not treated as false positives. Each run writes `eval_{label}.md` with coverage by content type, missed Willis rows, low-similarity fuzzy matches, and the surplus list, so it doubles as a human-review worksheet.
+
+`--pages` restricts scoring to only the pages you actually ran (useful for a partial/test run, so coverage isn't diluted by pages you never attempted), and `--content-types` restricts it to only certain content types — use this to score a focused index like `stats_index_*.csv` (`--content-types statistics`) or `scorecard_index_*.csv` (`--content-types "match information"`) against Willis's full mix of content types:
+
+```bash
+uv run tonywebb evaluate stats_index_qwen3.5_397b-cloud.csv --content-types statistics
+```
 
 ## Other analysis commands
 
@@ -153,4 +173,4 @@ uv run tonywebb clubs                # regenerate clubs.csv from all match_index
 uv run pytest
 ```
 
-Package layout: `tonywebb/pipeline.py` holds the shared page-iteration/retry/resume scaffolding used by every extraction command; `tonywebb/normalize.py` holds matchup/date normalization and the club registry; `tonywebb/scorecards/` holds the scorecard schema, validation, and prompts. `compare.py` at the repo root (field-level diff report) predates the CLI and is kept standalone.
+Package layout: `tonywebb/pipeline.py` holds the shared page-iteration/retry/resume scaffolding used by every extraction command; `tonywebb/indexing.py` holds the shared prompt fragments (style rules, 1895 calendar, date-context builder) and CLI runner used by every *index*-producing command (`extract-matches`, `index-stats`, `index-scorecards`); `tonywebb/normalize.py` holds matchup/date normalization and the club registry. `compare.py` at the repo root (field-level diff report) predates the CLI and is kept standalone.

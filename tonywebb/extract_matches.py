@@ -43,8 +43,14 @@ minor counties collection of cricket newspaper cuttings (1895).
 For each distinct piece of cricket content on this page, create an entry
 in "entries" with:
   - "title": a short descriptor (see rules per content_type below)
-  - "date": as YYYYMMDD. Use "18950000" if only the year is clear,
-            "18950800" if only the month is clear, "" if completely unknown.
+  - "date_phrase": the VERBATIM text in the source that indicates when this
+    happened (e.g. "on Whit-Monday", "on Saturday", "Friday in last week",
+    "5th August"), copied exactly as printed. This is resolved to a date
+    deterministically in code, NOT by you -- do not compute a date yourself,
+    just quote the phrase. Use "" if no date reference is present at all.
+  - "date": your own best-effort YYYYMMDD guess, used only as a fallback if
+    "date_phrase" can't be resolved. Use "18950000" if only the year is
+    clear, "18950800" if only the month is clear, "" if completely unknown.
   - "content_type": one of the allowed types below
   - "collection": "Tony Webb minor counties collection"
   - "page": {page_num}
@@ -109,35 +115,29 @@ IMPORTANT RULES:
 - Drop trailing "OC" from team names unless it is clearly part of the
   official team name (e.g., use "Waterlow's" not "Waterlow's OC").
 
-KEY 1895 DATES (for resolving historical date references):
-- Whit-Monday (Bank Holiday): 27 May 1895
-- Whit-Tuesday: 28 May 1895
-- Good Friday: 12 April 1895
-- Easter Monday: 15 April 1895
-- August Bank Holiday: 5 August 1895
-When the text says "Whit-Monday", "Bank Holiday", etc., use these dates.
 The PUBLICATION DATE is NOT the match date — matches are typically
-reported days after they were played.
+reported days after they were played. Do not try to resolve weekday names
+or holiday names to a specific date yourself; just quote them verbatim in
+"date_phrase" and let the deterministic resolver handle it.
 
 EXAMPLES OF CORRECT EXTRACTION:
 
 Example 1 — Match report with a date reference:
   Text: "KENSWORTH v. DUNSTABLE VICTORIA.--Played on Whit-Monday..."
-  (Publication date: Saturday 8 June 1895)
   Correct: {{"title": "Kensworth v Dunstable Victoria",
-             "date": "18950527", "content_type": "match information"}}
-  Note: "Whit-Monday" in 1895 was 27 May. Do NOT use the publication
-  date (8 June) as the match date.
+             "date_phrase": "on Whit-Monday", "date": "18950527",
+             "content_type": "match information"}}
 
 Example 2 — Match report with scorecard:
   A match header followed by detailed batting and bowling figures is
   ONE "match information" entry. Do NOT create separate "statistics"
   entries for the individual scores within a match report.
 
-Example 3 — Resolving "on Friday":
-  (Publication date: Saturday 8 June 1895)
+Example 3 — A weekday reference:
   Text: "The match was played on Friday"
-  Correct date: "18950607" (the Friday before the Saturday publication)
+  Correct: {{"date_phrase": "on Friday", "date": "18950607"}}
+  (Fill "date" with your own best guess, but "date_phrase" is what actually
+  determines the final date — copy it verbatim.)
 
 Return ONLY a JSON object with a single key "entries" (array). If no
 cricket content is found, return {{"entries": []}}.

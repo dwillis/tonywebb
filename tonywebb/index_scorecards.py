@@ -21,7 +21,7 @@ Outputs:
 """
 
 from . import config
-from .indexing import KEY_1895_DATES, STYLE_RULES, build_date_context, run_index_extraction
+from .indexing import STYLE_RULES, build_date_context, run_index_extraction
 from .llm_common import JSONExtractError, parse_json_object
 
 SYSTEM_PROMPT = (
@@ -55,15 +55,19 @@ scorecard) -- that is a result, not a scorecard.
 
 For each match report WITH a scorecard, create an entry in "entries" with:
   - "title": "Team A v Team B" (use "v" with no period)
-  - "date": as YYYYMMDD. Use "18950000" if only the year is clear,
-            "18950800" if only the month is clear, "" if completely unknown.
+  - "date_phrase": the VERBATIM text indicating when this was played (e.g.
+    "on Whit-Monday", "on Saturday", "Friday in last week"), copied exactly
+    as printed. This is resolved to a date deterministically in code, NOT
+    by you -- do not compute a date yourself. Use "" if no date reference
+    is present.
+  - "date": your own best-effort YYYYMMDD guess, used only as a fallback if
+    "date_phrase" can't be resolved. Use "18950000" if only the year is
+    clear, "18950800" if only the month is clear, "" if completely unknown.
   - "content_type": "match information"
   - "collection": "Tony Webb minor counties collection"
   - "page": {page_num}
 
 {STYLE_RULES}
-
-{KEY_1895_DATES}
 
 RULES:
 - If a match report's scorecard continues from a previous page (starts
@@ -78,8 +82,8 @@ RULES:
 EXAMPLE — has a scorecard (include):
   "Dr. Stuart, b Tilley ... 0\\nA. Cuthinson, b Tilley ... 17\\n...
   Extras ... 6\\nTotal ... 45"
-  → {{"title": "Roberts and Roberts v County Asylum", "date": "18950616",
-      "content_type": "match information"}}
+  → {{"title": "Roberts and Roberts v County Asylum", "date_phrase": "",
+      "date": "18950616", "content_type": "match information"}}
 
 EXAMPLE — no scorecard (exclude):
   "NEWBURY v SPEEN.--Newbury won by 20 runs."

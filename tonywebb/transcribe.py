@@ -20,6 +20,7 @@ import llm
 
 from . import config
 from .images import fetch_image, new_session
+from .llm_common import no_thinking_kwargs
 from .pipeline import parse_page_spec
 
 logger = logging.getLogger(__name__)
@@ -65,7 +66,9 @@ def transcribe_page(model, page_num: int, image_bytes: bytes, media_type: str) -
         raise ValueError(f"Page {page_num}: image_bytes is empty — nothing to transcribe")
 
     attachment = llm.Attachment(content=image_bytes, type=media_type)
-    response = model.prompt(user_prompt, attachments=[attachment], system=SYSTEM_PROMPT)
+    response = model.prompt(
+        user_prompt, attachments=[attachment], system=SYSTEM_PROMPT, **no_thinking_kwargs(model)
+    )
     return response.text().strip()
 
 

@@ -42,9 +42,16 @@ class TestBuildUserPrompt:
         prompt = index_scorecards.build_user_prompt(1, "text")
         assert "continues from a previous page" in prompt
 
-    def test_contains_1895_calendar(self):
+    def test_contains_whit_monday_example(self):
         prompt = index_scorecards.build_user_prompt(1, "Some text")
         assert "Whit-Monday" in prompt
+
+    def test_contains_date_phrase_field(self):
+        # Date resolution moved to deterministic Python code (resolve_date_phrase) --
+        # the model is asked to quote the verbatim phrase, not compute a date itself.
+        prompt = index_scorecards.build_user_prompt(1, "Some text")
+        assert "date_phrase" in prompt
+        assert "do not compute a date yourself" in prompt.lower()
 
     def test_publication_date_detected(self):
         prompt = index_scorecards.build_user_prompt(145, PAGE_145)

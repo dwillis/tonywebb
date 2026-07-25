@@ -16,6 +16,7 @@ from tonywebb.normalize import (
     normalize_matchup,
     normalize_title,
     relative_dates,
+    resolve_date_phrase,
     title_key,
 )
 
@@ -38,6 +39,17 @@ class TestNormalizeMatchup:
 
     def test_strips_trailing_cc(self):
         assert normalize_matchup("Waterlow's CC v East Finchley") == "Waterlow's v East Finchley"
+
+    def test_strips_trailing_oc(self):
+        assert normalize_matchup("Waterlow's OC v East Finchley") == "Waterlow's v East Finchley"
+
+    def test_strips_trailing_oc_dotted(self):
+        assert normalize_matchup("Waterlow's O.C. v East Finchley") == "Waterlow's v East Finchley"
+
+    def test_matchup_key_same_for_oc_variant(self):
+        k1 = matchup_key("Waterlow's OC v East Finchley")
+        k2 = matchup_key("Waterlow's v East Finchley")
+        assert k1 == k2
 
     def test_strips_trailing_cricket_club(self):
         result = normalize_matchup("Dunstable Cricket Club v Luton")
@@ -191,6 +203,70 @@ class TestRelativeDates:
     def test_all_weekdays_present(self):
         rel = relative_dates(date(1895, 6, 8))
         assert len(rel) == 7
+
+
+class TestResolveDatePhrase:
+    def test_none_returns_none(self):
+        assert resolve_date_phrase(None, date(1895, 6, 8)) is None
+
+    def test_empty_returns_none(self):
+        assert resolve_date_phrase("", date(1895, 6, 8)) is None
+
+    def test_whit_monday(self):
+        assert resolve_date_phrase("on Whit-Monday", date(1895, 6, 8)) == "18950527"
+
+    def test_whit_tuesday(self):
+        assert resolve_date_phrase("Whit Tuesday", date(1895, 6, 8)) == "18950528"
+
+    def test_good_friday(self):
+        assert resolve_date_phrase("played on Good Friday", None) == "18950412"
+
+    def test_easter_monday(self):
+        assert resolve_date_phrase("Easter Monday", None) == "18950415"
+
+    def test_august_bank_holiday(self):
+        assert resolve_date_phrase("on the August Bank Holiday", None) == "18950805"
+
+    def test_bank_holiday_generic(self):
+        assert resolve_date_phrase("Bank Holiday", None) == "18950805"
+
+    def test_explicit_day_month(self):
+        assert resolve_date_phrase("5 August", None) == "18950805"
+
+    def test_explicit_day_month_with_ordinal(self):
+        assert resolve_date_phrase("5th August", None) == "18950805"
+
+    def test_explicit_month_day(self):
+        assert resolve_date_phrase("August 5th", None) == "18950805"
+
+    def test_invalid_explicit_date_returns_none(self):
+        assert resolve_date_phrase("31 February", None) is None
+
+    def test_weekday_relative_to_publication(self):
+        # Publication is Saturday 8 June 1895 -> "on Friday" means 1895-06-07.
+        assert resolve_date_phrase("on Friday", date(1895, 6, 8)) == "18950607"
+
+    def test_weekday_without_publication_date_returns_none(self):
+        assert resolve_date_phrase("on Friday", None) is None
+
+    def test_last_week_qualifier_subtracts_a_week(self):
+        # "Friday in last week" -- one week further back than plain "Friday".
+        plain = resolve_date_phrase("on Friday", date(1895, 6, 8))
+        last_week = resolve_date_phrase("Friday in last week", date(1895, 6, 8))
+        assert plain == "18950607"
+        assert last_week == "18950531"
+
+    def test_plain_last_saturday_not_treated_as_last_week(self):
+        # "last Saturday" without the word "week" is just the ordinary
+        # most-recent-Saturday resolution, not an extra week back.
+        assert resolve_date_phrase("last Saturday", date(1895, 6, 8)) == "18950601"
+
+    def test_unresolvable_phrase_returns_none(self):
+        assert resolve_date_phrase("sometime in the spring", date(1895, 6, 8)) is None
+
+    def test_holiday_takes_priority_over_weekday(self):
+        # Even if a weekday name also appears, an explicit holiday name wins.
+        assert resolve_date_phrase("on Whit-Monday (a Monday)", date(1895, 6, 8)) == "18950527"
 
 
 # ── ClubRegistry ───────────────────────────────────────────────────────────

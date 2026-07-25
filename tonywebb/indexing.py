@@ -24,6 +24,7 @@ from .normalize import (
     normalize_matchup,
     normalize_title,
     relative_dates,
+    resolve_date_phrase,
     title_key,
 )
 from .pipeline import RawResponseLog, load_pages, parse_page_spec, resolve_model, run_pages
@@ -83,11 +84,21 @@ def normalize_and_dedup(
     page_num: int,
     allowed_types: set[str] | None = None,
     registry: ClubRegistry | None = None,
+    publication_date=None,
 ) -> tuple[list[dict], list[dict]]:
     """Normalize title/date and drop duplicates within a page.
 
     Returns (kept, discarded). Each discarded item records the reason and the
     original entry so dropped data stays visible in the raw-responses log.
+
+    If an entry carries a "date_phrase" (a verbatim date reference like "on
+    Whit-Monday" or "Saturday last week"), that phrase is resolved
+    deterministically via resolve_date_phrase() and PREFERRED over the
+    model's own "date" field when it resolves -- models are unreliable at
+    doing the weekday-relative-to-publication-date arithmetic themselves,
+    even when handed a precomputed lookup table, so deterministic resolution
+    in Python is strictly more trustworthy when it succeeds. Falls back to
+    the model's own "date" field when the phrase is absent or unresolvable.
     """
     seen: set[tuple[str, str, str]] = set()
     out: list[dict] = []
@@ -111,7 +122,8 @@ def normalize_and_dedup(
             continue
 
         raw_title = entry.get("matchup", "") or entry.get("title", "")
-        date = normalize_date(entry.get("date", ""))
+        resolved = resolve_date_phrase(entry.get("date_phrase"), publication_date)
+        date = resolved if resolved else normalize_date(entry.get("date", ""))
 
         if content_type == "match information":
             title = normalize_matchup(raw_title, registry=registry)
@@ -262,6 +274,7 @@ def run_index_extraction(
     total_entries = 0
     total_errors = 0
     cross_page_dupes: list[dict] = []
+    page_text_by_num = dict(pages)
 
     def extract_fn(page_num: int, page_text: str) -> tuple[list[dict], str]:
         return extract_entries(
@@ -275,8 +288,10 @@ def run_index_extraction(
         raw = page_result.raw
         error = page_result.error
 
+        pub_date = detect_publication_date(page_text_by_num.get(page_result.page, ""))
         normalized, discarded = normalize_and_dedup(
             entries or [], page_result.page, allowed_types=allowed_types, registry=registry,
+            publication_date=pub_date,
         )
         page_dupes = track_cross_page(global_seen, normalized)
         cross_page_dupes.extend(page_dupes)

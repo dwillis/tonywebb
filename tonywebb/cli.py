@@ -6,11 +6,13 @@ from . import (
     build_browser,
     clubs,
     compare,
+    consensus,
     evaluate,
     extract_matches,
     extract_stats,
     index_scorecards,
     index_stats,
+    promote_reviewed,
     transcribe,
 )
 
@@ -29,6 +31,8 @@ def build_parser() -> argparse.ArgumentParser:
         index_stats,
         index_scorecards,
         evaluate,
+        consensus,
+        promote_reviewed,
         compare,
         build_browser,
         clubs,

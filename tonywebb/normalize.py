@@ -60,8 +60,11 @@ def _title_case_team(name: str) -> str:
 
 def _normalize_team(team: str, registry: ClubRegistry | None = None) -> str:
     s = team.strip()
-    # Drop trailing C.C. / Cricket Club
-    s = re.sub(r"[,\s]+(?:C\.?\s*C\.?|Cricket\s+Club)\.?\s*$", "", s, flags=re.IGNORECASE)
+    # Drop trailing C.C. / Cricket Club / O.C. (Old Cricketers-style suffix --
+    # matches generate_clubs.py's strip_cc_oc(), which already treats OC the
+    # same way; normalize_matchup previously didn't, causing e.g. "Waterlow's
+    # OC" and "Waterlow's" to be treated as different teams).
+    s = re.sub(r"[,\s]+(?:C\.?\s*C\.?|Cricket\s+Club|O\.?\s*C\.?)\.?\s*$", "", s, flags=re.IGNORECASE)
     # G.S. → Grammar School (only as a standalone token)
     s = re.sub(r"\bG\.?\s*S\.?(?![A-Za-z])", "Grammar School", s, flags=re.IGNORECASE)
     # 2nd / 2ND → Second, 1st → First, 3rd → Third
@@ -197,6 +200,83 @@ def relative_dates(pub: date) -> dict[str, str]:
             delta = 7  # "on Monday" in a Monday paper means a week prior
         out[name] = (pub - timedelta(days=delta)).isoformat()
     return out
+
+
+# ── Date-phrase resolution (deterministic, replaces model arithmetic) ──────
+# Models are unreliable at "resolve this weekday relative to the publication
+# date" arithmetic, even when handed a precomputed lookup table in the prompt.
+# Asking for the verbatim date phrase and resolving it here in Python removes
+# that failure mode -- this is a lookup/regex problem, not a reasoning one.
+
+_HOLIDAY_DATES_1895 = {
+    "whit monday": (5, 27), "whit-monday": (5, 27),
+    "whit tuesday": (5, 28), "whit-tuesday": (5, 28),
+    "good friday": (4, 12),
+    "easter monday": (4, 15),
+    "august bank holiday": (8, 5),
+    "bank holiday": (8, 5),
+}
+
+_LAST_WEEK_RE = re.compile(r"last\s+week", re.IGNORECASE)
+_WEEKDAY_RE = re.compile(
+    r"\b(monday|tuesday|wednesday|thursday|friday|saturday|sunday)\b", re.IGNORECASE
+)
+_MONTH_DAY_RE = re.compile(
+    r"\b(?P<day>\d{1,2})(?:st|nd|rd|th)?\s+(?P<month>january|february|march|april|may|june|"
+    r"july|august|september|october|november|december)\b",
+    re.IGNORECASE,
+)
+_DAY_MONTH_RE = re.compile(
+    r"\b(?P<month>january|february|march|april|may|june|july|august|september|october|"
+    r"november|december)\s+(?P<day>\d{1,2})(?:st|nd|rd|th)?\b",
+    re.IGNORECASE,
+)
+
+
+def resolve_date_phrase(phrase: str | None, publication_date: date | None, year: int = 1895) -> str | None:
+    """Deterministically resolve a verbatim date reference to YYYYMMDD.
+
+    Handles: named 1895 holidays ("on Whit-Monday"), explicit month/day
+    ("5 August" or "August 5th"), and weekday names relative to the page's
+    publication date ("on Saturday", with a "last week" qualifier pushing the
+    result back an additional 7 days, e.g. "Friday in last week").
+
+    Returns None if the phrase can't be confidently resolved -- callers
+    should fall back to the model's own "date" field in that case.
+    """
+    if not phrase:
+        return None
+    p = phrase.strip().lower()
+    if not p:
+        return None
+
+    for name, (month, day) in _HOLIDAY_DATES_1895.items():
+        if name in p:
+            return f"{year}{month:02d}{day:02d}"
+
+    m = _MONTH_DAY_RE.search(p) or _DAY_MONTH_RE.search(p)
+    if m:
+        month = _MONTHS[m.group("month").lower()]
+        day = int(m.group("day"))
+        try:
+            return date(year, month, day).strftime("%Y%m%d")
+        except ValueError:
+            return None
+
+    if publication_date is None:
+        return None
+    wd_match = _WEEKDAY_RE.search(p)
+    if not wd_match:
+        return None
+    weekday_name = wd_match.group(1).lower()
+    rel = relative_dates(publication_date)
+    resolved = rel.get(weekday_name)
+    if resolved is None:
+        return None
+    resolved_date = date.fromisoformat(resolved)
+    if _LAST_WEEK_RE.search(p):
+        resolved_date -= timedelta(days=7)
+    return resolved_date.strftime("%Y%m%d")
 
 
 # ── Club Registry ───────────────────────────────────────────────────────────

@@ -11,6 +11,8 @@ EXPECTED_SUBCOMMANDS = {
     "index-stats",
     "index-scorecards",
     "evaluate",
+    "consensus",
+    "promote-reviewed",
     "compare",
     "browse",
     "clubs",
@@ -86,3 +88,18 @@ class TestBackwardCompatibleDefaults:
         parser = build_parser()
         args = parser.parse_args(["clubs"])
         assert args.output == "clubs.csv"
+
+    def test_consensus_default_pattern_truth_and_output(self):
+        parser = build_parser()
+        args = parser.parse_args(["consensus"])
+        assert args.pattern == "match_index_*.csv"
+        assert args.truth == "match_index_willis.csv"
+        assert args.output == "consensus_index.csv"
+        assert args.report == "consensus_report.md"
+        assert args.min_agreement == 1
+
+    def test_promote_reviewed_default_truth(self):
+        parser = build_parser()
+        args = parser.parse_args(["promote-reviewed", "match_index_reviewed.csv"])
+        assert args.truth == "match_index_willis.csv"
+        assert args.dry_run is False

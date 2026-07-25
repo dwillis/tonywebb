@@ -1,6 +1,7 @@
 """Tests for extract_matches.py — extraction, prompt building, and post-processing."""
 
 import json
+from datetime import date
 
 import pytest
 
@@ -148,6 +149,47 @@ class TestNormalizeAndDedup:
         assert result[0]["content_type"] == "match information"
 
 
+class TestNormalizeAndDedupDatePhrase:
+    """date_phrase, resolved deterministically, is preferred over the model's own "date"."""
+
+    def test_resolved_phrase_overrides_models_own_date(self):
+        entries = [{
+            "matchup": "A v B", "content_type": "match information",
+            "date_phrase": "on Whit-Monday", "date": "18950601",  # model's own guess is wrong
+        }]
+        result, _ = normalize_and_dedup(entries, page_num=1)
+        assert result[0]["date"] == "18950527"  # deterministic resolution wins
+
+    def test_weekday_phrase_needs_publication_date(self):
+        entries = [{
+            "matchup": "A v B", "content_type": "match information",
+            "date_phrase": "on Friday", "date": "18950608",
+        }]
+        result, _ = normalize_and_dedup(entries, page_num=1, publication_date=date(1895, 6, 8))
+        assert result[0]["date"] == "18950607"
+
+    def test_unresolvable_phrase_falls_back_to_models_date(self):
+        entries = [{
+            "matchup": "A v B", "content_type": "match information",
+            "date_phrase": "sometime in spring", "date": "18950400",
+        }]
+        result, _ = normalize_and_dedup(entries, page_num=1)
+        assert result[0]["date"] == "18950400"
+
+    def test_no_phrase_falls_back_to_models_date(self):
+        entries = [{"matchup": "A v B", "content_type": "match information", "date": "18950527"}]
+        result, _ = normalize_and_dedup(entries, page_num=1)
+        assert result[0]["date"] == "18950527"
+
+    def test_empty_phrase_falls_back_to_models_date(self):
+        entries = [{
+            "matchup": "A v B", "content_type": "match information",
+            "date_phrase": "", "date": "18950527",
+        }]
+        result, _ = normalize_and_dedup(entries, page_num=1)
+        assert result[0]["date"] == "18950527"
+
+
 class TestNormalizeAndDedupDiscards:
     def test_no_discards_for_clean_entries(self):
         entries = [{"matchup": "A v B", "date": "18950527", "content_type": "match information"}]
@@ -226,10 +268,16 @@ class TestBuildUserPrompt:
         prompt = build_user_prompt(42, "Some text")
         assert "page 42" in prompt.lower()
 
-    def test_contains_1895_calendar(self):
+    def test_contains_whit_monday_example(self):
         prompt = build_user_prompt(1, "Some text")
         assert "Whit-Monday" in prompt
-        assert "27 May 1895" in prompt
+
+    def test_contains_date_phrase_field(self):
+        # Date resolution moved to deterministic Python code (resolve_date_phrase) --
+        # the model is asked to quote the verbatim phrase, not compute a date itself.
+        prompt = build_user_prompt(1, "Some text")
+        assert "date_phrase" in prompt
+        assert "do not compute a date yourself" in prompt.lower()
 
     def test_contains_few_shot_examples(self):
         prompt = build_user_prompt(1, "Some text")
