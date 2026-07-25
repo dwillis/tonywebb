@@ -31,7 +31,7 @@ P Plimshaw b Frost... 2
 G Millican b Frost... 9
 W Stanion not out... 3
 Extras ... 9
-Total...... 203
+Total .. 203
 
 LEVENSHULME v. MACCLESFIELD (Second Eleven).—At Macclesfield. Levenshulme: R. N. Heaton 31, W. Heaton 9, F. Siddall 20, E. B. Booth 8, F. Whiston 6, T. Clegg 14, G. P. Lewis 6, H. Ward 1, H. Hobday 10, Foster 2, Dean 7, extras 5; total 102. Macclesfield: Wright 4, Sbatwell 15, Heel 14, Lees 8, Shaidon (not out) 13. Fowler 2, Sawyer (not out) 2, extras 3; total (for five wickets) 66.
 
@@ -71,21 +71,19 @@ Total ... 98
 ANALYSIS OF BOWLING.
 STOCKPORT.
 O. M. R. W.
-Hall...... 24 9 32 4
+Hall .. 24 9 32 4
 Brookes... 16 3 4 39 5
 Hodgkinson 7 3 14 1
 
 WERNETH.
 O. M. R. W.
 Brown.. 21 8 25 7
-F. Tor-
-kington 16 2 42 2
+F. Torkington 16 2 42 2
 F. Tyler. 5 0 23 1
 
 LANGLEY v. LANE END (HIGHFIELD).—Played at Leek on Saturday. Score:—
 Langley.
-Lowe hit wkt b Simp-
-son ... 2
+Lowe hit wkt b Simpson ... 2
 Bramhall c Simpson b
 J Simpson... 11
 Bishop b J Simpson...
@@ -93,8 +91,7 @@ Ball eduction b J Simpson... 11
 Bier c Goodwin b
 Morley... 8
 Hill c Sutton b Simpson...
-Lilley c Sutton b Simp-
-son ... 0
+Lilley c Sutton b Simpson ... 0
 Bratt not out... 11
 Morley c b Morley...
 Chapman b Simpson... 8

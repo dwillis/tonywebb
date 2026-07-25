@@ -6,6 +6,7 @@ from tonywebb.cli import build_parser
 
 EXPECTED_SUBCOMMANDS = {
     "transcribe",
+    "clean-transcriptions",
     "extract-matches",
     "extract-stats",
     "index-stats",
@@ -103,3 +104,11 @@ class TestBackwardCompatibleDefaults:
         args = parser.parse_args(["promote-reviewed", "match_index_reviewed.csv"])
         assert args.truth == "match_index_willis.csv"
         assert args.dry_run is False
+
+    def test_clean_transcriptions_defaults(self):
+        parser = build_parser()
+        args = parser.parse_args(["clean-transcriptions", "--input", "qwen3.5:397b"])
+        assert args.dry_run is False
+        assert args.skip_dot_leaders is False
+        assert args.skip_hyphens is False
+        assert args.skip_typos is False

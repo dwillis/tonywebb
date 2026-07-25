@@ -64,8 +64,7 @@ H. Wood, b Overton .. .. 1 b Overton .. .. 0
 J. Thomas, c Hartley, b Down .. 6 b Hartley .. .. 14
 H. M. Davies, b Down.. .. 0 run out .. .. 0
 F. A. Twining, b Down.. .. 13 b Kirby .. .. 56
-W. A. Alexander, c Down, b Over-
-ton .. .. .. 4 b Overton .. .. 0
+W. A. Alexander, c Down, b Overton .. .. .. 4 b Overton .. .. 0
 S. Pratt, b Down .. .. 0 lbw, b Smith .. 0
 G. Short, c Overton, b Down .. 0 b Kirby .. .. 9
 A. J. Hill, b Down .. .. 0 b Kirby .. .. 2

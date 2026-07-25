@@ -27,12 +27,10 @@ b w, b Hinds .. 5
 b Hinds .. 24
 b Leake .. 0
 b Hinds .. 0
-c Hastings, b Cun-
-ninghame .. 5
+c Hastings, b Cunninghame .. 5
 absent (hurt).. 0
 b Cunningham .. 2
-c F. H. Sitwell, b Cun-
-ninghame .. 5
+c F. H. Sitwell, b Cunninghame .. 5
 b Cunningham .. 5
 b Hinds .. 1
 not out.. 3
@@ -41,8 +39,7 @@ Extras .. 9
 LUDLOW AND SOUTH SHROPSHIRE 2nd Innings.
 J. T. Leake, b Harding .. 0
 H. G. B. Phillips, run out.. .. 8
-Rev. W. F. G. Sandwith, b Hard-
-ing .. 0
+Rev. W. F. G. Sandwith, b Harding .. 0
 F. H. Sitwell, b Toppin .. 1
 H. F. Hastings, b Toppin .. 0
 N. C. Rainston, b Harding .. 4
@@ -107,8 +104,7 @@ A. Morgan, not out.. .. 5
 Extras .. 5
 64
 
-HEREFORD ST. V FOXLEY.—Played at Foxley on Satur-
-day. Score:-
+HEREFORD ST. V FOXLEY.—Played at Foxley on Saturday. Score:-
 1st Innings.
 J Probert, b Johnstone .. 4
 T Jones, b Miles .. 0

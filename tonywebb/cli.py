@@ -4,6 +4,7 @@ import argparse
 
 from . import (
     build_browser,
+    clean_transcriptions,
     clubs,
     compare,
     consensus,
@@ -26,6 +27,7 @@ def build_parser() -> argparse.ArgumentParser:
 
     for module in (
         transcribe,
+        clean_transcriptions,
         extract_matches,
         extract_stats,
         index_stats,

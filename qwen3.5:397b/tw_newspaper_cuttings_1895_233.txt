@@ -30,15 +30,11 @@ Second Innings.
 b Smith .. 32
 run out .. 6
 c Souch b Flint .. 25
-c Millward b Light-
-wood .. 2
-c Vaughton b Light-
-wood .. 8
-at Morgan b Light-
-wood .. 17
+c Millward b Lightwood .. 2
+c Vaughton b Lightwood .. 8
+at Morgan b Lightwood .. 17
 b Smith .. 0
-c Vaughton b Ferri-
-day .. 0
+c Vaughton b Ferriday .. 0
 b Wheldon .. 22
 not out .. 4
 b Flint .. 0
@@ -90,8 +86,7 @@ ALDERSHOT.—On the County Ground at Worcester,
 and won, after a most exciting finish, by Aldershot by
 two runs. Score :-
 ALDERSHOT DEPOT.
-Capt. Lewis lbw b Nor-
-man .. 11
+Capt. Lewis lbw b Norman .. 11
 Capt. Norbury run out .. 17
 Lieut. Hobson b Norman .. 20
 Palmer b Norman .. 2
@@ -116,14 +111,12 @@ E. Bromley Martin b
 Wodehouse b Hobson .. 16
 Capt. Featherstonhaugh
 b Hobson .. 0
-Major Hudson b Wode-
-house .. 9
+Major Hudson b Wodehouse .. 9
 Sergt. Norman b Hobson .. 5
 Winnington b Hobson .. 2
 Capt. Stewart b Carrol .. 10
 W. W. Hylson b Carrol .. 0
-H. E. M. Porter c Hol-
-land b Wodehouse .. 19
+H. E. M. Porter c Holland b Wodehouse .. 19
 Sergeant Pitt not out .. 3
 Extras .. 11
 100
@@ -161,13 +154,10 @@ Colour-Sergeant Smith b
 Carroll .. 1
 Captain Scott c Palmer b
 Lambert .. 4
-Corp. Costello b Wode-
-house .. 41
+Corp. Costello b Wodehouse .. 41
 Capt. Nelson b Stewart .. 3
-Corp. Langmore b Wode-
-house .. 8
-Mr. Turner b Wode-
-house .. 0
+Corp. Langmore b Wodehouse .. 8
+Mr. Turner b Wodehouse .. 0
 Pte. Cherry not out .. 1
 Pte. Baile b Wodehouse .. 1
 Extras .. 5
@@ -276,17 +266,14 @@ Extras .. 4
 WELLAND AND DISTRICT.
 H. W. Gunn c Jone b
 Butler .. 25
-A. Kent c Jone b Mase-
-field .. 0
+A. Kent c Jone b Masefield .. 0
 J. R. Hill b Farley .. 4
 R. Coventry b Butler .. 22
 H. Freeman b Farley .. 5
-Major E. J. Webb b Far-
-ley .. 0
+Major E. J. Webb b Farley .. 0
 J. Farr not out .. 4
 W. A. Norbury run out .. 2
-W. A. Ormond b Far-
-ley .. 0
+W. A. Ormond b Farley .. 0
 L. Docker c Browning b
 Farley .. 0
 Extras .. 6
@@ -315,8 +302,7 @@ c Guliding b Hemus 5—b Hemus —, Kilford b Chadd 1—not
 out 0, Hill c Hemus b Chadd 0—b Chadd 1, Grindley c and
 b Hemus 5—c Pitt b Hemus 1, extras 13—4; totals 37—22.
 
-HABBOURNE v. WICKENFORD.—Played at Wickn-
-ford on Saturday, and resulted in an easy win for the
+HABBOURNE v. WICKENFORD.—Played at Wicknford on Saturday, and resulted in an easy win for the
 visitors by 69 runs. Mr. Lightwood took seven
 wickets for 32 runs. Score :-
 BARBOURNE.—F. Bewley b Williams 27, J. Lightwood b
@@ -325,24 +311,20 @@ G. Brewer not out 23, F. Everitt b Williams 1, P. Sheppard
 b Jones-Williams 7, A. Knott b Williams 1, C. J. Knott not
 out 12, R. Goodman to bat, extras 15; *total 122. *Innings
 declared closed.
-WICKENFORD.—A. W. Isaac c Wall b Bewley 8, G. Buck-
-land b Lightwood 4, T. G. Jones-Williams c Harkness b
+WICKENFORD.—A. W. Isaac c Wall b Bewley 8, G. Buckland b Lightwood 4, T. G. Jones-Williams c Harkness b
 Lightwood 5, W. Williams c Dralson b Knott 17, A. W.
 Page c C. J. Knott b Lightwood 1, F. Fido b Lightwood 1,
 T. C. Hichens c C. Knott b Bewley 2, W. Jones b Lightwood
 0, E. Fido c G. J. Knott b Lightwood 0, T. J. Smith b
 Lightwood 4, G. Shaw not out 0, extras 14; total 56.
 
-BROMSGROVE v. REDDITCH AND DISTRICT.—Broms-
-grove commenced their cricket week on Monday. The
+BROMSGROVE v. REDDITCH AND DISTRICT.—Bromsgrove commenced their cricket week on Monday. The
 result was a draw greatly in favour of Bromsgrove.
 Score :-
 BROMSGROVE.—R. Perkins 31, Rolleston 5, Abbott 9,
 Nokes 21, J. K. Perkins 18, Wood 5, Bancroft 6, Green 23,
 Harrison 13, Wallace 0, Lee not out 0, extras 8, total 144.
-REDDITCH AND DISTRICT.—Hobday 12, Crow 5, Dr. Mor-
-ton 6, H. Chambers 22, Herbert Chambers 0, Ireson 0, Lam-
-bert 20, Bird 4, Styler 3, Wood 9, Turner to bat, extras 12,
+REDDITCH AND DISTRICT.—Hobday 12, Crow 5, Dr. Morton 6, H. Chambers 22, Herbert Chambers 0, Ireson 0, Lambert 20, Bird 4, Styler 3, Wood 9, Turner to bat, extras 12,
 total 93.
 
 BROMSGROVE v. MR. (J.) BEARCROFT'S ELEVEN.—

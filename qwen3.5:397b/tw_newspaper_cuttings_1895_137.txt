@@ -68,7 +68,7 @@ May 25... Abbots Langley... Abbots Langley... Won by 125 runs
 June 1... Frogmore ...Watford ... ...Won by 105 runs
 8... Stanmore ... " " ...Won by an ins.
 ... and 202 runs
-12... Berkmsd. Sch.... ... ...Lost by 36 runs
+12... Berkmsd. Sch .. ... ...Lost by 36 runs
 15... Aldenham Sch... Aldenham ...Won by an ins.
 ... and 15 runs
 19... St. Albans ...Watford ... ...Won by 31 runs
@@ -152,7 +152,7 @@ Members who have had not less than three innings.
 W. R. Collins ... 8        1       196      173*     28.00
 O. Pigg .. ..   4        2       144      109*     72.00
 G. M. Vines ... 3        0       119       74      39.66
-B. Astley ..   5        0        69       33      13.80
+B. Astley .. 5        0        69       33      13.80
 E. R. Hill...   5        1        48       22      12.00
 F. G. Robins ... 4        0        44       21      11.00
 R. G. Barnett ... 4        1        31       15      10.33

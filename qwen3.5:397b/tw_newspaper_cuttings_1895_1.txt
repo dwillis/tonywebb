@@ -61,7 +61,7 @@ c Hall b Dawes .. .. 0
 st Carter .. .. 1
 run out .. .. 0
 b Whinnett .. .. 1
-Ex ras .. .. 1
+Extras .. .. 1
 30
 
 CADDINGTON v. DUNSTABLE SECOND ELEVEN.—Played on Thursday, at Caddington, and resulted in a win for Dunstable by two runs only. Scores :—

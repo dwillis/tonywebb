@@ -5,27 +5,27 @@ This match was played on Saturday in the Park, East Hyde, St. Matthew's winning 
 HYDE C.C.
 S. Irons c Duckley b Butler ... 3
 W. Woodford b Butler .. 8
-A. Smart b Horton ....... 2
-J. Skeggs b Horton ...... 0
-R. Harris c Barford b Horton ........ 1
-H. Ashby b Butler ...... 7
-G. Ford b Horton ....... 0
+A. Smart b Horton .. 2
+J. Skeggs b Horton .. 0
+R. Harris c Barford b Horton .. 1
+H. Ashby b Butler .. 7
+G. Ford b Horton .. 0
 H. Wilson lbw b Butler.. 3
-H. Edge b Butler........ 0
-J. Gunnell b Butler..... 2
-L. Jefferson not out .... 0
-Extras.................. 5
-Total ................... 31
-b Horton ............ 3
-not out............. 1
-b Barford........... 2
+H. Edge b Butler .. 0
+J. Gunnell b Butler .. 2
+L. Jefferson not out .. 0
+Extras .. 5
+Total .. 31
+b Horton .. 3
+not out .. 1
+b Barford .. 2
 c Garrett b Barford 12
-b Barford........... 9
-not out............. 0
-b Barford........... 0
+b Barford .. 9
+not out .. 0
+b Barford .. 0
 c Clark b Horton .. 4
 c Buckley b Horton 0
-Extras ............ 1
+Extras .. 1
 Total (7 wkts) 33
 
 ST. MATTHEW'S.
@@ -33,7 +33,7 @@ W. Garrett b Irons ... 3
 T. Barford c Smart b Irons ... 19
 J. Clark lbw b Irons ... 0
 S. Garrett lbw b Irons ... 1
-C. Butler c Woodford b Irons ............
+C. Butler c Woodford b Irons .. 
 A. Buckley lbw b Skeggs ... 3
 W. Mair c Irons b Smart ... 2
 F. Kilby c Harris b Irons ... 4
@@ -49,34 +49,34 @@ CRICKET. — GREENFIELD v PULLOXHILL. — This match was played at Greenfield on
 HOUGHTON v. WESTONING.
 Played on Houghton Green on Monday. Score:—
 WESTONING.
-P. Bayden b Giddings ............ 4
-G. Crawley c Holt b Robinson.... 7
-A. Knutt c sub b Giddings ....... 4
-A. Muckleston b Giddings........ 24
-A. Neil lbw b Giddings.......... 0
-O. H. Trepte b Giddings......... 1
-M. Judge b Giddings............. 0
-T. Summus c Carter b Holt....... 7
-A. Stanley not out .............. 0
-F. Summus b Giddings............ 1
-F. Holbs b Robinson............. 0
-Extras .......................... 4
-Total ......................... 52
+P. Bayden b Giddings .. 4
+G. Crawley c Holt b Robinson .. 7
+A. Knutt c sub b Giddings .. 4
+A. Muckleston b Giddings .. 24
+A. Neil lbw b Giddings .. 0
+O. H. Trepte b Giddings .. 1
+M. Judge b Giddings .. 0
+T. Summus c Carter b Holt .. 7
+A. Stanley not out .. 0
+F. Summus b Giddings .. 1
+F. Holbs b Robinson .. 0
+Extras .. 4
+Total .. 52
 
 HOUGHTON.
-F. Love not out ................. 46
-H. Thompson b Muckleston........ 1
-J. Robinson b Muckleston........ 4
-C. Holt c and b Muckleston ...... 4
+F. Love not out .. 46
+H. Thompson b Muckleston .. 1
+J. Robinson b Muckleston .. 4
+C. Holt c and b Muckleston .. 4
 T. Giddings c Judge b Muckleston 6
-O. Cogswell c and b Nutt........ 0
-W. Carter b Nutt ................ 0
-F. Pratt c Crawley b Nutt ....... 1
-O. Fowler b Nutt ................ 11
-H. Tompkins b Nutt .............. 1
-A. Cook b Trepte ................ 37
-Extras .......................... 15
-Total ......................... 132
+O. Cogswell c and b Nutt .. 0
+W. Carter b Nutt .. 0
+F. Pratt c Crawley b Nutt .. 1
+O. Fowler b Nutt .. 11
+H. Tompkins b Nutt .. 1
+A. Cook b Trepte .. 37
+Extras .. 15
+Total .. 132
 
 VOLUNTEERS AT CRICKET.
 A match was played at Churn Camp on Wednesday last week, between the Luton Detachment and the Remainder of the 3rd Volunteer Battalion, resulting in a win for Luton by 28 runs. Scores:—Luton Detachment, 75; Remainder of Battalion, 47.

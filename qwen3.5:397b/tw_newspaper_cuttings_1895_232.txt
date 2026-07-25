@@ -5,18 +5,18 @@ HALESOWEN.
 At Worcester. Although Club and Ground had much the best of matters, time nearly saved the visitors, their last wicket going down to the last ball of the match. E. G. Hobson and E. G. M. Carmichael played good cricket for their respective totals, and Burrows and J. Lightwood bowled well.
 Score:-
 CLUB AND GROUND.
-E. G. Hobson b Smith ..... 67
-Straw b Moore ..... 0
-E. G. M. Carmichael b Smith ..... 35
-T. G. Hammell c Dauglish b Smith ..... 3
-Burrows b Smith ..... 0
-W. South b Moore ..... 19
-Rev. Jones Bateman b Moore ..... 2
-E. P. Hem not out ..... 3
-J. Lightwood c Howard b Haybould ..... 11
+E. G. Hobson b Smith .. 67
+Straw b Moore .. 0
+E. G. M. Carmichael b Smith .. 35
+T. G. Hammell c Dauglish b Smith .. 3
+Burrows b Smith .. 0
+W. South b Moore .. 19
+Rev. Jones Bateman b Moore .. 2
+E. P. Hem not out .. 3
+J. Lightwood c Howard b Haybould .. 11
 T. A. D. Walker } did not
 W. Park } bat.
-Extras ..... 9
+Extras .. 9
 149
 HALESOWEN.
 Rev. A. P. Dauglish c Carmichael b Burrows 0
@@ -29,21 +29,21 @@ W. Kempson b Burrows 0
 R. Phelps b Burrows 0
 H. R. Hingley not out 7
 A. Hingley b Lightwood 2
-Extras ..... 6
+Extras .. 6
 75
 *Innings closed.
 ANALYSIS OF BOWLING.
 CLUB & GROUND.
-Moore ..... 16 3 43 5
+Moore .. 16 3 43 5
 Haybould ... 13-2 5 22 1
-Smith ..... 20 5 48 4
+Smith .. 20 5 48 4
 HALESOWEN.
-Morris ..... 4 1 12 -
-Howard ..... 3 - 15 -
+Morris .. 4 1 12 -
+Howard .. 3 - 15 -
 Smith bowled a no ball.
 HALESOWEN.
-Burrows ..... 13 3 26 5
-Hobson ..... 12 6 31 3
+Burrows .. 13 3 26 5
+Hobson .. 12 6 31 3
 Carmichael .. 3 - 13 -
 Lightwood ... 3 1 2 2
 
