@@ -25,6 +25,7 @@ from .normalize import (
     normalize_title,
     relative_dates,
     resolve_date_phrase,
+    symmetric_matchup_key,
     title_key,
 )
 from .pipeline import RawResponseLog, load_pages, parse_page_spec, resolve_model, run_pages
@@ -150,14 +151,24 @@ def normalize_and_dedup(
                 "date": date,
                 "content_type": content_type,
                 "collection": config.COLLECTION_NAME,
-                "record_id": (entry.get("record_id") or "").strip(),
+                "pages": 1,
             }
         )
     return out, discarded
 
 
 def _row_key(matchup: str, date: str, content_type: str) -> tuple[str, str, str]:
-    key = matchup_key(matchup) if content_type == "match information" else title_key(matchup)
+    # Order-insensitive for matches, unlike the exact matchup_key() used for
+    # WITHIN-page dedup in normalize_and_dedup(). Cross-page duplicates in
+    # this collection are frequently two different newspapers' independent
+    # write-ups of the same match, which routinely name the teams in the
+    # opposite order (prose word order vs. house style) -- the same reason
+    # evaluate/consensus/promote-reviewed use symmetric_matchup_key() for
+    # their own cross-source matching. The date is still part of this key,
+    # so a genuine same-day-reversed-order rematch (e.g. First XI vs Second
+    # XI fixtures between the same two clubs) is the only real edge case
+    # this accepts, same tradeoff already made everywhere else.
+    key = symmetric_matchup_key(matchup) if content_type == "match information" else title_key(matchup)
     return (key, date, content_type)
 
 
@@ -176,6 +187,46 @@ def track_cross_page(global_seen: dict, rows: list[dict]) -> list[dict]:
         else:
             global_seen.setdefault(key, row["page"])
     return dupes
+
+
+def recompute_pages_column(csv_path: Path) -> int:
+    """Rewrite the "pages" column of an index CSV to the true count of distinct
+    pages each (matchup, date, content_type) entry appears on across the whole
+    file -- not just consecutive pages, any two.
+
+    Every row sharing a key gets the same count (flagged, not merged: each
+    page's row stays in the CSV so nothing is silently dropped). Returns the
+    number of rows whose value changed.
+    """
+    with csv_path.open(newline="", encoding="utf-8") as f:
+        reader = csv.DictReader(f)
+        fieldnames = reader.fieldnames
+        rows = list(reader)
+
+    pages_by_key: dict[tuple[str, str, str], set[int]] = {}
+    for row in rows:
+        content_type = (row.get("content_type") or "match information").strip().lower()
+        key = _row_key(row.get("matchup", ""), row.get("date", ""), content_type)
+        try:
+            page = int((row.get("page") or "").strip())
+        except (ValueError, TypeError):
+            continue
+        pages_by_key.setdefault(key, set()).add(page)
+
+    changed = 0
+    for row in rows:
+        content_type = (row.get("content_type") or "match information").strip().lower()
+        key = _row_key(row.get("matchup", ""), row.get("date", ""), content_type)
+        count = str(len(pages_by_key.get(key, set())) or 1)
+        if row.get("pages") != count:
+            changed += 1
+        row["pages"] = count
+
+    with csv_path.open("w", newline="", encoding="utf-8") as f:
+        writer = csv.DictWriter(f, fieldnames=fieldnames)
+        writer.writeheader()
+        writer.writerows(rows)
+    return changed
 
 
 # ── LLM extraction ───────────────────────────────────────────────────────────
@@ -269,7 +320,7 @@ def run_index_extraction(
     if not csv_path.exists():
         with csv_path.open("w", newline="", encoding="utf-8") as f:
             writer = csv.writer(f)
-            writer.writerow(["matchup", "page", "date", "content_type", "collection", "record_id"])
+            writer.writerow(["matchup", "page", "date", "content_type", "collection", "pages"])
 
     total_entries = 0
     total_errors = 0
@@ -306,7 +357,7 @@ def run_index_extraction(
                         row["date"],
                         row["content_type"],
                         row["collection"],
-                        row["record_id"],
+                        row["pages"],
                     ])
             total_entries += len(normalized)
 
@@ -333,3 +384,8 @@ def run_index_extraction(
         print(f"{len(cross_page_dupes)} entry(ies) also appear on an earlier page (kept; review manually):")
         for d in cross_page_dupes:
             print(f"  page {d['page']}: {d['matchup']} [{d['date']}] first seen on page {d['first_page']}")
+
+    if csv_path.exists():
+        changed = recompute_pages_column(csv_path)
+        if changed:
+            print(f"Updated 'pages' count for {changed} row(s) spanning more than one page.")

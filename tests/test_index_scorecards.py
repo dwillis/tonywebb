@@ -137,7 +137,7 @@ class TestEndToEnd:
             ])
 
         rows = out_csv.read_text().strip().splitlines()
-        assert rows[0] == "matchup,page,date,content_type,collection,record_id"
+        assert rows[0] == "matchup,page,date,content_type,collection,pages"
         assert len(rows) == 3  # header + 2 entries
         assert all(",match information," in r for r in rows[1:])
         assert fake_model.calls == 1

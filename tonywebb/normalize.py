@@ -58,8 +58,13 @@ def _title_case_team(name: str) -> str:
     return "".join(_title_token(p) if p.strip() and p != "-" else p for p in parts)
 
 
-def _normalize_team(team: str, registry: ClubRegistry | None = None) -> str:
-    s = team.strip()
+def _apply_team_style(s: str) -> str:
+    """Style cleanups shared by every _normalize_team() exit path -- run once
+    on the raw input, and again on whatever a registry lookup returns, so a
+    non-style-compliant clubs.csv canonical_name (e.g. "Liberal 2nd XI" where
+    "Second XI" is merely an alias) can't bypass these rules just by being
+    the string the registry happens to return verbatim.
+    """
     # Drop trailing C.C. / Cricket Club / O.C. (Old Cricketers-style suffix --
     # matches generate_clubs.py's strip_cc_oc(), which already treats OC the
     # same way; normalize_matchup previously didn't, causing e.g. "Waterlow's
@@ -77,11 +82,15 @@ def _normalize_team(team: str, registry: ClubRegistry | None = None) -> str:
     s = re.sub(r"\s+", " ", s).strip()
     # Strip surrounding punctuation
     s = s.strip(",;:")
-    s = _title_case_team(s)
+    return _title_case_team(s)
+
+
+def _normalize_team(team: str, registry: ClubRegistry | None = None) -> str:
+    s = _apply_team_style(team.strip())
     if registry:
         resolved = registry.resolve(s)
         if resolved:
-            return resolved
+            return _apply_team_style(resolved)
     return s
 
 

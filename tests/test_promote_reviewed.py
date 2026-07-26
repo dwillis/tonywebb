@@ -8,13 +8,13 @@ from tonywebb.promote_reviewed import run
 
 
 def _write_csv(tmp_path: Path, name: str, rows: list[dict], extra_fields: list[str] | None = None) -> Path:
-    fieldnames = ["matchup", "page", "date", "content_type", "collection", "record_id"] + (extra_fields or [])
+    fieldnames = ["matchup", "page", "date", "content_type", "collection", "pages"] + (extra_fields or [])
     path = tmp_path / name
     with path.open("w", newline="", encoding="utf-8") as f:
         writer = csv.DictWriter(f, fieldnames=fieldnames)
         writer.writeheader()
         for r in rows:
-            writer.writerow({"collection": "Tony Webb minor counties collection", "record_id": "", **r})
+            writer.writerow({"collection": "Tony Webb minor counties collection", "pages": "", **r})
     return path
 
 
@@ -111,6 +111,25 @@ class TestPromoteReviewed:
         with pytest.raises(SystemExit):
             run(_make_ns(reviewed=str(tmp_path / "nope.csv")))
 
+    def test_promoted_row_creating_cross_page_duplicate_updates_pages(self, tmp_path, monkeypatch, capsys):
+        # Willis already has this match on page 59; promoting a reviewed row
+        # for the same match on page 61 (a second newspaper's recap) should
+        # flag BOTH rows pages=2, not just insert an unflagged second row.
+        truth_path = _write_csv(tmp_path, "match_index_willis.csv", [
+            {"matchup": "A v B", "page": "59", "date": "18950907", "content_type": "match information"},
+        ])
+        reviewed_path = _write_csv(tmp_path, "match_index_reviewed.csv", [
+            {"matchup": "A v B", "page": "61", "date": "18950907", "content_type": "match information", "notes": ""},
+        ], extra_fields=["notes"])
+
+        monkeypatch.chdir(tmp_path)
+        run(_make_ns(reviewed=str(reviewed_path), truth=str(truth_path)))
+
+        with truth_path.open(newline="", encoding="utf-8") as f:
+            rows = list(csv.DictReader(f))
+        assert len(rows) == 2
+        assert {r["pages"] for r in rows} == {"2"}
+
     def test_creates_truth_file_if_missing(self, tmp_path, monkeypatch, capsys):
         reviewed_path = _write_csv(tmp_path, "match_index_reviewed.csv", [
             {"matchup": "C v D", "page": "2", "date": "18950603", "content_type": "match information", "notes": ""},
@@ -122,7 +141,7 @@ class TestPromoteReviewed:
 
         assert truth_path.exists()
         rows = truth_path.read_text().strip().splitlines()
-        assert rows[0] == "matchup,page,date,content_type,collection,record_id"
+        assert rows[0] == "matchup,page,date,content_type,collection,pages"
         assert len(rows) == 2
         out = capsys.readouterr().out
         assert "does not exist yet" in out

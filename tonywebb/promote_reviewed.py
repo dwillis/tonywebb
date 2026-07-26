@@ -2,7 +2,7 @@
 
 `tonywebb browse` produces compare_browser.html with an "Export Reviewed
 CSV" button that writes accepted rows (matchup,page,date,content_type,
-collection,record_id,notes) as match_index_reviewed.csv. This command
+collection,pages,notes) as match_index_reviewed.csv. This command
 appends any of those rows not already present in match_index_willis.csv,
 turning your own review decisions into an expanding ground truth instead of
 a one-time manual index -- Willis currently only covers pages 1-61.
@@ -15,6 +15,7 @@ from pathlib import Path
 
 from . import config
 from .evaluate import IndexRow, load_index
+from .indexing import recompute_pages_column
 from .normalize import symmetric_matchup_key, title_key
 
 
@@ -80,8 +81,9 @@ def run(args) -> None:
     with truth_path.open("a", newline="", encoding="utf-8") as f:
         writer = csv.writer(f)
         if not file_exists:
-            writer.writerow(["matchup", "page", "date", "content_type", "collection", "record_id"])
+            writer.writerow(["matchup", "page", "date", "content_type", "collection", "pages"])
         for r in new_rows:
-            writer.writerow([r.matchup, r.page, r.date, r.content_type, config.COLLECTION_NAME, ""])
+            writer.writerow([r.matchup, r.page, r.date, r.content_type, config.COLLECTION_NAME, 1])
 
+    recompute_pages_column(truth_path)
     print(f"\nPromoted {len(new_rows)} row(s) into {truth_path}.")

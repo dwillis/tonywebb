@@ -25,6 +25,7 @@ class IndexRow:
     page: int
     date: str
     content_type: str
+    pages: int = 1  # how many distinct pages this entry appears on (1 = single page)
 
 
 def load_index(path: Path) -> tuple[list[IndexRow], list[dict]]:
@@ -48,7 +49,11 @@ def load_index(path: Path) -> tuple[list[IndexRow], list[dict]]:
                 skipped.append({"line": i, "reason": "empty content_type", "row": raw})
                 continue
             date = normalize_date(raw.get("date", ""))
-            rows.append(IndexRow(matchup=matchup, page=page, date=date, content_type=content_type))
+            try:
+                pages = int((raw.get("pages") or "").strip())
+            except (ValueError, TypeError):
+                pages = 1
+            rows.append(IndexRow(matchup=matchup, page=page, date=date, content_type=content_type, pages=pages))
     return rows, skipped
 
 
@@ -81,6 +86,8 @@ class EvalResult:
     date_total: int
     type_agree: int
     type_total: int
+    pages_agree: int
+    pages_total: int
 
 
 def _match_page(truth_rows: list[IndexRow], model_rows: list[IndexRow], fuzzy_threshold: float) -> tuple[list[MatchPair], list[IndexRow], list[IndexRow]]:
@@ -141,6 +148,12 @@ def evaluate(truth_rows: list[IndexRow], model_rows: list[IndexRow], fuzzy_thres
     date_agree = sum(1 for p in all_matched if p.truth.date and p.model.date and p.truth.date == p.model.date)
     date_total = sum(1 for p in all_matched if p.truth.date and p.model.date)
 
+    # "pages" (how many distinct pages this entry spans) agreement among
+    # matched pairs -- both sides flag rather than merge cross-page entries,
+    # so a matched pair's pages counts should usually agree.
+    pages_agree = sum(1 for p in all_matched if p.truth.pages == p.model.pages)
+    pages_total = len(all_matched)
+
     # Content-type agreement measured on a type-blind key match (so it's not
     # trivially 100% for the exact-match pass, which requires type equality
     # by construction).
@@ -155,6 +168,8 @@ def evaluate(truth_rows: list[IndexRow], model_rows: list[IndexRow], fuzzy_thres
         date_total=date_total,
         type_agree=type_agree,
         type_total=type_total,
+        pages_agree=pages_agree,
+        pages_total=pages_total,
     )
 
 
@@ -233,6 +248,9 @@ def format_report(
         + (f" ({result.date_agree / result.date_total:.1%})" if result.date_total else ""),
         f"- Content-type agreement (type-blind matches): {result.type_agree}/{result.type_total}"
         + (f" ({result.type_agree / result.type_total:.1%})" if result.type_total else ""),
+        f"- Pages-count agreement (matched pairs -- does the model flag the same "
+        f"number of pages this entry spans as Willis does): {result.pages_agree}/{result.pages_total}"
+        + (f" ({result.pages_agree / result.pages_total:.1%})" if result.pages_total else ""),
         f"- Missed Willis rows: {len(result.missed)}",
         f"- Surplus model rows on Willis-covered pages (review list, NOT false positives -- "
         f"Willis is partial even within these pages): {len(result.surplus)}",

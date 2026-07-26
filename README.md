@@ -89,9 +89,11 @@ Output:
 **CSV format**
 
 ```
-matchup, page, date, content_type, collection, record_id
+matchup, page, date, content_type, collection, pages
 Penzance v Helston, 62, 18950809, match information, Tony Webb minor counties collection,
 ```
+
+`pages` is the number of distinct pages this entry was found on -- normally `1`. The same match sometimes gets reported twice, not just as a continuation onto the very next page but in a wholly separate newspaper cutting elsewhere in the collection (team order and even the reported date can differ between the two write-ups). Every run recomputes this column across the whole output file, flagging both occurrences with the shared count rather than merging them into one row, so nothing is silently dropped -- a human decides what to do with the duplicate. `consensus` and `promote-reviewed` also recompute it on their own output.
 
 **Options**
 

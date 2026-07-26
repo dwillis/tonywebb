@@ -63,7 +63,7 @@ Alexandra,,,club
 Alexandra A,,,club
 Alexandra A Team,,,club
 Alexandra Amateurs,,,club
-Alexandra 2nd,,,club
+Alexandra Second,Alexandra 2nd,,club
 Alexandra Second XI,,,club
 All England XI Of Professionals,,,club
 All Saints',All Saints|All Saints' OC,,church
@@ -269,7 +269,7 @@ Boldre,,,club
 Bollington,,,club
 Bollington Fairfield,,,club
 Bollington Second,,,club
-Bollington 2nd XI,Bollington Second XI,,club
+Bollington Second XI,Bollington 2nd XI,,club
 Bonningtons,,,club
 Booker Temperance,,,club
 Bootle,,,club
@@ -287,7 +287,7 @@ Boulter-Street Institute,,,club
 Bournemouth,,,club
 Bovingdon,,,club
 Bow,,,club
-Bowdon 2nd XI,Bowdon Second XI,,club
+Bowdon Second XI,Bowdon 2nd XI,,club
 Boxmoor,,,club
 Boxmoor St John's,,,church
 Boyn Hill,,,club
@@ -300,8 +300,8 @@ Bradfield,,,club
 Bradford,,,club
 Bramall,,,club
 Bramall First,,,club
-Bramall 1st XI,Bramall First XI,,club
-Bramall 2nd XI,,,club
+Bramall First XI,Bramall 1st XI,,club
+Bramall Second XI,Bramall 2nd XI,,club
 Bramhall,,,club
 Bramham,,,club
 Brecon,,,club
@@ -488,12 +488,12 @@ Charlton,,,club
 Chartley,,,club
 Cheadle,,,club
 Cheadle Hulme,,,club
-Cheadle Hulme 2nd XI,Cheadle Hulme Second XI,,club
+Cheadle Hulme Second XI,Cheadle Hulme 2nd XI,,club
 Cheadle Wesleyans,,,club
 Cheaule Hulme,,,club
 Cheddleton,,,club
 Cheetham,,,club
-Cheetham 2nd XI,Cheetham Second XI,,club
+Cheetham Second XI,Cheetham 2nd XI,,club
 Chelford,,,club
 Chell,,,club
 Cheltenham,,,club
@@ -706,7 +706,7 @@ Dewsbury Savils An XI,,,club
 Didcot GWR,,,club
 Didsbury,,,club
 Didsbury Second,,,club
-Didsbury 2nd XI,Didsbury Second XI,,club
+Didsbury Second XI,Didsbury 2nd XI,,club
 Dignall End,,,club
 Dilwyn,,,club
 Din's,,,club
@@ -871,7 +871,7 @@ Fitzwilliam,,,club
 Fitzwilliam Club,,,club
 Fitzwilliam Lawn Tennis Club,,,club
 Flackwell Heath,,,club
-Flackwell Heath 2nd XI,Flackwell Heath Second XI,,club
+Flackwell Heath Second XI,Flackwell Heath 2nd XI,,club
 Flanshaw,,,club
 Fleetwood's XI,Mr Fleetwood's XI,,personal_xi
 Flint,,,club
@@ -984,7 +984,7 @@ Great Kingshill,,,club
 Great Missenden,,,club
 Great Moor,,,club
 Great Moor Second,,,club
-Great Moor 2nd XI,Great Moor Second XI,,club
+Great Moor Second XI,Great Moor 2nd XI,,club
 Great Munden,,,club
 Great Somerford,,,club
 Great Witley,,,club
@@ -1053,7 +1053,7 @@ Hanover,,,club
 Hanover First XI,,,club
 Hanover Mersey,,,club
 Hanover Second,,,club
-Hanover 2nd XI,Hanover Second XI,,club
+Hanover Second XI,Hanover 2nd XI,,club
 Harbourne,,,club
 Harbourne College,,,school
 Harby,,,club
@@ -1070,7 +1070,7 @@ Harpenden,,,club
 Harpurhey B S,,,club
 Harpurhey BS,,,club
 Harpurhey Wesleyans,,,club
-Harpurhey Wesleyans 2nd XI,,,club
+Harpurhey Wesleyans Second XI,Harpurhey Wesleyans 2nd XI,,club
 Harraton,,,club
 Harris' XI,Mr Harris XI|Mr Harris' XI,,club
 Harrow,,,club
@@ -1086,7 +1086,7 @@ Hatfield,,,club
 Hatherleigh,,,club
 Hathersett,,,club
 Haughton Wesleyans First,,,club
-Haughton Wesleyans 1st XI,Haughton Wesleyans First XI,,club
+Haughton Wesleyans First XI,Haughton Wesleyans 1st XI,,club
 Havelock,,,club
 Haverland,,,club
 Haviland's XI,Mr Haviland's XI,,personal_xi
@@ -1109,7 +1109,7 @@ Heath End,,,club
 Heath Row,,,club
 Heaton Guild,,,club
 Heaton Mersey,,,club
-Heaton Mersey 2nd XI,Heaton Mersey Second XI,,club
+Heaton Mersey Second XI,Heaton Mersey 2nd XI,,club
 Heaton Mersey Sunday School,,,school
 Heaton Mersey Third,,,club
 Heaton Mersey Third XI,,,club
@@ -1166,7 +1166,7 @@ Heywood Excelsior Second XI,,,club
 Heywood's Excelsior,,,club
 Heywood's Excelsior First XI,,,personal_xi
 Heywood's Excelsior Second,,,club
-Heywood's Excelsior 2nd XI,Heywood's Excelsior Second XI,,personal_xi
+Heywood's Excelsior Second XI,Heywood's Excelsior 2nd XI,,personal_xi
 Hhecc,,,club
 High Fell,,,club
 High Fell First,,,club
@@ -1372,7 +1372,7 @@ Ladies,,,club
 Ladies And Gentlemen,,,club
 Ladock,,,club
 Lads' Club Second,,,club
-Lads' Club 2nd XI,Lads' Club Second XI,,club
+Lads' Club Second XI,Lads' Club 2nd XI,,club
 Lady Huntingdon's,,,club
 Laird's Bros Draftsmen,,,club
 Laird's Bros Draughtsmen,,,club
@@ -1381,7 +1381,7 @@ Lancashire,,,club
 Lancashire Hill,,,club
 Lancashire Hill B S,,,club
 Lancashire Hill S S,,,club
-Lancashire Hill 2nd XI,Lancashire Hill Second XI,,club
+Lancashire Hill Second XI,Lancashire Hill 2nd XI,,club
 Lancashire Hill SS,,,club
 Lancashire Hill Sunday School,,,school
 Lancashire-Hill B S,,,club
@@ -1431,10 +1431,10 @@ Leominster,,,club
 Lesbury,,,club
 Levenshulme,,,club
 Levenshulme Second Elevens,,,club
-Levenshulme 2nd XI,Levenshulme Second XI,,club
+Levenshulme Second XI,Levenshulme 2nd XI,,club
 Lever-Daulby,,,club
 Leyland,,,club
-Liberal 2nd XI,Liberal Second XI,,club
+Liberal Second XI,Liberal 2nd XI,,club
 Liberals,,,club
 Licensed Victuallers,,,club
 Lifeboat,,,club
@@ -1466,8 +1466,8 @@ Littlemore Village,,,club
 Littlepetherick,,,club
 Littleport,,,club
 Liverpool,,,club
-Liverpool 2nd XI,Liverpool Second XI,,club
-Liverpool 3rd,,,club
+Liverpool Second XI,Liverpool 2nd XI,,club
+Liverpool Third,Liverpool 3rd,,club
 Liversedge,,,club
 Llandovery,,,club
 Llandudno,,,club
@@ -1492,7 +1492,7 @@ Long Crendon,,,club
 Longhirst,,,club
 Longsight Second,,,club
 Longsight Second XI,,,club
-Longsight 3rd XI,Longsight Third XI,,club
+Longsight Third XI,Longsight 3rd XI,,club
 Lord Battersea's XI,,,personal_xi
 Lord Cobham's XI,,,personal_xi
 Lord Coventry's XI,,,personal_xi
@@ -1538,7 +1538,7 @@ Macclesfield Conservative Club,,,club
 Macclesfield Conservatives,,,club
 Macclesfield Conservatives Club,,,club
 Macclesfield Second,,,club
-Macclesfield 2nd XI,Macclesfield Second XI,,club
+Macclesfield Second XI,Macclesfield 2nd XI,,club
 Macclesfield Second Xis,,,club
 Maddish St Joseph's,,,church
 Madron,,,club
@@ -1718,7 +1718,7 @@ Newtown House,,,club
 Next Twenty-Two,,,club
 Nomads,,,club
 Norbury Second,,,club
-Norbury 2nd XI,Norbury Second XI,,club
+Norbury Second XI,Norbury 2nd XI,,club
 Norfolk,,,club
 Norfolk County Asylum,,,club
 Norfolk Venue Change,,,club
@@ -1746,7 +1746,7 @@ Northamptonshire Club And Ground,,,club
 Northaw,,,club
 North-Eastern County School,,,school
 Northern Nomads,,,club
-Northern 2nd XI,Northern Second XI,,club
+Northern Second XI,Northern 2nd XI,,club
 Northillage,,,club
 Northleach,,,club
 Northumberland,,,club
@@ -1858,7 +1858,7 @@ Oxfordshire,,,club
 Oxhey,,,club
 Oxoley,,,club
 Oxton,,,club
-Oxton 2nd XI,Oxton Second XI,,club
+Oxton Second XI,Oxton 2nd XI,,club
 P Burslem,,,club
 P Leeder's XI,,,personal_xi
 P Sutton's XI,Mr P Sutton's XI|Mr P Suttons XI,,personal_xi
@@ -1884,7 +1884,7 @@ Percy YMCA,,,club
 Peripatetics,,,club
 Permanent Staff Of The Iind Batt Oxford Light Infantry,,,club
 Permanent Staff Of The Second Batt Oxford Light Infantry,,,club
-Permanent Staff of the 3rd Batt Oxford Light Infantry,,,club
+Permanent Staff of the Third Batt Oxford Light Infantry,Permanent Staff of the 3rd Batt Oxford Light Infantry,,club
 Permanent Way,,,club
 Perranarworthal,,,club
 Perranworth,,,club
@@ -1939,7 +1939,7 @@ Potton,,,club
 Potton Cup Match,,,club
 Poynton,,,club
 Poynton Second,,,club
-Poynton 2nd XI,Poynton Second XI,,club
+Poynton Second XI,Poynton 2nd XI,,club
 Poynton United,,,club
 Present,,,club
 Present Second XI,,,club
@@ -2050,7 +2050,7 @@ Roberts And Roberts,,,club
 Roborah Police,,,club
 Rocester,,,club
 Rock Ferry,,,club
-Rock Ferry 2nd XI,Rock Ferry Second XI,,club
+Rock Ferry Second XI,Rock Ferry 2nd XI,,club
 Rock Ferry Second Xis,,,club
 Rockliff,,,club
 Rodbourne,,,club
@@ -2089,7 +2089,7 @@ S Groom's XII,Mr S Groom's XII,,personal_xi
 S Hoare XI,Mr S Hoare XI,,club
 S Hoare's XI,Mr S Hoare's XI,,personal_xi
 Sale,,,club
-Sale 2nd XI,Sale Second XI,,club
+Sale Second XI,Sale 2nd XI,,club
 Salem Athletic,,,club
 Salmon's XI,Mr Salmon's XI,,personal_xi
 Salt Union,,,club
@@ -2192,7 +2192,7 @@ South Heigham Institute,,,club
 South Hetton,,,club
 South Manchester,,,club
 South Manchester Second,,,club
-South Manchester 2nd XI,South Manchester Second XI,,club
+South Manchester Second XI,South Manchester 2nd XI,,club
 South Milford,,,club
 South Northumberland,,,club
 South Park,,,club
@@ -2260,7 +2260,7 @@ St James's,,,church
 St James's Dudley,,,church
 St James's Wrexham,St James's (wrexham),,church
 St John's,,,church
-St John's 2nd XI,St John's Second XI,,personal_xi
+St John's Second XI,St John's 2nd XI,,personal_xi
 St John's Sunday School Teachers,,,school
 St John's Teachers,,,church
 St Joseph Handen,,,church
@@ -2286,7 +2286,7 @@ St Mary's,,,church
 St Mary's College Dundalk,,,school
 St Mary's (launceston),,,church
 St Mary's School,,,school
-St Mary's 2nd XI,St Mary's Second XI,,personal_xi
+St Mary's Second XI,St Mary's 2nd XI,,personal_xi
 St Matthew's,St Matthews,,church
 "St Matthew's, Luton",St Matthew's Luton,,church
 St Mawes,,,church
@@ -2349,7 +2349,7 @@ Stevenage Town Second XI,,,club
 Stockcross,,,club
 Stockport,,,club
 Stockport Congregational,,,club
-Stockport Congregational 2nd XI,Stockport Congregational Second XI,,club
+Stockport Congregational Second XI,Stockport Congregational 2nd XI,,club
 Stockport Congregationals Second,,,club
 Stockport Congregationals Second XI,,,club
 Stockport Great Moor,,,club
@@ -2358,7 +2358,7 @@ Stockport Lads' Club First,,,club
 Stockport Lads' Club First XI,Stockport Lads Club First XI,,club
 Stockport Post Office,,,club
 Stockport Second,,,club
-Stockport 2nd XI,Stockport Second XI,,club
+Stockport Second XI,Stockport 2nd XI,,club
 Stockton,,,club
 Stoke,,,club
 Stoke Club,,,club
@@ -2483,7 +2483,7 @@ Trains,,,club
 Tram Inn,,,club
 Trame Printers,,,club
 Tranmere Wesley,,,club
-Tranmere Wesley 2nd XI,Tranmere Wesley Second XI,,club
+Tranmere Wesley Second XI,Tranmere Wesley 2nd XI,,club
 Tranmere Wesleyans,,,club
 Trefonen,,,club
 Trefonen (return),,,club
@@ -2646,7 +2646,7 @@ Wem,,,club
 Wendlebury,,,club
 Weobley,,,club
 Werneth,,,club
-Werneth 2nd XI,Werneth Second XI,,club
+Werneth Second XI,Werneth 2nd XI,,club
 Werneth Second Xis,,,club
 Wesley Chapel,,,church
 Wesley Chapel Second XI,,,church
@@ -2660,7 +2660,7 @@ Wesleyites,,,club
 West Ashton,,,club
 West Denton,,,club
 West Derby,,,club
-West Derby 2nd XI,West Derby Second XI,,club
+West Derby Second XI,West Derby 2nd XI,,club
 West End Ramblers,,,club
 West End Rovers,,,club
 West Herts,,,club

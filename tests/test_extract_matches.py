@@ -148,6 +148,14 @@ class TestNormalizeAndDedup:
         result, _ = normalize_and_dedup(entries, page_num=1)
         assert result[0]["content_type"] == "match information"
 
+    def test_pages_defaults_to_1(self):
+        # "pages" (how many distinct pages this entry spans) is a derived
+        # field computed later by recompute_pages_column(), never supplied
+        # by the model -- every freshly normalized entry starts at 1.
+        entries = [{"matchup": "A v B", "date": "18950527", "content_type": "match information"}]
+        result, _ = normalize_and_dedup(entries, page_num=1)
+        assert result[0]["pages"] == 1
+
 
 class TestNormalizeAndDedupDatePhrase:
     """date_phrase, resolved deterministically, is preferred over the model's own "date"."""
@@ -259,6 +267,16 @@ class TestTrackCrossPage:
         dupes = track_cross_page(seen, [_row("Waterlows v East Finchley", 9)])
         assert len(dupes) == 1
 
+    def test_reversed_team_order_still_reported(self):
+        # Cross-page duplicates are frequently two different newspapers'
+        # write-ups of the same match, which routinely name the teams in
+        # the opposite order -- unlike within-page dedup, this must not be
+        # order-sensitive. See _row_key()'s docstring in indexing.py.
+        seen: dict = {}
+        track_cross_page(seen, [_row("Liverpool v Oxton", 59)])
+        dupes = track_cross_page(seen, [_row("Oxton v Liverpool", 61)])
+        assert len(dupes) == 1
+
 
 # ── Prompt building ────────────────────────────────────────────────────────
 
@@ -316,6 +334,60 @@ class TestBuildUserPrompt:
         assert "Liverpool player statistics" in prompt
         assert "ONE \"player statistics\"" in prompt or "ONE entry" in prompt
         assert "Liverpool batting averages" in prompt  # named as an incorrect example
+
+    def test_contains_unplayed_fixture_preview_example(self):
+        # Regression test: pages 32 and 41 had future-tense fixture-preview
+        # paragraphs ("will again be fought out by...", "have no fixture for
+        # to-morrow... play the Wycombe Club") indexed as "fixture
+        # information" entries -- these must be skipped entirely, not just
+        # re-tagged under a different content_type.
+        prompt = build_user_prompt(1, "Some text")
+        assert "Old Higher Grade v Camden" in prompt
+        assert "no entry of any kind" in prompt.lower()
+        assert "will again be fought out" in prompt
+
+    def test_contains_shared_roundup_date_rule(self):
+        # Regression test: page 59's "CRICKET NOTES" roundup states "on
+        # Saturday" only in the New Brighton v Formby recap; the day-less
+        # recaps around it (Liverpool v Oxton, Rock Ferry v Cheadle Hulme,
+        # Wallasey v Oxton Second XI, ...) were getting the PUBLICATION date
+        # (18950914) instead of inheriting "on Saturday" (the real match
+        # date, 18950907, confirmed by page 61's cross-reference to the
+        # same matches).
+        prompt = build_user_prompt(1, "Some text")
+        assert "New Brighton...on Saturday...Formby" in prompt or "New Brighton v Formby" in prompt
+        assert "date_phrase applies to EVERY recap in the run" in prompt
+        assert "publication date" in prompt.lower()
+
+    def test_contains_team_aggregates_without_player_table_rule(self):
+        # Regression test: page 27's "Royal Berks Seed Establishment" and
+        # "Biscuit Factory" give only a numeric season record (win/loss/
+        # drawn, runs for/against) with NO separate player-averages table,
+        # and got miscategorized as "team information" instead of
+        # "statistics" -- the model was treating "team aggregates" as only
+        # ever a second entry alongside player stats.
+        prompt = build_user_prompt(1, "Some text")
+        assert "Royal Berks Seed Establishment team aggregates" in prompt
+        assert "WHETHER OR NOT" in prompt
+
+    def test_contains_generic_headline_rule(self):
+        # Regression test: page 3's "MESSRS FORDAM'S EMPLOYEES" headline is
+        # a generic label, not "Team A v Team B" -- the model titled the
+        # entry from the headline instead of the real opponents ("Sewell
+        # Lime Works" and "Blows Down Lime Works") named in the body.
+        prompt = build_user_prompt(1, "Some text")
+        assert "Sewell Lime Works v Blows Down Lime Works" in prompt
+        assert "Messrs Fordam's Employees" in prompt
+
+    def test_contains_wrapped_team_qualifier_rule(self):
+        # Regression test: page 44's headline "NEW CHESTERTON JUNIORS v.
+        # LIBERAL\n2nd XI." wraps the "2nd XI" qualifier onto its own line
+        # right after "LIBERAL" -- the model attached it to the wrong team,
+        # producing "New Chesterton Juniors Second XI v Liberal" instead of
+        # "New Chesterton Juniors v Liberal Second XI".
+        prompt = build_user_prompt(1, "Some text")
+        assert "New Chesterton Juniors v Liberal Second XI" in prompt
+        assert "New Chesterton Juniors Second XI v Liberal" in prompt
 
     def test_publication_date_detected(self):
         text = "SATURDAY 8 JUNE 1895\nCricket content"

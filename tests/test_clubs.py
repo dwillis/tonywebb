@@ -8,6 +8,8 @@ import pytest
 from tonywebb.clubs import (
     canonical_key,
     extract_teams_from_csv,
+    fix_ordinal_style,
+    generate_clubs,
     guess_type,
     normalize_apostrophes,
     strip_cc_oc,
@@ -58,6 +60,23 @@ class TestStripMr:
 
     def test_case_insensitive(self):
         assert strip_mr("MR Smith") == "Smith"
+
+
+class TestFixOrdinalStyle:
+    def test_2nd_to_second(self):
+        assert fix_ordinal_style("Liberal 2nd XI") == "Liberal Second XI"
+
+    def test_1st_to_first(self):
+        assert fix_ordinal_style("Bramall 1st XI") == "Bramall First XI"
+
+    def test_3rd_to_third(self):
+        assert fix_ordinal_style("Liverpool 3rd") == "Liverpool Third"
+
+    def test_already_styled_unchanged(self):
+        assert fix_ordinal_style("Liberal Second XI") == "Liberal Second XI"
+
+    def test_no_ordinal_unchanged(self):
+        assert fix_ordinal_style("East Finchley") == "East Finchley"
 
 
 # ── Canonical key ──────────────────────────────────────────────────────────
@@ -141,7 +160,7 @@ class TestExtractTeams:
         csv_path = tmp_path / "match_index_test.csv"
         with csv_path.open("w", newline="") as f:
             writer = csv.writer(f)
-            writer.writerow(["matchup", "page", "date", "content_type", "collection", "record_id"])
+            writer.writerow(["matchup", "page", "date", "content_type", "collection", "pages"])
             writer.writerow(["Team A v Team B", "1", "18950527", "match information", "coll", ""])
             writer.writerow(["LCR Thring", "5", "18950814", "biography", "coll", ""])
         result = extract_teams_from_csv(csv_path)
@@ -155,7 +174,39 @@ class TestExtractTeams:
         csv_path = tmp_path / "match_index_test.csv"
         with csv_path.open("w", newline="") as f:
             writer = csv.writer(f)
-            writer.writerow(["matchup", "page", "date", "content_type", "collection", "record_id"])
+            writer.writerow(["matchup", "page", "date", "content_type", "collection", "pages"])
             writer.writerow(["Reading School", "1", "18950527", "statistics", "coll", ""])
         result = extract_teams_from_csv(csv_path)
         assert len(result["test"]) == 0
+
+
+# ── generate_clubs() end-to-end ────────────────────────────────────────────
+
+
+class TestGenerateClubsOrdinalStyle:
+    def test_picks_style_compliant_canonical_even_from_willis(self, tmp_path, monkeypatch):
+        # Regression test: generate_clubs() preferred Willis's own spelling
+        # as canonical outright, with no ordinal-style fixup -- if Willis's
+        # CSV itself used "2nd XI", that non-style-compliant form became
+        # canonical_name and the correctly-styled "Second XI" form (used by
+        # other sources) was demoted to a mere alias.
+        willis_path = tmp_path / "match_index_willis.csv"
+        with willis_path.open("w", newline="") as f:
+            writer = csv.writer(f)
+            writer.writerow(["matchup", "page", "date", "content_type", "collection", "pages"])
+            writer.writerow(["Liberal 2nd XI v Newbury", "1", "18950527", "match information", "coll", ""])
+
+        model_path = tmp_path / "match_index_model.csv"
+        with model_path.open("w", newline="") as f:
+            writer = csv.writer(f)
+            writer.writerow(["matchup", "page", "date", "content_type", "collection", "pages"])
+            writer.writerow(["Liberal Second XI v Newbury", "1", "18950527", "match information", "coll", ""])
+
+        monkeypatch.chdir(tmp_path)
+        generate_clubs(pattern="match_index_*.csv", output_path="clubs_out.csv")
+
+        with (tmp_path / "clubs_out.csv").open(newline="") as f:
+            rows = {r["canonical_name"]: r for r in csv.DictReader(f)}
+        assert "Liberal Second XI" in rows
+        assert "Liberal 2nd XI" not in rows
+        assert "Liberal 2nd XI" in rows["Liberal Second XI"]["aliases"]

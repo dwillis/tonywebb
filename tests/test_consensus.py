@@ -161,10 +161,10 @@ class TestFormatConsensusReport:
 def _write_csv(tmp_path: Path, name: str, rows: list[dict]) -> Path:
     path = tmp_path / name
     with path.open("w", newline="", encoding="utf-8") as f:
-        writer = csv.DictWriter(f, fieldnames=["matchup", "page", "date", "content_type", "collection", "record_id"])
+        writer = csv.DictWriter(f, fieldnames=["matchup", "page", "date", "content_type", "collection", "pages"])
         writer.writeheader()
         for r in rows:
-            writer.writerow({"collection": "Tony Webb minor counties collection", "record_id": "", **r})
+            writer.writerow({"collection": "Tony Webb minor counties collection", "pages": "", **r})
     return path
 
 
@@ -189,7 +189,7 @@ class TestRunCLI:
         run(_make_ns(truth=""))
 
         out_csv = (tmp_path / "consensus_index.csv").read_text().strip().splitlines()
-        assert out_csv[0] == "matchup,page,date,content_type,collection,record_id"
+        assert out_csv[0] == "matchup,page,date,content_type,collection,pages"
         assert len(out_csv) == 2
         assert (tmp_path / "consensus_report.md").exists()
 
@@ -221,3 +221,18 @@ class TestRunCLI:
         out = capsys.readouterr().out
         assert "Truth file not found" in out
         assert (tmp_path / "consensus_index.csv").exists()
+
+    def test_pages_count_computed_across_output_rows(self, tmp_path, monkeypatch):
+        # Same match reported on two different pages (e.g. two newspapers'
+        # recaps of the same Saturday) should come out of consensus as two
+        # rows, both flagged pages=2 -- not merged, not left at 1.
+        _write_csv(tmp_path, "match_index_model_a.csv", [
+            {"matchup": "A v B", "page": "59", "date": "18950907", "content_type": "match information"},
+            {"matchup": "A v B", "page": "61", "date": "18950907", "content_type": "match information"},
+        ])
+        monkeypatch.chdir(tmp_path)
+        run(_make_ns(truth=""))
+        with (tmp_path / "consensus_index.csv").open(newline="", encoding="utf-8") as f:
+            rows = list(csv.DictReader(f))
+        assert len(rows) == 2
+        assert [r["pages"] for r in rows] == ["2", "2"]

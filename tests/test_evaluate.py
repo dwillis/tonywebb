@@ -32,14 +32,41 @@ class TestLoadIndex:
         rows, _ = load_index(WILLIS_SAMPLE)
         assert all(isinstance(r.page, int) for r in rows)
 
+    def test_pages_column_parsed(self):
+        rows, _ = load_index(WILLIS_SAMPLE)
+        assert all(isinstance(r.pages, int) for r in rows)
+
+    def test_missing_pages_column_defaults_to_1(self, tmp_path):
+        # Older CSVs written before this feature existed have no "pages"
+        # column at all -- must not error, just default to 1.
+        path = tmp_path / "no_pages_column.csv"
+        path.write_text(
+            "matchup,page,date,content_type,collection\n"
+            "A v B,1,18950527,match information,Tony Webb minor counties collection\n",
+            encoding="utf-8",
+        )
+        rows, skipped = load_index(path)
+        assert skipped == []
+        assert rows[0].pages == 1
+
+    def test_blank_pages_value_defaults_to_1(self, tmp_path):
+        path = tmp_path / "blank_pages.csv"
+        path.write_text(
+            "matchup,page,date,content_type,collection,pages\n"
+            "A v B,1,18950527,match information,Tony Webb minor counties collection,\n",
+            encoding="utf-8",
+        )
+        rows, _ = load_index(path)
+        assert rows[0].pages == 1
+
 
 def _write_csv(tmp_path: Path, name: str, rows: list[dict]) -> Path:
     path = tmp_path / name
     with path.open("w", newline="", encoding="utf-8") as f:
-        writer = csv.DictWriter(f, fieldnames=["matchup", "page", "date", "content_type", "collection", "record_id"])
+        writer = csv.DictWriter(f, fieldnames=["matchup", "page", "date", "content_type", "collection", "pages"])
         writer.writeheader()
         for r in rows:
-            writer.writerow({"collection": "Tony Webb minor counties collection", "record_id": "1", **r})
+            writer.writerow({"collection": "Tony Webb minor counties collection", "pages": "1", **r})
     return path
 
 
@@ -133,6 +160,45 @@ class TestEvaluate:
         result = evaluate(truth, model, fuzzy_threshold=0.5)
         assert len(result.matched) == 1
         assert result.matched[0].model.matchup == "Kensworth v Dunstable Vic"
+
+
+class TestPagesAgreement:
+    def test_matching_pages_count_agrees(self):
+        truth = [IndexRow("A v B", 1, "18950527", "match information", pages=2)]
+        model = [IndexRow("A v B", 1, "18950527", "match information", pages=2)]
+        result = evaluate(truth, model)
+        assert result.pages_agree == 1
+        assert result.pages_total == 1
+
+    def test_mismatched_pages_count_disagrees(self):
+        # Willis flags this as spanning 2 pages; the model only caught it on
+        # one -- exactly the page-61-style miss this feature exists to surface.
+        truth = [IndexRow("A v B", 1, "18950527", "match information", pages=2)]
+        model = [IndexRow("A v B", 1, "18950527", "match information", pages=1)]
+        result = evaluate(truth, model)
+        assert result.pages_agree == 0
+        assert result.pages_total == 1
+
+    def test_default_pages_of_1_agrees_by_default(self):
+        truth = [IndexRow("A v B", 1, "18950527", "match information")]
+        model = [IndexRow("A v B", 1, "18950527", "match information")]
+        result = evaluate(truth, model)
+        assert result.pages_agree == 1
+        assert result.pages_total == 1
+
+    def test_unmatched_rows_not_counted(self):
+        truth = [IndexRow("A v B", 1, "18950527", "match information", pages=2)]
+        model = [IndexRow("Nowhere United v Somewhere Town", 1, "18950527", "match information", pages=1)]
+        result = evaluate(truth, model)
+        assert result.pages_total == 0
+
+    def test_report_includes_pages_agreement_line(self):
+        truth = [IndexRow("A v B", 1, "18950527", "match information", pages=2)]
+        model = [IndexRow("A v B", 1, "18950527", "match information", pages=1)]
+        result = evaluate(truth, model)
+        report = format_report("test", result, truth, [], [])
+        assert "Pages-count agreement" in report
+        assert "0/1" in report
 
 
 class TestCoverageByContentType:

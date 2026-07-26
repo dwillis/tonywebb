@@ -128,7 +128,7 @@ def sample_csv(tmp_path):
     csv_path = tmp_path / "match_index_test.csv"
     with csv_path.open("w", newline="") as f:
         writer = csv.writer(f)
-        writer.writerow(["matchup", "page", "date", "content_type", "collection", "record_id"])
+        writer.writerow(["matchup", "page", "date", "content_type", "collection", "pages"])
         writer.writerow(["Team A v Team B", "1", "18950527", "match information", "Tony Webb minor counties collection", ""])
         writer.writerow(["Team C v Team D", "1", "18950603", "match information", "Tony Webb minor counties collection", ""])
         writer.writerow(["LCR Thring", "5", "18950814", "biography", "Tony Webb minor counties collection", ""])
@@ -163,7 +163,7 @@ class TestLoadRows:
         csv_path = tmp_path / "match_index_empty.csv"
         with csv_path.open("w", newline="") as f:
             writer = csv.writer(f)
-            writer.writerow(["matchup", "page", "date", "content_type", "collection", "record_id"])
+            writer.writerow(["matchup", "page", "date", "content_type", "collection", "pages"])
             writer.writerow(["A v B", "1", "", "match information", "col", ""])
         rows = load_rows(str(csv_path))
         assert len(rows) == 1
@@ -174,7 +174,7 @@ class TestLoadRows:
         csv_path = tmp_path / "match_index_blank.csv"
         with csv_path.open("w", newline="") as f:
             writer = csv.writer(f)
-            writer.writerow(["matchup", "page", "date", "content_type", "collection", "record_id"])
+            writer.writerow(["matchup", "page", "date", "content_type", "collection", "pages"])
             writer.writerow(["", "1", "18950527", "match information", "col", ""])
         rows = load_rows(str(csv_path))
         assert len(rows) == 0
@@ -191,7 +191,7 @@ class TestBuildBrowserIntegration:
             csv_path = tmp_path / f"match_index_{model}.csv"
             with csv_path.open("w", newline="") as f:
                 writer = csv.writer(f)
-                writer.writerow(["matchup", "page", "date", "content_type", "collection", "record_id"])
+                writer.writerow(["matchup", "page", "date", "content_type", "collection", "pages"])
                 writer.writerow(["Team A v Team B", "1", "18950527", "match information", "coll", ""])
                 if model == "model_b":
                     writer.writerow(["Team A v Team B", "1", "18950603", "match information", "coll", ""])
@@ -215,7 +215,7 @@ class TestBuildBrowserIntegration:
         csv_path = tmp_path / "match_index_test.csv"
         with csv_path.open("w", newline="") as f:
             writer = csv.writer(f)
-            writer.writerow(["matchup", "page", "date", "content_type", "collection", "record_id"])
+            writer.writerow(["matchup", "page", "date", "content_type", "collection", "pages"])
             writer.writerow(["X v Y", "1", "18950527", "match information", "coll", ""])
 
         monkeypatch.chdir(tmp_path)

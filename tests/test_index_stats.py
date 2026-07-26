@@ -141,7 +141,7 @@ class TestEndToEnd:
             ])
 
         rows = out_csv.read_text().strip().splitlines()
-        assert rows[0] == "matchup,page,date,content_type,collection,record_id"
+        assert rows[0] == "matchup,page,date,content_type,collection,pages"
         assert "Abingdon player statistics" in rows[1]
         assert ",statistics," in rows[1]
         assert fake_model.calls == 1

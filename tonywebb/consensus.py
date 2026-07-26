@@ -21,6 +21,7 @@ from pathlib import Path
 
 from . import config
 from .evaluate import IndexRow, load_index
+from .indexing import recompute_pages_column
 from .normalize import symmetric_matchup_key, title_key
 
 
@@ -234,9 +235,11 @@ def run(args) -> None:
     out_path = Path(args.output)
     with out_path.open("w", newline="", encoding="utf-8") as f:
         writer = csv.writer(f)
-        writer.writerow(["matchup", "page", "date", "content_type", "collection", "record_id"])
+        writer.writerow(["matchup", "page", "date", "content_type", "collection", "pages"])
         for c in consensus:
-            writer.writerow([c.matchup, c.page, c.date, c.content_type, config.COLLECTION_NAME, ""])
+            writer.writerow([c.matchup, c.page, c.date, c.content_type, config.COLLECTION_NAME, 1])
+    if consensus:
+        recompute_pages_column(out_path)
     print(f"Wrote {out_path} ({len(consensus)} rows)")
 
     report_path = Path(args.report)

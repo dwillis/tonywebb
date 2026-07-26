@@ -45,7 +45,7 @@ def load_rows(path: str) -> dict[tuple[str, str, str, str], dict]:
                     "date": date,
                     "content_type": content_type,
                     "collection": (row.get("collection") or "").strip(),
-                    "record_id": (row.get("record_id") or "").strip(),
+                    "pages": (row.get("pages") or "").strip(),
                 }
     return out
 
@@ -538,7 +538,7 @@ function toggleDetail(tr, r) {
       html += '<div><span class="pill">' + m + '</span>' +
         'matchup="' + esc(d.matchup) + '" date=' + esc(d.date) +
         ' type=' + esc(d.content_type) +
-        (d.record_id ? ' id=' + esc(d.record_id) : '') +
+        (d.pages && d.pages !== '1' ? ' pages=' + esc(d.pages) : '') +
         '</div>';
     }
   }
@@ -632,7 +632,7 @@ document.getElementById('exportBtn').addEventListener('click', () => {
     alert('No accepted entries to export. Review and accept entries first.');
     return;
   }
-  let csv = 'matchup,page,date,content_type,collection,record_id,notes\\n';
+  let csv = 'matchup,page,date,content_type,collection,pages,notes\\n';
   for (const r of accepted) {
     const s = state[rowKey(r)];
     const notes = (s.notes || '').replace(/"/g, '""');

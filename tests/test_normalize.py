@@ -390,6 +390,25 @@ class TestNormalizeTeamWithRegistry:
         result = _normalize_team("Waterlows")
         assert result == "Waterlows"  # no registry, no resolution
 
+    def test_registry_result_gets_style_cleanup_too(self, tmp_path):
+        # Regression test: clubs.csv had 38 clubs with a non-style-compliant
+        # canonical_name (e.g. "Liberal 2nd XI", with "Liberal Second XI"
+        # demoted to a mere alias). _normalize_team() correctly turned "2nd"
+        # into "Second" on the RAW input, but then registry.resolve() handed
+        # back the un-fixed canonical verbatim, silently undoing the fix --
+        # this is why page 44's "New Chesterton Juniors v Liberal Second XI"
+        # (extracted correctly per the wrapped-team-qualifier fix) still came
+        # out the CSV as "...v Liberal 2nd XI". Style cleanup must also run
+        # on whatever the registry returns, not just the raw input.
+        csv_path = tmp_path / "clubs.csv"
+        with csv_path.open("w", newline="") as f:
+            writer = csv.writer(f)
+            writer.writerow(["canonical_name", "aliases", "location", "type"])
+            writer.writerow(["Liberal 2nd XI", "Liberal Second XI", "", "club"])
+        reg = ClubRegistry(csv_path)
+        assert _normalize_team("Liberal 2nd XI", registry=reg) == "Liberal Second XI"
+        assert _normalize_team("Liberal Second XI", registry=reg) == "Liberal Second XI"
+
     def test_normalize_matchup_with_registry(self, registry_csv):
         reg = ClubRegistry(registry_csv)
         result = normalize_matchup("Waterlows v Mr F Gentle's XI", registry=reg)

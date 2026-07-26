@@ -32,6 +32,19 @@ def strip_dots(name: str) -> str:
     return name.replace(".", "").strip()
 
 
+def fix_ordinal_style(name: str) -> str:
+    """1st/2nd/3rd -> First/Second/Third, matching normalize.py's
+    _normalize_team() house style ("Second XI" not "2nd XI"). Without this,
+    canonical selection (by raw frequency or Willis's own spelling) can pick
+    a non-style-compliant form as canonical_name, silently demoting the
+    correctly-styled spelling to a mere alias.
+    """
+    s = re.sub(r"\b1st\b", "First", name, flags=re.IGNORECASE)
+    s = re.sub(r"\b2nd\b", "Second", s, flags=re.IGNORECASE)
+    s = re.sub(r"\b3rd\b", "Third", s, flags=re.IGNORECASE)
+    return s
+
+
 def canonical_key(name: str) -> str:
     s = strip_cc_oc(name)
     s = strip_mr(s)
@@ -121,11 +134,13 @@ def generate_clubs(pattern: str = "match_index_*.csv", output_path: str = "clubs
                 counts[n] += 1
             canonical = max(counts, key=lambda n: (counts[n], n))
 
-        # Normalize the canonical: strip CC/OC, Mr prefix, dots from abbreviations
+        # Normalize the canonical: strip CC/OC, Mr prefix, dots from abbreviations,
+        # ordinal style (must run last so it isn't undone by whitespace collapse)
         canonical = strip_cc_oc(canonical)
         canonical = strip_mr(canonical)
         canonical = strip_dots(canonical)
         canonical = re.sub(r"\s+", " ", canonical).strip()
+        canonical = fix_ordinal_style(canonical)
 
         # Collect aliases (raw forms that differ from canonical after basic cleanup)
         aliases = set()
