@@ -49,8 +49,11 @@ in "entries" with:
     deterministically in code, NOT by you -- do not compute a date yourself,
     just quote the phrase. Use "" if no date reference is present at all.
   - "date": your own best-effort YYYYMMDD guess, used only as a fallback if
-    "date_phrase" can't be resolved. Use "18950000" if only the year is
-    clear, "18950800" if only the month is clear, "" if completely unknown.
+    "date_phrase" can't be resolved. Use "YYYYMMDD" when the day is known,
+    "YYYYMM00" (e.g. "18950800") when the month is known but the day isn't,
+    and "YYYY0000" (e.g. "18950000") when only the year is clear. The whole
+    collection is 1895, so the year is ALWAYS known -- never leave "date"
+    empty; if nothing else applies, use "18950000".
   - "content_type": one of the allowed types below
   - "collection": "Tony Webb minor counties collection"
   - "page": {page_num}

@@ -171,7 +171,19 @@ _DATE_RE = re.compile(r"^(\d{4})(\d{2})(\d{2})$")
 
 
 def normalize_date(s: str) -> str:
-    """Return a YYYYMMDD string. '' if unparseable; partial allowed (year/month only)."""
+    """Return a YYYYMMDD string. '' only if the input is unparseable.
+
+    Date encoding convention used across every run:
+      - ``YYYYMMDD`` — full date, day known (e.g. ``18950527``)
+      - ``YYYYMM00`` — month known, day unknown (e.g. ``18950800``)
+      - ``YYYY0000`` — year only, month/day unknown (e.g. ``18950000``)
+
+    The collection is a single season (1895), so the year is always known
+    and a row's date should never be empty in practice -- callers floor an
+    empty result to ``{SEASON}0000`` rather than persisting ''. This function
+    does not assume the season, so it returns '' for genuinely unparseable
+    input and leaves the floor to the caller.
+    """
     if s is None:
         return ""
     s = str(s).strip()

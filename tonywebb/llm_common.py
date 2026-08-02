@@ -86,8 +86,13 @@ def no_thinking_kwargs(model) -> dict:
         # llm-ollama exposes thinking as `think`
         return {"think": False}
     if any(x in model_id.lower() for x in ("claude", "opus", "sonnet", "haiku")):
-        # Anthropic extended thinking: budget_tokens=0 disables it
-        return {"budget_tokens": 0}
+        # Anthropic extended thinking: current llm-anthropic (0.25+) disables
+        # it via a boolean `thinking` option. An older plugin version used a
+        # bare `budget_tokens=0` kwarg -- that field no longer exists on
+        # ClaudeOptionsWithThinking and now raises a pydantic validation
+        # error ("Extra inputs are not permitted") instead of silently
+        # disabling thinking.
+        return {"thinking": False}
     return {}
 
 

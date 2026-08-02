@@ -34,6 +34,11 @@ logger = logging.getLogger(__name__)
 
 VALID_CONTENT_TYPES = config.VALID_CONTENT_TYPES
 
+# Max page gap over which a detected publication date may carry forward to a
+# page whose own header OCR failed to parse. Covers a multi-page edition
+# without bleeding across a large gap into a different edition.
+_PUB_DATE_CARRY_GAP = 3
+
 STYLE_RULES = """STYLE RULES (apply to all titles):
   * Do not use periods/full stops in abbreviations: "Mr" not "Mr.",
     "Dr" not "Dr.", "Rev" not "Rev.", "St" not "St.", "MCC" not "M.C.C."
@@ -125,6 +130,35 @@ def normalize_and_dedup(
         raw_title = entry.get("matchup", "") or entry.get("title", "")
         resolved = resolve_date_phrase(entry.get("date_phrase"), publication_date)
         date = resolved if resolved else normalize_date(entry.get("date", ""))
+        # Date convention: full YYYYMMDD, YYYYMM00 for known month / unknown
+        # day, YYYY0000 for year-only. The whole collection is 1895, so the
+        # year is always known -- a date is never empty. Floor anything the
+        # model left blank (or that failed to resolve) to the season year so
+        # every row carries a date that downstream matching/consensus can key
+        # on. See normalize_date() for the encoding rules.
+        if not date:
+            date = f"{config.SEASON}0000"
+
+        # Weekend-results convention: a Friday or Saturday paper's match
+        # reports are for the previous Saturday (e.g. a Friday 16 Aug paper
+        # reports Saturday 10 Aug matches). Match bodies often state no
+        # explicit date -- the human index (Willis) applies this convention
+        # and the model can't, since it's told not to compute dates. Apply it
+        # here, but ONLY for "match information" whose date is still a
+        # placeholder (day unknown -- the string ends in "00", i.e. YYYYMM00 or
+        # YYYY0000) after phrase resolution and the year-floor fallback: a
+        # specific date resolved from the text always wins, and non-match
+        # content (season statistics, team info) is left alone. Fri/Sat-only
+        # limits the heuristic to actual weekend-results papers.
+        if (
+            content_type == "match information"
+            and publication_date is not None
+            and publication_date.weekday() in (4, 5)  # Friday, Saturday
+            and date.endswith("00")
+        ):
+            sat_iso = relative_dates(publication_date).get("saturday")
+            if sat_iso:
+                date = sat_iso.replace("-", "")
 
         if content_type == "match information":
             title = normalize_matchup(raw_title, registry=registry)
@@ -155,6 +189,36 @@ def normalize_and_dedup(
             }
         )
     return out, discarded
+
+
+def publication_date_for_page(
+    page_num: int,
+    page_text: str,
+    last_pub_date,
+    last_pub_page: int | None,
+) -> tuple:
+    """Publication date for a page, carrying the last detected date forward.
+
+    A multi-page paper prints its date header once (on the first page); OCR
+    can garble or drop it on continuation pages (e.g. p51 "FRIDAY 16 AUGUST
+    1895" but p52 "FRIDAY AUGUST 1895" with the day lost). When detection
+    fails on a page that closely follows a dated one, reuse the last date so
+    the whole edition keeps its date context. Bounded to
+    _PUB_DATE_CARRY_GAP pages so it can't bleed across a large gap into a
+    different edition.
+
+    Returns (pub_date_to_use, new_last_pub_date, new_last_pub_page) so callers
+    can thread the state through pages in document order.
+    """
+    detected = detect_publication_date(page_text)
+    if detected is not None:
+        return detected, detected, page_num
+    if last_pub_date is not None and (
+        last_pub_page is None
+        or 0 < page_num - last_pub_page <= _PUB_DATE_CARRY_GAP
+    ):
+        return last_pub_date, last_pub_date, last_pub_page
+    return None, last_pub_date, last_pub_page
 
 
 def _row_key(matchup: str, date: str, content_type: str) -> tuple[str, str, str]:
@@ -327,6 +391,17 @@ def run_index_extraction(
     cross_page_dupes: list[dict] = []
     page_text_by_num = dict(pages)
 
+    # Carry-forward state for the publication date: a multi-page paper prints
+    # its date header once (on the first page), and OCR can garble or drop it
+    # on continuation pages (e.g. p51 "FRIDAY 16 AUGUST 1895" but p52 "FRIDAY
+    # AUGUST 1895" with the day lost). When detection fails on a page that
+    # closely follows a dated one, we reuse the last detected date so the
+    # whole edition keeps its date context instead of falling back to a
+    # year/month guess. Bounded to _PUB_DATE_CARRY_GAP pages so it can't bleed
+    # across a large gap into a different edition.
+    last_pub_date = None
+    last_pub_page = None
+
     def extract_fn(page_num: int, page_text: str) -> tuple[list[dict], str]:
         return extract_entries(
             model, page_num, page_text,
@@ -334,12 +409,17 @@ def run_index_extraction(
         )
 
     def on_result(page_result) -> None:
-        nonlocal total_entries, total_errors
+        nonlocal total_entries, total_errors, last_pub_date, last_pub_page
         entries = page_result.items
         raw = page_result.raw
         error = page_result.error
 
-        pub_date = detect_publication_date(page_text_by_num.get(page_result.page, ""))
+        pub_date, last_pub_date, last_pub_page = publication_date_for_page(
+            page_result.page,
+            page_text_by_num.get(page_result.page, ""),
+            last_pub_date,
+            last_pub_page,
+        )
         normalized, discarded = normalize_and_dedup(
             entries or [], page_result.page, allowed_types=allowed_types, registry=registry,
             publication_date=pub_date,
