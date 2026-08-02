@@ -8,3 +8,11 @@ wheels/
 
 # Virtual environments
 .venv
+
+# Generated data and bulky artifacts — organized under folders but not tracked
+# (regenerable by re-running the tonywebb CLI, or local-only reference images)
+raw_responses/
+jpgs/
+older/
+docs/
+stats/scorecards_*.json
