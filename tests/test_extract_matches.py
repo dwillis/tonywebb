@@ -198,6 +198,136 @@ class TestNormalizeAndDedupDatePhrase:
         assert result[0]["date"] == "18950527"
 
 
+class TestNormalizeAndDedupDateFloor:
+    """The whole collection is 1895, so a row's date is never empty: an
+    unresolvable phrase plus a blank model date is floored to the season
+    year (18950000), not persisted as ''.
+    """
+
+    def test_empty_date_floored_to_season_year(self):
+        entries = [{"matchup": "A v B", "content_type": "match information", "date": ""}]
+        result, _ = normalize_and_dedup(entries, page_num=1)
+        assert result[0]["date"] == "18950000"
+
+    def test_missing_date_key_floored_to_season_year(self):
+        entries = [{"matchup": "A v B", "content_type": "match information"}]
+        result, _ = normalize_and_dedup(entries, page_num=1)
+        assert result[0]["date"] == "18950000"
+
+    def test_unresolvable_phrase_and_empty_date_floored(self):
+        entries = [{
+            "matchup": "A v B", "content_type": "match information",
+            "date_phrase": "sometime this spring", "date": "",
+        }]
+        result, _ = normalize_and_dedup(entries, page_num=1)
+        assert result[0]["date"] == "18950000"
+
+    def test_known_month_unknown_day_is_not_floored(self):
+        # YYYYMM00 is a valid partial date and must survive the floor.
+        entries = [{
+            "matchup": "A v B", "content_type": "match information",
+            "date_phrase": "", "date": "18950800",
+        }]
+        result, _ = normalize_and_dedup(entries, page_num=1)
+        assert result[0]["date"] == "18950800"
+
+
+class TestNormalizeAndDedupWeekendSaturday:
+    """Undated match reports in a Friday/Saturday paper were played the
+    previous Saturday (Willis's convention). A placeholder date (day
+    unknown -- ends in "00") on a match-information row is resolved to that
+    Saturday; a specific date from the text always wins, and non-match
+    content is left alone.
+    """
+
+    def test_undated_match_on_friday_paper_defaults_to_previous_saturday(self):
+        # Friday 16 Aug 1895 -> previous Saturday = 10 Aug.
+        entries = [{"matchup": "A v B", "content_type": "match information", "date": ""}]
+        result, _ = normalize_and_dedup(entries, page_num=1, publication_date=date(1895, 8, 16))
+        assert result[0]["date"] == "18950810"
+
+    def test_undated_match_on_saturday_paper_defaults_to_previous_saturday(self):
+        # Saturday 17 Aug 1895 paper -> previous Saturday = 10 Aug.
+        entries = [{"matchup": "A v B", "content_type": "match information", "date": ""}]
+        result, _ = normalize_and_dedup(entries, page_num=1, publication_date=date(1895, 8, 17))
+        assert result[0]["date"] == "18950810"
+
+    def test_month_only_on_friday_paper_overridden_to_saturday(self):
+        # Model could only pin the month (August) -> resolve to the Saturday.
+        entries = [{
+            "matchup": "A v B", "content_type": "match information",
+            "date_phrase": "", "date": "18950800",
+        }]
+        result, _ = normalize_and_dedup(entries, page_num=1, publication_date=date(1895, 8, 16))
+        assert result[0]["date"] == "18950810"
+
+    def test_specific_date_wins_over_saturday_heuristic(self):
+        # A real date from the text is never overridden.
+        entries = [{
+            "matchup": "A v B", "content_type": "match information",
+            "date_phrase": "", "date": "18950812",
+        }]
+        result, _ = normalize_and_dedup(entries, page_num=1, publication_date=date(1895, 8, 16))
+        assert result[0]["date"] == "18950812"
+
+    def test_resolved_phrase_wins_over_saturday_heuristic(self):
+        # date_phrase resolves to a specific day -> that wins, not the Saturday.
+        entries = [{
+            "matchup": "A v B", "content_type": "match information",
+            "date_phrase": "on Friday", "date": "18950000",
+        }]
+        result, _ = normalize_and_dedup(entries, page_num=1, publication_date=date(1895, 8, 16))
+        # "on Friday" in a Friday paper means the Friday a week prior = 9 Aug.
+        assert result[0]["date"] == "18950809"
+
+    def test_non_match_content_not_overridden(self):
+        # Season statistics stay year-only even on a Friday paper.
+        entries = [{"title": "Averages", "content_type": "statistics", "date": ""}]
+        result, _ = normalize_and_dedup(entries, page_num=1, publication_date=date(1895, 8, 16))
+        assert result[0]["date"] == "18950000"
+
+    def test_midweek_paper_not_overridden(self):
+        # Only Friday/Saturday papers trigger the heuristic.
+        entries = [{"matchup": "A v B", "content_type": "match information", "date": ""}]
+        result, _ = normalize_and_dedup(entries, page_num=1, publication_date=date(1895, 8, 14))  # Wednesday
+        assert result[0]["date"] == "18950000"
+
+    def test_no_publication_date_no_override(self):
+        entries = [{"matchup": "A v B", "content_type": "match information", "date": "18950800"}]
+        result, _ = normalize_and_dedup(entries, page_num=1)
+        assert result[0]["date"] == "18950800"
+
+
+class TestPublicationDateCarryForward:
+    """When OCR drops a continuation page's date header, reuse the last
+    detected publication date across the short gap (same edition)."""
+
+    def test_detected_date_used_and_remembered(self):
+        from tonywebb.indexing import publication_date_for_page
+        pub, last, lastp = publication_date_for_page(51, "SATURDAY 8 JUNE 1895\n...", None, None)
+        assert pub == date(1895, 6, 8)
+        assert last == date(1895, 6, 8) and lastp == 51
+
+    def test_undated_continuation_page_carries_forward(self):
+        from tonywebb.indexing import publication_date_for_page
+        # p51 detected Friday 16 Aug; p52 header lost the day -> carry forward.
+        pub, _, _ = publication_date_for_page(52, "MACCLESFIELD CHRONICLE: FRIDAY AUGUST 1895-2.",
+                                              date(1895, 8, 16), 51)
+        assert pub == date(1895, 8, 16)
+
+    def test_gap_too_large_does_not_carry(self):
+        from tonywebb.indexing import publication_date_for_page
+        pub, _, _ = publication_date_for_page(60, "no date here", date(1895, 8, 16), 51)
+        assert pub is None
+
+    def test_new_detected_date_resets_state(self):
+        from tonywebb.indexing import publication_date_for_page
+        # Even after a carry-forward, a fresh header re-detects and updates.
+        pub, last, lastp = publication_date_for_page(53, "FRIDAY 23 AUGUST 1895\n...",
+                                                     date(1895, 8, 16), 52)
+        assert pub == date(1895, 8, 23) and lastp == 53
+
+
 class TestNormalizeAndDedupDiscards:
     def test_no_discards_for_clean_entries(self):
         entries = [{"matchup": "A v B", "date": "18950527", "content_type": "match information"}]

@@ -32,7 +32,7 @@ class TestTranscribePage:
         # didn't disable thinking, an asymmetry with every extraction command.
         model = _FakeModel()
         transcribe_page(model, 1, b"fake-bytes", "image/jpeg")
-        assert model.calls[0].get("budget_tokens") == 0
+        assert model.calls[0].get("thinking") is False
 
     def test_empty_image_bytes_raises(self):
         model = _FakeModel()

@@ -2,9 +2,10 @@
 
 import json
 
+import llm
 import pytest
 
-from tonywebb.llm_common import JSONExtractError, parse_json_object
+from tonywebb.llm_common import JSONExtractError, no_thinking_kwargs, parse_json_object
 
 
 class TestParseJsonObject:
@@ -92,3 +93,61 @@ class TestParseJsonObject:
         parsed = parse_json_object(raw)
         assert "entries" in parsed
         assert len(parsed["entries"]) == 2
+
+
+class _FakeOllamaModel:
+    model_id = "qwen3.5:397b-cloud"
+
+
+class _FakeClaudeModel:
+    model_id = "claude-haiku-4.5"
+
+
+class _FakeOtherModel:
+    model_id = "gpt-5.4"
+
+
+class TestNoThinkingKwargs:
+    def test_ollama_uses_think_false(self):
+        model = _FakeOllamaModel()
+        # Real llm-ollama model instances live in a module containing "ollama";
+        # a bare object won't match that, so patch __module__ via a real class.
+        model.__class__.__module__ = "llm_ollama"
+        assert no_thinking_kwargs(model) == {"think": False}
+
+    def test_claude_uses_thinking_false(self):
+        assert no_thinking_kwargs(_FakeClaudeModel()) == {"thinking": False}
+
+    def test_opus_sonnet_haiku_all_match(self):
+        for model_id in ("claude-opus-5", "claude-sonnet-5", "claude-haiku-4.5"):
+            model = _FakeClaudeModel()
+            model.model_id = model_id
+            assert no_thinking_kwargs(model) == {"thinking": False}
+
+    def test_other_model_gets_no_kwargs(self):
+        assert no_thinking_kwargs(_FakeOtherModel()) == {}
+
+    def test_missing_model_id_gets_no_kwargs(self):
+        assert no_thinking_kwargs(object()) == {}
+
+
+class TestNoThinkingKwargsAgainstRealPlugin:
+    """Regression coverage for the actual bug: llm-anthropic changed its
+    Options schema from a bare budget_tokens=0 kwarg to a boolean `thinking`
+    field, and the old kwarg now raises a pydantic validation error
+    ("Extra inputs are not permitted") instead of silently disabling
+    thinking. A fake model with no real Options validation can't catch that
+    kind of plugin-version drift -- only validating against the actual
+    installed plugin's schema can.
+
+    Anthropic model instantiation needs no network call or API key (only
+    .prompt() does), so this is safe to run in CI. An equivalent live check
+    for llm-ollama isn't included -- llm-ollama's model registration calls
+    out to a running Ollama daemon to list available models, which CI
+    doesn't have.
+    """
+
+    def test_claude_kwargs_validate_against_installed_plugin(self):
+        model = llm.get_model("claude-haiku-4.5")
+        kwargs = no_thinking_kwargs(model)
+        model.Options(**kwargs)  # raises pydantic.ValidationError if rejected
