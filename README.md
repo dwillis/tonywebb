@@ -6,7 +6,7 @@ Tools for transcribing and indexing the [Tony Webb minor counties cricket newspa
 
 The collection is a 247-page FlippingBook archive of Victorian cricket newspaper cuttings. The pipeline has three stages:
 
-1. **Transcription** (`tonywebb transcribe`) — fetches each page image and asks a vision LLM to transcribe the text verbatim, saving one `.txt` file per page. `tonywebb clean-transcriptions` fixes OCR-layer artifacts (dot leaders, soft-wrap hyphens, known typos) in the result.
+1. **Transcription** (`tonywebb transcribe`) — fetches each page image and asks a vision LLM to transcribe the text verbatim, saving one `.txt` file per page. `tonywebb clean-transcriptions` fixes OCR-layer artifacts (dot leaders, soft-wrap hyphens, known typos) in the result. `tonywebb reconcile` runs 2–3 models over the collection and reconciles them with an image referee, auto-accepting agreements and adjudicating only the lines where they disagree — a drop-in higher-accuracy input for the extraction stage.
 2. **Extraction** — reads the transcribed text and asks an LLM to pull out structured data:
    - `tonywebb extract-matches` — match/content index entries (match reports, statistics tables, biographies, etc.) into a CSV.
    - `tonywebb extract-stats` — end-of-season player/team averages tables into JSON.
