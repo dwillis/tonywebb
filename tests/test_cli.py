@@ -14,6 +14,7 @@ EXPECTED_SUBCOMMANDS = {
     "evaluate",
     "consensus",
     "promote-reviewed",
+    "reconcile",
     "compare",
     "browse",
     "clubs",
