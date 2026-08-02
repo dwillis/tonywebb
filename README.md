@@ -196,10 +196,44 @@ uv run tonywebb promote-reviewed match_index_reviewed.csv             # then app
 ## Other analysis commands
 
 ```bash
-uv run tonywebb compare              # cross-model agreement matrix -> compare_results.md
-uv run tonywebb browse               # interactive HTML browser -> compare_browser.html
-uv run tonywebb clubs                # regenerate clubs.csv from all match_index_*.csv files
+uv run tonywebb compare --pattern match_indexes/match_index_*.csv -o reports/compare_results.md
+uv run tonywebb browse --pattern match_indexes/match_index_*.csv -o browser/compare_browser.html
+uv run tonywebb clubs --pattern match_indexes/match_index_*.csv   # writes clubs.csv in the repo root
 ```
+
+## Data file layout
+
+Generated data and reports live in subfolders, not the repo root. Only `clubs.csv`
+(read by default by several commands) stays in the root.
+
+| Folder | Contents |
+|--------|----------|
+| `match_indexes/` | `match_index_*.csv` model outputs and `match_index_willis.csv` (ground truth) |
+| `eval/` | `eval_*.md` evaluation reports |
+| `raw_responses/` | `raw_responses_*.jsonl` raw LLM response logs |
+| `transcripts/` | `full_text_output_*.txt` concatenated transcriptions |
+| `stats/` | `player_stats_*.json`, `stats_index_*.csv`, `scorecard_index_*.csv`, `scorecards_*.json` |
+| `reports/` | `compare_results.md`, `notes.md`, `llm-indexing-report.md` |
+| `browser/` | `compare_browser.html` |
+| `docs/` | reference documents (e.g. the indexing guide draft) |
+| `review/` | `resolved_low_conf_entries.csv` review queue |
+
+Because the CLI resolves paths relative to the working directory, commands that
+previously found these files in the root now need flags pointing at the new
+folders:
+
+- `consensus`, `compare`, `browse`, `clubs` → `--pattern match_indexes/match_index_*.csv`
+- `evaluate` → pass explicit CSV paths under `match_indexes/`, and
+  `--truth match_indexes/match_index_willis.csv`
+- `promote-reviewed` → `--truth match_indexes/match_index_willis.csv`
+- Extraction commands → `-i transcripts/full_text_output_gemini31pro.txt` (the default
+  input now lives in `transcripts/`) and `-o <folder>/<file>` for the main CSV/JSON
+  output.
+
+Note: the four extraction commands write `raw_responses_*.jsonl` to the working
+directory by hardcoded default (no flag), so a fresh extraction run will recreate
+those logs in the root — move them into `raw_responses/` afterwards, or re-run this
+cleanup.
 
 ## Development
 
