@@ -74,6 +74,45 @@ Fixes three things in already-transcribed page text: soft line-wrap hyphens that
 
 Always run `--dry-run` first — it reports per-file change counts with no writes — then re-run without it once the counts look right. `--skip-dot-leaders`, `--skip-hyphens`, and `--skip-typos` disable individual transforms.
 
+## Stage 1c: Reconcile multiple OCR runs
+
+No single transcription model is error-free — each makes occasional line-level mistakes (a misread digit, a garbled surname, a dropped line), and the bad output looks plausible, so eyeballing 247 pages doesn't scale. `reconcile` runs 2–3 good models over the collection, auto-accepts the lines they agree on, and asks a vision model to read the original page image only where they disagree. Because errors are line-local and line order is stable across good models, line-level alignment plus targeted adjudication turns "review every page" into "review a few flagged lines per page."
+
+```bash
+# Calibrate first — no tokens spent: per-page dispute stats over all pages.
+uv run tonywebb reconcile qwen3.5:397b gemini-31-pp minimax-m3 --no-referee --dry-run
+
+# Full reconciliation with the image referee (gemini-3.5-flash, not an ensemble member):
+uv run tonywebb reconcile qwen3.5:397b gemini-31-pp minimax-m3 --local-dir jpgs/
+```
+
+The **first** run directory is the reference (best model first); its line breaks, dot-leaders, and ornaments are preserved in the output. Other runs are aligned to it. Where the runs disagree, a `replace` opcode is wrap-repaired (one long paragraph line in qwen equals several column-width-wrapped lines in gemini → treated as agreement), and unsplittable cores become a single multi-line dispute sent to the referee in **one** vision call per page.
+
+Classification precedence: **unanimous** → accept; **2-of-3 majority** → accept the majority text and log the dispute (majorities are never re-adjudicated — two independent models outrank one referee); otherwise **conflict** → the referee reads the page. The referee is told to transcribe what is *printed* even when the arithmetic looks wrong (1895 compositor errors are real), to write `[unclear]` for illegible text, and that its reading need not match any offered version. Missing-line disputes (one run has a line the reference lacks) are resolved as `ABSENT` if the referee sees nothing printed there. No markers are injected into the output text — the downstream `extract-matches` feeds it to an LLM, and disputes are fully recoverable from the JSONL by `(page, ref_line_start)`.
+
+Arithmetic attention-flags detect innings blocks (≥6 score lines including an Extras line, followed by a total within 2 lines) where the printed total disagrees with the sum of the scores — the only detector for correlated same-family errors (e.g. both Geminis misreading the same digit). Flags are report-only in v1; they never alter text or trigger the referee.
+
+**Outputs**
+- `reconciled/tw_newspaper_cuttings_1895_{page}.txt` — drop-in input for `clean-transcriptions`/`extract-matches`, same naming as a transcribe run.
+- `reconcile_conflicts.jsonl` — append-only, one record per page (notes, stats, disputes, arithmetic flags).
+- `reconcile_report.md` — regenerated in full from the JSONL each run: unresolved disputes, referee-novel readings, arithmetic flags, page notes.
+
+**Options**
+
+| Flag | Default | Description |
+|------|---------|-------------|
+| `run_dirs` (positional, 2+) | — | Run directories; **first** is the reference |
+| `--output-dir` | `reconciled/` | Reconciled per-page `.txt` output |
+| `--referee-model` | `gemini/gemini-3.5-flash` | Vision model adjudicating disputes (warns if it shares a family prefix with a run) |
+| `--no-referee` | — | Majority/flag only; do not call a referee model |
+| `--pages` | — | Specific pages/ranges, e.g. `1,5-10` |
+| `--local-dir` | — | Local JPG directory (local-first fetch) |
+| `--report` | `reconcile_report.md` | Regenerated Markdown report path |
+| `--conflicts` | `reconcile_conflicts.jsonl` | Append-only JSONL of per-page disputes |
+| `--dry-run` | — | Align + classify + stats only; no writes, no referee |
+
+Already-reconciled pages (non-empty output `.txt`) are skipped on re-runs; the report is rebuilt from the JSONL each time. The rate-limit delay fires only after referee calls.
+
 ## Stage 2: Extract match records
 
 ```bash

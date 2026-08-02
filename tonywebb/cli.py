@@ -14,6 +14,7 @@ from . import (
     index_scorecards,
     index_stats,
     promote_reviewed,
+    reconcile,
     transcribe,
 )
 
@@ -35,6 +36,7 @@ def build_parser() -> argparse.ArgumentParser:
         evaluate,
         consensus,
         promote_reviewed,
+        reconcile,
         compare,
         build_browser,
         clubs,
