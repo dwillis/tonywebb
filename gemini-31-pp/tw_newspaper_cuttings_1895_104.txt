@@ -8,11 +8,11 @@ bowling of Harding and Toppin. The match ended in a
 win for the Free Foresters. Score:-
 1st innings. FREE FORESTERS. 2nd innings.
 F. L. Evelyn, b Leake .. .. 7 c Hastings, b Phillips 13
-A. M. Miller, c Leake, b Hinds .. 25 l b w, b Hinds .. 4
+A. M. Miller, c Leake, b Hinds .. 25 l b w, b Hinds .. .. 4
 A. G. Archer, b Hinds .. .. 1 b Hinds .. .. 24
 C. Harding, b Leake .. .. 1 b Leake .. .. 0
-D. F. Gillam, run out .. .. 0 b Hinds .. .. 9
-C. Toppin, b Leake .. .. .. 15 c Hastings, b Cun-
+D. F. Gillam, run out .. .. 0 b Hinds .. .. 0
+C. Toppin, b Leake .. .. 15 c Hastings, b Cun-
 ninghame .. .. 5
 D. T. M. Jones, b Leake .. .. 18 absent (hurt) .. .. 0
 E. R. Marston, absent .. .. 0 b Cunninghame .. 2
@@ -21,15 +21,16 @@ ninghame .. .. 5
 Captain Cowan, c and b Leake .. 0 b Cunninghame .. 5
 G. E. Willis, b Hinds .. .. 0 b Hinds .. .. 1
 H. Powys, Keck, not out .. .. 2 not out .. .. .. 3
-Extras .. .. .. .. 11 Extras .. .. 9
+Extras .. .. .. .. 11 Extras .. .. 19
+-- --
 88 81
-1st innings. LUDLOW AND SOUTH SHROPSHIRE 2nd innings.
+innings. LUDLOW AND SOUTH SHROPSHIRE 2nd innings.
 J. T. Leake, b Harding .. .. 0 b Toppin .. .. 0
 H. C. B. Phillips, run out .. .. 8 c Gillman, b Toppin.. 15
 Rev. W. F. G. Sandwith, b Hard-
-ing .. .. .. .. 0 b Harding .. .. 0
+ing .. .. .. .. .. 0 b Harding .. .. 0
 F. H. Sitwell, b Toppin .. .. 1 b Toppin .. .. 0
-H. F. Hastings, b Toppin .. .. 0 run out .. .. 81
+H. F. Hastings, b Toppin .. .. 0 run out .. .. 31
 N. C. Stainton, b Harding .. 4 b Harding .. .. 7
 C. J. Clerke, b Toppin .. .. 2 b Toppin .. .. 6
 W. H. H. Sitwell, c Cowan, b
@@ -39,6 +40,7 @@ C. H. Seton, b Toppin .. .. 0 b Toppin .. .. 2
 A. R. Cunninghame, not out .. 0 b Harding .. .. 6
 Hinds, b Harding .. .. .. 1 not out .. .. .. 1
 Extras .. .. .. .. 0 Extras .. .. 4
+-- --
 23 74
 
 MARDEN v WEOBLEY.-Played at Weobley on Saturday.
@@ -59,6 +61,7 @@ J. Godwin, b Sutcliffe .. 0 C. Jennings, b Silkstone .. 0
 S. Perry, b Crook .. .. 2 A. Morgan, not out .. .. 5
 F. Mattey, not out .. .. 3
 Extras .. .. .. 4 Extras .. .. .. 5
+-- --
 100 66
 
 HEREFORD ST. v FOXLEY.-Played at Foxley on Satur-
@@ -76,16 +79,17 @@ W Widen, not out .. .. .. 0
 W Godsall, b Williams .. .. 0
 W Jones, b Pitt .. .. .. 0
 Extras .. .. .. .. 5 Extras .. .. 5
+-- --
 50 11
 ST. MARTIN'S.-1st innings.
 B Johnstone, b Reece .. 16 F Bromage, b Reece .. 0
 W Pitt, run out .. .. 0 H Beach, run out .. .. 0
-C Bray, not out .. .. 26 A Evans, b Reece .. .. 0
+C Bray, not out .. .. 36 A Evans, b Reece .. .. 0
 C Miles, b Cornewall .. 1 T Cropp, c Cornewall, b
 P Levason, b Cornewall .. 2 Reece .. .. .. 0
-T H Williams, c Reece, b Extras .. .. .. 7
-Cornewall .. .. .. 3
-J Jones, b Cornewall .. 3 58
+T H Williams, c. Reece, b Extras .. .. .. 7
+Cornewall .. .. .. 3 --
+J Jones, b Cornewall .. 3 68
 
 FIXTURES.
 HEREFORDSHIRE CLUB AND GROUND CRICKET CLUB.
@@ -98,7 +102,7 @@ Club and Ground v Ross, at Hereford, August 28 and 29
 Club and Ground v Lugwardine, at Lugwardine, August 31
 
 WORCESTERSHIRE CRICKET CLUB.
-Worcestershire v Herefordshire, in Worcestershire, August 9
+Worcestershire v Hertfordshire, in Worcestershire, August 9
 and this day (Saturday)
 Worcestershire v Surrey Second Eleven, at Kennington Oval,
 August 14 and 15
@@ -125,7 +129,7 @@ Ludlow and South Shropshire v Church Stretton, at Ludlow,
 August 21
 Brynmawr v Pengam, at Brynmawr, August 21
 Ludlow and South Shropshire v Knighton at Ludlow, August 22
-Ludlow and South Shropshire v Plowden, at Plowden, August 26
+Ludlow and South Shropshire v Plowden, at Plowden, August 28
 Ludlow and South Shropshire v Leominster, at Leominster,
 August 31
 Brynmawr v Blaina, at Blaina, September 11
