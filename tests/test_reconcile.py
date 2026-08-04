@@ -100,6 +100,103 @@ class TestAlignToReference:
         assert insert[0].ref_span == (1, 1)
         assert insert[0].other_lines == ["b"]
 
+    def test_long_paragraph_wrapped_into_many_lines_still_matches(self):
+        # The old fixed wrap-join cap of 8 lines could never bridge a real
+        # column-width paragraph wrap (gemini wraps qwen's single-line
+        # paragraphs into 30+ lines). The incremental join with length
+        # early-abort must match regardless of how many lines the wrap spans.
+        words = [f"word{i}" for i in range(120)]
+        long_line = " ".join(words)
+        wrapped = [" ".join(words[i:i + 6]) for i in range(0, 120, 6)]  # 20 lines
+        assert len(wrapped) == 20
+        segs = align_to_reference([long_line], wrapped)
+        assert [s.kind for s in segs] == ["equal"]
+
+    def test_noisy_scorecard_lines_pair_one_to_one(self):
+        # Dense OCR noise: consecutive lines each differ slightly between
+        # runs (a misread digit or surname per line), so no exact resync
+        # anchor exists anywhere nearby. Nearly-identical lines must pair
+        # 1:1 as single-line disputes instead of merging into one giant
+        # unsplittable core.
+        ref = [
+            "H. Boddy, c Kent, b Barber 0",
+            "J. Smith, b Barber 12",
+            "W. Jones, run out 4",
+        ]
+        other = [
+            "H. Boddy, c Keen, b Barber 9",
+            "J. Smith, b Barber 13",
+            "W. Jones, run ont 4",
+        ]
+        segs = align_to_reference(ref, other)
+        assert [s.kind for s in segs] == ["replace", "replace", "replace"]
+        assert all(s.ref_span[1] - s.ref_span[0] == 1 for s in segs)
+
+    def test_elect_reference_prefers_run_agreeing_with_majority(self):
+        # Page 55-style: the default first run deviates structurally (splits
+        # two-column rows) while the other two agree with each other -- the
+        # election must pick one of the agreeing runs as reference, so the
+        # outlier can't poison every pairwise alignment at once.
+        agreeing = "\n".join(f"Player{i} b Bowler{i} {i}    second col {i}" for i in range(12))
+        deviant_lines = []
+        for i in range(12):
+            deviant_lines.append(f"Player{i} b Bowler{i} {i}")
+        for i in range(12):
+            deviant_lines.append(f"second col {i}")
+        deviant = "\n".join(deviant_lines)
+        texts = [("deviant", deviant), ("runB", agreeing), ("runC", agreeing)]
+        assert reconcile.elect_reference(texts, "deviant") == "runB"
+
+    def test_elect_reference_keeps_default_on_agreement(self):
+        text = "\n".join(f"line {i}" for i in range(10))
+        texts = [("runA", text), ("runB", text), ("runC", text)]
+        assert reconcile.elect_reference(texts, "runA") == "runA"
+
+    def test_transposed_sections_reordered_before_alignment(self):
+        # Scrapbook pages: different models read the pasted cuttings in
+        # different column orders, so the same matches appear transposed.
+        # Section headers ("X v. Y") are matched and the run re-sequenced to
+        # the reference's order, so line alignment sees them in one order.
+        sec_a = ["ALPHA v. BRAVO.", "A. One, b Two 3", "Total 10"]
+        sec_b = ["CHARLIE v. DELTA.", "C. Three, b Four 5", "Total 20"]
+        ref = sec_a + sec_b
+        other = sec_b + sec_a  # transposed
+        rec = reconcile_page(1, "\n".join(ref), [("runA", "\n".join(other))],
+                             ref_label="ref", garbage_min_chars=0)
+        assert any("reordered" in n for n in rec.notes)
+        assert rec.disputes == []  # identical content once reordered
+        assert rec.output_lines == ref
+
+    def test_local_difference_inside_long_wrapped_passage_stays_small(self):
+        # Regression test: a real full run showed a single misread word deep
+        # inside a ~150-line scorecard turning into ONE giant dispute
+        # spanning the whole rest of the page, because once the runs' wrap
+        # styles diverge, difflib has no further equal anchors to find and
+        # lumps everything after the first mismatch into one "replace" op.
+        # Ten player rows, one line each in ref; every row wraps onto two
+        # lines in "other" -- except row 5, which also has a genuine
+        # misread (Kirby -> Kirbey). The fix should confine the dispute to
+        # just that one row, not swallow rows 6-10 too.
+        ref = [f"Player{i} b Bowler{i} run {i}" for i in range(1, 11)]
+        other = []
+        for i in range(1, 11):
+            name = "Kirbey" if i == 5 else f"Player{i}"
+            other.append(f"{name} b Bowler{i}")
+            other.append(f"run {i}")
+        segs = align_to_reference(ref, other)
+
+        replaces = [s for s in segs if s.kind == "replace"]
+        assert len(replaces) == 1
+        assert replaces[0].ref_span == (4, 5)  # only row 5 (0-indexed)
+
+        # Rows 1-4 and 6-10 must still resolve as equal (via the wrap-join
+        # path), not get pulled into the dispute.
+        equal_spans = {s.ref_span for s in segs if s.kind == "equal"}
+        for i in range(1, 5):
+            assert (i - 1, i) in equal_spans
+        for i in range(6, 11):
+            assert (i - 1, i) in equal_spans
+
 
 # ── reconcile_page ─────────────────────────────────────────────────────────────
 
@@ -135,6 +232,34 @@ class TestReconcilePage:
         rec = _rec_page(ref, [("runA", runA), ("runB", runB)])
         conflicts = [d for d in rec.disputes if d.resolution == "conflict"]
         assert len(conflicts) == 1
+
+    def test_four_way_2_2_tie_is_conflict_not_majority(self):
+        # Regression test: with a 4-run ensemble, two readings can each hold
+        # exactly half the votes (ref+runA say "9", runB+runC say "0"). The
+        # old code picked whichever key happened to be built first in the
+        # variants dict (always the reference's) and called it "majority"
+        # without ever consulting the referee -- a real tie is not a majority.
+        ref = "the score was 9\nnext line"
+        runA = "the score was 9\nnext line"
+        runB = "the score was 0\nnext line"
+        runC = "the score was 0\nnext line"
+        rec = reconcile_page(1, ref, [("runA", runA), ("runB", runB), ("runC", runC)],
+                              ref_label="ref", garbage_min_chars=0)
+        assert len(rec.disputes) == 1
+        assert rec.disputes[0].resolution == "conflict"
+
+    def test_four_way_clear_plurality_still_majority(self):
+        # A 2-1-1 split (no tie for the top count) is still a clear plurality
+        # and should resolve without the referee, same as 2-of-3 did.
+        ref = "the score was 9\nnext line"
+        runA = "the score was 9\nnext line"
+        runB = "the score was 0\nnext line"
+        runC = "the score was 7\nnext line"
+        rec = reconcile_page(1, ref, [("runA", runA), ("runB", runB), ("runC", runC)],
+                              ref_label="ref", garbage_min_chars=0)
+        assert len(rec.disputes) == 1
+        assert rec.disputes[0].resolution == "majority"
+        assert "9" in "\n".join(rec.disputes[0].chosen_lines)
 
     def test_n2_any_difference_is_conflict(self):
         # With only one other run (N=2: ref + runA), any diff → conflict (no majority possible).

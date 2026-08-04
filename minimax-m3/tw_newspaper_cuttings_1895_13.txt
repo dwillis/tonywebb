@@ -7,11 +7,11 @@ IMPORTANT TO SECRETARIES.—As in former years, we readily grant a portion of ou
 READING v. SLOUGH.—Played at Reading, on Saturday, and ended in a draw. Score:—
 
 SLOUGH.
-G. Blanchett b Eynott .. 6
+C. Blanchett b Eynott .. 6
 E. W. Adams c Crowhurst b Eynott .. .. .. 10
-C. Abrams l-b-w b Eynott 50
+C. Abrams 1-b-w b Eynott 50
 R. F. De Winton c Deane b Williams .. .. 50
-B. Blanchett c Eppstein b Williams .. .. 11
+B. Blanchett c Eppstein b Williams .. .. .. 11
 R. D. Bayley c Plum b Eynott .. .. .. 15
 T. H. E. Meggs b Eynott 11
 Rev. C. S. Hyder b Williams .. .. .. 3
@@ -19,9 +19,8 @@ J. Mawby not out .. 2
 H. T. Woodward b Eynott 1
 A. H. Fawkes b Williams 0
 
-Extras .. 7
-
-Total .. 175
+Extras .. .. 7
+Total .. ..175
 
 READING.
 H. J. Collins c Abrams b Woodward .. .. 0
@@ -31,48 +30,46 @@ F. Deane c Woodward b Meggs .. .. .. 44
 Rev. Eppstein c De Winton b Meggs .. .. 2
 G. Williams not out .. 13
 C. A. Langley c De Winton b Adams .. .. 4
-Eynott c G. Blanchett b Meggs .. .. .. 12
+Eynott c C. Blanchett b Meggs .. .. .. 12
 E. Birch c B. Blanchett b Adams .. .. .. 1
 S. Harris not out .. 0
 S. Todd did not bat.
 
-Extras .. 3
-
-Total (8 wkts) .. 120
+Extras .. .. 3
+Total (8 wkts) ..120
 
 READING SCHOOL v. HURST.—Played at Hurst, on May 16th. Score:—
 
 HURST.
 S. H. Maurice b Eppstein 15
-F. Bullock l-b-w b Eppstein 4
-E. M. Sturges b Hodge .. 49
+F. Bullock lbw b Eppstein 4
+E. M. Sturges b Hodge.. 49
 F. W. Finch c Plum b Eppstein .. .. .. 18
 H. Lazell b Eppstein .. 0
 C. Fetherstonbray b McCarthy .. .. .. 0
 J. G. H. Orr b Hodge .. 18
 H. Lazell, jun., b Hodge 1
 P. S. Finch b Hodge .. 2
-J. Donnellman b Cocks.. 0
+J. Donnellman b Cocks .. 0
 F. Blake not out .. 8
-Extras .. 13
-
-Total .. 125
+Extras .. .. 13
+Total .. ..125
 
 READING SCHOOL.
 H. V. Plum b Lazell, jun. 26
 F. G. Clarke b Bullock .. 19
 J. Hodge b Bullock .. 5
 McCarthy not out .. 8
-W. L. Morris )
-Rev. W. C. Eppstein )
-R. A. Jackson )
-E. W. Hale )
-A. T. Cliff )
-S. W. Cooks ) Did not
-H. Silver ) bat.
+W. L. Morris
+Rev. W. C. Eppstein
+R. A. Jackson
+E. W. Hale
+A. T. Cliff
+S. W. Cooks
+H. Silver
+Did not bat.
 
-Extras .. 14
-
+Extras .. .. 14
 Total (3 wkts) .. 83
 
 BISCUIT FACTORY A XI. v. WOKINGHAM.—Played at Wokingham, on Saturday, in the presence of a large company of visitors. Score:—
@@ -82,33 +79,30 @@ J. Dowell c Ridgeway b May .. .. .. 6
 W. Garrard c Hensman b May .. .. .. 7
 V. F. Critchley c Caldicott b May .. .. 14
 H. J. Isaacs c Parker b May .. .. .. 4
-T. T. Cass c Hoasman b Dexter .. .. 6
-C. B. Maxwell c Barry b Feilham .. .. 23
-F. W. Phillips c Barry b Feltham .. .. 22
+T. T. Cass c Hoasman b Dexter .. .. .. 6
+C. B. Maxwell c Barry b Felltham .. .. 23
+F. W. Phillips c Barry b Felltham .. .. 23
 H. Matthews b Ridgeway 1
 F. G. Dormer not out .. 12
 E. L. Coates b Ridgeway 4
 A. Burgess c Ridgeway b May .. .. .. 15
-Extras .. 8
-
-Total .. 122
+Extras .. .. 8
+Total .. ..122
 
 WOKINGHAM.
 H. M. Dexter c Burgess b Maxwell .. .. 28
-B. Caldecott b Phillips .. 2
-J. May b Phillips .. 0
+E. Caldecott b Phillips .. 2
+J. May b Phillips .. .. 0
 C. Caldecott not out .. 20
-E. S. Barry c Garrard b Phillips .. .. 0
-W. G. Hensman c Cass b Phillips .. .. 2
-F. Feltham b Maxwell .. 3
-W. J. Ridgeway b Maxwell 1
+E. S. Barry c Garrard b Phillips .. .. .. 0
+W. G. Hensman c Cass b Phillips .. .. .. 2
+F. Felltham b Maxwell .. 3
+W. J. Ridgeway b Maxwell .. .. .. 1
 A. G. Bates b Phillips .. 1
 C. T. Murdoch b Phillips 0
 A. J. Parker not out .. 1
-
-Extras .. 7
-
-Total .. 74
+Extras .. .. 7
+Total .. .. 74
 
 BISCUIT FACTORY B XI. v. TWYFORD. — Played at Reading on Saturday last. With the score at 151 for two wickets, the Factory declared their innings closed. Twyford could make no stand against the bowling of Manning, who took four wickets for six runs, and Harding, who took three wickets for 27 runs. Score:—
 
@@ -117,35 +111,34 @@ A. Leaver not out .. 74
 A. W. Dowell b Bradford 4
 C. Crook b Hopkins .. 49
 J. R. Broad not out .. 17
-J. Stevens )
-B. Harding )
-W. Povey )
-J. Phillips )
-C. G. Love )
-E. Manning ) did not
-C. Manners ) bat.
+J. Stevens
+B. Harding
+W. Porey
+J. Phillips
+C. G. Love
+E. Manning
+C. Manners
+did not bat.
 
-Extras .. 8
-
-Total .. 151
+Extras .. .. 8
+Total .. ..151
 
 TWYFORD.
-E. Varndell b Harding .. 4
-T. Osman l-b-w b Harding .. .. .. 13
+E. Varndoll b Harding .. 4
+T. Osman 1-b-w b Harding .. .. .. 13
 Wadhams b Harding .. 4
 Readings run out .. 1
-Williams b Love .. .. 12
+Williams b Love.. .. 13
 Bye b Broad .. .. 9
-R. Cross not out .. .. 11
-G. Hopkins b Manning .. 0
+R. Cross not out .. 11
+C. Hopkins b Manning .. 0
 Bradford b Manning .. 1
 Walters b Manning .. 8
 A. Clark b Manning .. 0
-Extras .. 2
+Extras .. .. 2
+Total .. .. 59
 
-Total .. 59
-
-BISCUIT FACTORY STORES.—MARRIED v. SINGLE.—Played on the Recreation Ground, on Saturday, and after a pleasant game the married won by seven wickets. Score:—
+BISCUIT FACTORY STORES.—MARRIED v. SINGLE.—Played on the Recreation Ground, on Saturday, and after a pleasant game tho married won by seven wickets. Score:—
 
 SINGLE.
 F. Poffley b Huggins .. 35
@@ -157,28 +150,27 @@ C. Broadhurst b Dawson 5
 G. Bernard c Hall b Dix 6
 G. Ring c and b Cole .. 13
 W. Petherbridge b Cole.. 0
-H. Kilham not out .. 2
-H. Burris c Cole b Turner 1
-Extras .. 14
-
-Total .. 109
+H. Kilham not out .. 3
+H. Barrie c Cole b Turner 1
+Extras .. .. 14
+Total .. ..109
 
 MARRIED.
 W. Harding not out .. 66
 R. Cole b Hambleton .. 7
 A. Sawyer b Hambleton 6
 A. Dawson b Hambleton 19
-C. Wickens not out .. 4
-A. Furnell )
-B. Huggins )
-F. Dix ) Did not
-A. Turner ) bat.
-W. Hall )
-A. Garland )
+G. Wickens not out .. 4
+A. Furnell
+R. Huggins
+F. Dix
+A. Turner
+W. Hall
+A. Garland
+Did not bat.
 
-Extras .. 7
-
-Total .. 100
+Extras .. .. 7
+Total .. ..100
 
 GRAZELEY AND SPENCER'S WOOD INSTITUTE v. BISCUIT FACTORY C XI.—Played at Grazeley, on Saturday, and resulted in a win for the home team by 22 runs. Score:—
 
@@ -187,17 +179,15 @@ F. Guilding c & b Saunders .. .. .. 10
 L. Demons b Saunders .. 0
 T. S. Templeton c Ireson b Saunders .. .. 5
 G. Masters b Saunders .. 14
-J. Lowe b Ireson .. .. 16
+J. Lowe b Ireson .. 16
 R. J. Webb b Ireson .. 8
 J. Ross c Saunders b Russell .. .. .. 6
-J. Beesley run out .. .. 6
+J. Beesley run out .. 6
 G. Boshier b Russell .. 0
-G. Gale not out .. .. 2
-J. Blake b Russell .. .. 0
-
-Extras .. 2
-
-Total .. 61
+G. Gale not out .. 2
+J. Blake b Russell .. 0
+Extras .. .. 3
+Total .. .. 61
 
 BISCUIT FACTORY.
 R. Buller c Lowe b Templeton .. .. .. 9
@@ -211,16 +201,15 @@ P. Bates c & b Beesley .. 0
 H. Truss b Templeton .. 7
 W. Russell run out .. 6
 W. Dolton not out .. 0
-Extras .. 7
+Extras .. .. 6
+Total .. .. 43
 
-Total .. 43
-
-SUTTON'S A XI. v. CULHAM.—Played at Culham, on Wednesday, the visitors winning by nine runs, after Culham had lost only two wickets for 33 runs. Score:—
+SUTTON'S A XI. v. CULHAM.—Played at Culham, on Wednesday, the visitors winning by nine runs, after Culham had lost only two wickets for 93 runs. Score:—
 
 SUTTON'S.
 A. J. Hawes c Thirlwall b Letcher .. .. 5
-T. J. Bennett c Berry b Letcher .. .. .. 0
-J. May b Letcher .. 9
+T. J. Bennett c Berry b Letcher .. .. 0
+J. May b Letcher .. .. 9
 J. Bartlett b Letcher .. 7
 J. Allum c Maidment b Pearson .. .. .. 14
 R. Bowsher b Pearson .. 1
@@ -228,61 +217,56 @@ A. Shorter c Maidment b Letcher .. .. .. 0
 A. T. Austin b Letcher.. 0
 A. Curtis b Pearson .. 0
 G. Alder b Letcher .. 10
-H. B. Truman not out .. 2
-Extras .. 3
-
-Total .. 51
+H. E. Truman not out .. 2
+Extras .. .. 3
+Total .. .. 51
 
 CULHAM.
 J. Edwards b Austin .. 3
 J. Dolman c Truman b Austin .. .. .. 10
 A. Thirlwall b Austin .. 14
-H. Maidment c Bowsher b Bennett .. .. .. 1
-W. J. Letcher c Hawes b Bennett .. .. .. 0
+H. Maidment c Bowsher b Bennett .. .. 1
+W. J. Letcher c Hawes b Bennett .. .. .. 6
 E. S. Berry b Bennett .. 1
 A. Lovatt b Austin .. 1
 G. W. Pearson c Bowsher b Bennett .. .. .. 1
 T. Holmes b Bennett .. 2
 A. Mouncher b Bennett 0
 E. Nuttall not out .. 0
-Extras .. 3
+Extras .. .. 3
+Total .. .. 42
 
-Total .. 42
-
-SUTTON'S B XI. v. GRAZELEY AND SPENCER'S WOOD INSTITUTE.—Played on the Reading Ground, on Wednesday, the cœdesmen winning by 23 runs. Score:—
+SUTTON'S B XI. v. GRAZELEY AND SPENCER'S WOOD INSTITUTE.—Played on the Reading Ground, on Wednesday, the coedsmen winning by 23 runs. Score:—
 
 GRAZELEY AND S.W.I.
 F. Guilding b Wilmott .. 5
 G. Masters b Wilmott .. 24
 T. Templeton run out .. 6
-T. Core b Wilmott .. 3
+T. Cove b Wilmott .. 3
 J. Lowe b Wilmott .. 3
-E. Wheeler c & b Wilmott 0
+E. Whee er c & b Wilmott 0
 J. Beesley b Haines .. 1
-E. Rice not out .. .. 4
+E. Rice not out .. 4
 G. Rose c Ford b Wilmott 0
 V. Knowles b Wilmott .. 0
 G. Bowsher b Haines .. 0
-
-Extras .. 7
-
-Total .. 60
+Extras .. .. 7
+Total .. .. 60
 
 SUTTON'S.
 Haines b Templeton .. 31
-Luxton b Masters .. .. 18
+Luxton b Masters .. 18
 Swallow b Templeton .. 2
 White b Rose .. .. 0
 Wilmott c Wheeler b Masters .. .. .. 12
-Ford b Templeton .. .. 0
-Gear c Lowe b Templeton 5
-Waights b Masters .. .. 1
+Ford b Templeton .. 0
+Gear c Love b Templeton 3
+Waights b Masters .. 1
 Deacon not out .. .. 3
 Styles c Guilding b Masters .. .. .. 0
 Rouse b Masters .. .. 0
-Extras .. 3
-
-Total .. 83
+Extras .. .. 3
+Total .. .. 83
 
 OXFORD-ROAD v. CAVERSHAM HOUSE.—Played at Caversham, on the 15th inst., and resulted as follows:—
 
@@ -290,99 +274,94 @@ OXFORD-ROAD.
 W. D. Golby c Parr b Cave .. .. .. 0
 A. Stapley c Day b Cave 4
 G. Maggs c Day b Leigh 2
-R. Miller c Day b Cave 0
+R. Miller c Day b Cave 1
 Rickirds st. Leigh .. 25
 H. Chater c Hooke b Leigh .. .. .. 0
-H. Gyngell b Leigh .. 0
-Banwell c Day b Cave .. 0
+H. Gynge 1 b Leigh .. 0
+Banwell c Day b Cave .. 6
 Hicks b Leigh .. .. 9
 Road b Leigh .. .. 6
 Coles not out .. .. 2
-Extras .. 15
-
-Total .. 71
+Extras .. .. 15
+Total .. .. 71
 
 CAVERSHAM HOUSE.
 Leigh c Golby b Banwell 17
 Cave b Miller .. .. 11
 Day b Stapley .. .. 1
 Duckworth st. Golby .. 2
-H. Duckworth c and b Stapley .. .. .. 0
+H. Duckworth c and b Stapley .. .. .. 1
 Parr run out .. .. 4
 Gulliver run out .. .. 0
 Hook b Stapley .. .. 0
 Stallwood c Coles b Miller .. .. .. 1
 Butler b Stapley .. .. 0
 Farrell not out .. .. 0
-Extras .. 11
+Extras .. .. 11
+Total .. .. 51
 
-Total .. 51
-
-TEMPERANCE FORWARDS v. ST. ANDREW'S. — Played on the Recreation Ground, on Saturday, and resulted in a win for the former by 20 runs. Score:—
+TEMPERANCE FORWARDS v. ST. ANDREW'S.— Played on the Recreation Ground, on Saturday, and resulted in a win for the former by 20 runs. Score:—
 
 TEMPERANCE FORWARDS.
-E. Hobbs c Howse b Dudgeon. .. .. 0
-J. Morris b White .. 6
-A. Cane b Dudgeon .. 1
+E. Hobbs c Howse b Dudgeon.. .. .. 0
+J. Morris b White .. .. 6
+A. Cane b Dudgeon .. .. 1
 J. Smith not out .. .. 13
 P. Stabbington b White 11
 H. Hobbs b White .. .. 0
-T. Waite run out .. 0
+T. Waite run out .. .. 0
 C. Hobbs b White .. .. 4
 H. Blake b White .. .. 10
 C. Moss b L. Langley .. 10
 W. Hobbs b L. Langley 9
-Extras .. 3
-
-Total .. 57
+Extras .. .. 3
+Total .. .. 57
 
 ST. ANDREW'S.
 R. Howse b E. Hobbs .. 1
 J. Dudgeon b A. Cane .. 2
-A. Attwood b E. Hobbs.. 0
+A. Attwood b E. Hobbs. 0
 F. White c Morris b A. Cane .. .. .. 14
 L. Langley b E. Hobbs 2
 W. Armstrong b E. Hobbs .. .. .. 0
-W. Ham c Morris b A. Cane .. .. .. 2
-C. Langley b E. Hobbs.. 7
-C. Wenn run out. .. .. 3
+W. Hain c Morris b A. Cane .. .. .. 2
+C. Langley b E. Hobbs. 7
+G. Wenn run out .. .. 3
 G. Langley not out .. .. 1
 Roberts c Moss b A. Cane .. .. .. 0
-Extras .. 5
-
-Total .. 37
+Extras .. .. 5
+Total .. .. 37
 
 CLAREMONT v. GRANVILLE.—Played on Palmer Park on Saturday and resulted as follows:—
 
 GRANVILLE.
-Wells b Gillmore .. 5
-Firmin b Gillmore .. 2
-Street c Langston b Gillmore .. .. .. 6
-Thorp b Gillmore. .. .. 0
+Wells b Gilmore .. .. 5
+Firmin b Gilmore .. .. 2
+Street c Langston b Gilmore .. .. .. 6
+Thorp b Gilmore.. .. 0
 Neale run out .. .. 5
-Farley b Gillmore .. .. 14
-Howes b Gillmore .. .. 5
-Davis run out .. .. 0
-Marsland b Church .. 0
-Rannacus b Gillmore .. 0
+Farley b Gilmore .. .. 14
+Howes b Gilmore .. .. 6
+Davis run out .. .. 5
+Marsland b Church .. .. 0
+Runnacus b Gilmore .. 0
 Brown not out .. .. 0
-Extras .. 14
-
-Total .. 55
+Extras .. .. 14
+Total .. .. 55
 
 CLAREMONT.
-L. Gillmore c Brown b Farley .. .. .. 23
-Langston b Thorp .. .. 0
+L. Gilmore c Brown b Farley .. .. .. 23
+Langston b Thorp .. 0
 Church b Thorp .. .. 18
 Frame b Thorp .. .. 9
 Havercroft not out .. 19
 Sarjent b Farley .. .. 0
 Herrington c Farley b Firmin .. .. .. 2
 Lumb not out .. .. 4
-Talbot )
-Calvey ) did not bat.
-Kington )
+Talbot
+Ca'sey
+Kington
+did not bat.
 
-Extras .. 10
-
-Total .. 77
+Extras .. .. 10
+Total .. .. 77

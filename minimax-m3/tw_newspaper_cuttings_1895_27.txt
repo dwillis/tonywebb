@@ -1,117 +1,108 @@
 READING STANDARD: FRIDAY 20 SEPTEMBER 1895.
 
 49TH REGIMENTAL DISTRICT C.C.
-Matches played, 24 ; won, 13 ; lost, 10 ; drawn, 1.
+Matches played, 24; won, 13; lost, 10; drawn, 1.
 BATTING AVERAGES.
 
-                              Ings    Runs    not out    Times    Aver
-Pte Watts...........  23        610        3        142*    20.65
-Capt. Nepean ........  18        449        1        79      26.35
-Major Edwards ......   19        440        2        42      25.88
-Sergt Bedding.......   25        565        3        138*    25.66
-Sergt Bromley.......   24        333        1        54      14.47
-Lieut Swinton.......   21        274        2        34      14.42
-Pte Smith...........    6         70        0        58*     13.16
-Linc.-Corpl Croome..   22        163        2        33*      9.05
-Sergt-Dr Spencer ..   15        129        1        40       8.57
-Sergt Middleton.....   20         90        2        16       5
-Col.-Sgt Humphreys   22        201        1        25       4*80
+                        Ings  Runs  Times   Ings  Aver.
+                                  not out
+Pte Watts .............  23   610    3      142*  20.95
+Capt. Nepean ..........  18   449    1       73   26.23
+Major Edwards ........  19   440    2       62   25.84
+Sergt Bedding ........  25   505    3      138*  25.06
+Sergt Bromley ........  24   333    1       54   14.47
+Lieut Swinton ........  21   274    2       34   14.42
+Pte Smith ............   6    79    0       53*  13.16
+Linc-Corpl Croome ...  22   103    5       33*   9.08
+Sergt-Dr Spencer ...  15   120    1       40    8.57
+Sergt Middleton .....  20    90    2       16    5
+Col-Sgt Humphreys ..  22   201    1       25    4.90
+* Signifies not out.
 
-                          Signifies not out.
-                          BOWLING AVERAGES.
-                                    O         M         R        W        M       Aver
-Sergt Bedding ..........    263        690       62       94                9.07
-Lieut Swinton ..........    104        255       25       25              10.20
-Sergt Middleton ........      65        221       10       13              11.63
-L Corp Croome..........       92        126       426       32              13.31
-Sergt Bromley ..........      97        288       20       21              14.40
-Capt Nepean............      231        602       37       63              16.29
-O-Sergt Humphreys ....       65        210       12       11              17.50
-  N.C. Officers and Men's XI played 7 matches, won 4, lost
-2, drawn 1.
+BOWLING AVERAGES.
+                          O     R     W     M    Aver
+Sergt Bedding .......... 263   600   62   94    9.67
+Lieut Swinton .......... 104   255   22   25   10.26
+Sergt Middleton ........  65   221   19   13   11.63
+L Corpl Croome ........ 126   426   32   17   13.31
+Sergt Bromley .........  97   288   20   21   14.40
+Capt Nepean ........... 231   602   37   63   16.29
+O-Sergt Humphreys ...  65   210   12   11   17.50
 
-ROYAL BERKS SEED ESTABLISHMENT
-            CRICKET CLUB.
-   This club has enjoyed a successful season.   Of the
-19 matches played by the "A" team, 12 were won, 5
-lost and 2 drawn.   The total of runs obtained reached
-2,162 against 1,741 by their opponents.   The "B"
-team won six matches and lost four, and the juniors
-won four, lost three, whilst one ended in a tie.   Messrs
-Sutton have, as usual, been most liberal in supporting
-the club.   Appended are the batting averages for the
-season.
+N.C. Officers and Men's XI played 7 matches, won 4, lost 2, drawn 1.
 
-                              runs      ings     highest     aver
-                                                  score
-T J Bennett ............      280       10        64*       10.47
-J Allum ..............      305       28        68*       10.05
-A Shorter..............      172       15        73        14.33
-W J Crast .............      181       19        35        12.92
-M H F Sutton .........       41        3        20        13.66
-H J Barrett ............      196       16        41        13.06
-A J Hawes .............      248       21        38        11.81
-A Luxton...............       88        5        18        11.00
-T May .................      232       22        25        10.54
-James Bartlett...........       50        6        21         9.33
-E Haines ..............       72        8        31         9.00
-A T Austin.............      130       18        56         8.66
-E Deacon ..............       51        9        17         8.50
-J Bartlett .............       89       15        26         6.34
-R Bowler ..............       74       17        22*        6.72
-E Willmott ............       53        8        23         6.62
-J Ford.................       45        9        19         5.00
-G Gear.................       33        8         9         4.12
-                       *Not out.
+ROYAL BERKS SEED ESTABLISHMENT CRICKET CLUB.
+This club has enjoyed a successful season. Of the 19 matches played by the "A" team, 12 were won, 5 lost and 2 drawn. The total of runs obtained reached 2,162 against 1,741 by their opponents. The "B" team won six matches and lost four, and the juniors won four, lost three, whilst one ended in a tie. Messrs Sutton have, as usual, been most liberal in supporting the clu'. Appended are the batting averages for the season.
+
+                         runs   ings  highest  aver
+                                          score
+T J Bennett ............ 280    10     64*    10.47
+J Allum ................. 305    28     68*    10.05
+A Shorter ............... 172    15     73     14.33
+W J Grant ............... 181    19     35     12.92
+M H F Sutton ............  41     3     20     13.66
+H J Barrett ............. 196    16     41     13.06
+A J Hawes ............... 248    21     38     11.81
+A Luxton ................  88     ?     18     11.00
+T May ................... 232    22     25     10.54
+James Bartlett ..........  50     6     21      9.33
+E Haines ................  72     8     31      9.00
+A T Austin .............. 130    18     56      8.66
+E Deacon ................  51     9     17      8.50
+J Bartlett ..............  89    15     26      6.84
+R Bowater ...............  74    17     22*     6.72
+E Willmott ..............  53     8     23      6.62
+J Ford ..................  45     9     19      5.00
+G Gear ..................  33     8      9      4.12
+*Not out.
 
 BISCUIT FACTORY CRICKET CLUB.
 BATTING AND BOWLING ANALYSIS—SEASON 1895.
-
-     Team      Matches Pld    Won    Lost    Drawn
-       A           17         9       6       2
-       B           17         9       6       2
-       C           11         6       4       1
-                 ---         --      --      --
-                  45         24      16      6
+                  Matches Pld Won  Lost  Drawn
+Team      A .......  17      9    6     3
+          B .......  17      9    6     2
+          C .......  11      6    4     1
+                  ───      ─    ─     ─
+                  45      24   16     6
 
 BATTING AVERAGES A AND B.
-                                Most in   Times
-                       Ings      ings    not out    Runs     Aver
-W H Palmer .........    12        32        2       238      23.8
-J Dowell ............    18       107*       1       385      22.11
-C B Maxwell.........    16        60        1       294      19.6
-A Leaver............    20        74*       2       340      19.7
-T T Cass ............    17        54        2       289      19.4
-H Matthews..........     9        33*       1       140      17.5
-C Crook ............    12        48        0       201      16.9
-E G Love............    14        40*       1       110      15.5
-W Povey............    16        40        1       193      13.11
-F W Phillips.........    12        29        4       110      13.0
-W H Phillips.........    13        34        2       145      13.2
-H J Isaac............    10        30*       1       184      12.4
-J B Broad ............     6        17*       0        48      12.0
-V F Critchley ......    12        36        0       211      11.2
-S Howard ..............     6        65        0        94      15.4
-J Stevens..............    17        38        3       144      10.4
-T G Dormer ............    12        28*       3        83       9.2
-W Garrard..............    18        48        1       349       8.13
-J Manners..............     7        14        2       • 41      8.1
-                                C XI.
-J Saunders............    12     -  56        0       155      12.11
-A Fidler ..............    15        44        1       175      12.7
-B Buller..............    14        61*       2       190      14.10
-W Russell..............    11        24        0       109       9.10
+                        Ings  Most in   Times    Runs   Aver
+                               ings     not out
+W H Palmer ............   12    32        2       236   23.6
+J Dowell ...............   18   107*       1       385   22.61
+C B Maxwell ............   16    69        1       294   19.6
+A Leaver ...............   20    74*       2       340   19.7
+T T Cass ...............   17    54        2       289   19.4
+H Matthews .............    9    33*       1       140   17.5
+C Crook ................   12    48        0       201   16.9
+E G Love ...............   14    40*       7       110   15.5
+W Povey ................   16    40        1       193   13.11
+F W Phillips ...........   12    29        4       110   13.0
+W H Phillips ...........   13    34        2       145   13.2
+H J Isaacs .............   16    30*       1       184   12.4
+J E Broad ..............    6    17*       0        48   12.0
+V F Critchley ..........   12    30        0       211   11.2
+S Howard ...............    6    65        0        94   15.4
+J Stevens ..............   17    38        3       144   10.4
+T G Dormer .............   12    28*       3        83    9.2
+W Garrard ..............   18    48        1       149    8.13
+J Manners ..............    7    14        2        41    8.1
 
-                       * Signifies not out.
+C XI.
+J Saunders .............   12    56        0       155   12.11
+A Fidler ...............   15    44        1       175   12.5
+B Buller ...............   14    61*       2       190   15.10
+W Russell ..............   11    24        0       109    9.10
+* Signifies not out.
 
-                              BOWLING.
-                          Overs  Mdns  Wd  NB's  Runs  Wkts  Aver
-E L Coates ............   49     6    0    0    130    25    5.14
-C Manning ............  135    53    0    0    211    37    5.19
-W H Phillips .........  126    45    6    0    242    29    8.10
-A Burgess ............  262    82    0    0    547    62    8.47
-B Harding ............   75    24    6    0    161    17    6.11
-C B Maxwell .........  252    74    3    0    529    51   10.19
-C Manners ............   66    14    0    0    144    14   10.4
-J Manners ............   75    11    1    9    156    16   12.3
-F W Phillips .........  128    37    2    0    262    21   12.20
+BOWLING.
+                        Overs Mdns  Wd  NB's  Runs  Wkts  Aver
+E L Coates .............   49    6   0    0    130   25    5.14
+C Manning ..............   45    6   0    0    211   27    6.19
+W H Phillips ...........  136   45   6    0    242   29    8.10
+A Burgess ..............  262   82   0    1    547   62    8.47
+B Harding ..............   75   24   0    0    164   17    9.11
+C B Maxwell ............  252   74   3    1    529   51   10.10
+G Manners ..............   66   14   0    0    144   14   10.4
+J Manners ..............   75   11   1    0    156   16   12.3
+F W Phillips ...........  128   37   2    0    262   21   12.20

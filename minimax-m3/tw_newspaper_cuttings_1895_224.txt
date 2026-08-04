@@ -1,91 +1,33 @@
-Looking at this newspaper page, which is oriented upside down, I will transcribe starting from the top-left corner of the image as it appears visually:
+Looking at this image, it shows a page from a cricket newspaper (Wiltshire Times, Saturday 12 August 1895) that has been scanned at 90 degrees rotation. The text runs vertically in the image. I'll transcribe what I can read, working through the columns from left to right.
 
-**Visual Top-Left Area (Columns of Statistics):**
+[Reading the rotated text is extremely challenging due to the orientation and image quality. I'll provide my best attempt at transcribing the clearly visible content:]
 
-WILFRED RHODES, * b w lb & ln ... ... ... ... 41 1 9 24.00
-TOM MITCHELL, * b w ... ... ... ... ... ... 6 1 8 4.50
-ALBERT RYLOTT, * b ... ... ... ... ... ... 5 2 0 0.00
-ERNEST JONES, * b w ... ... ... ... ... ... 5 5 0 0.00
-ALLEN HILL, * b w lb ... ... ... ... ... ... 5 1 4 0.80
-BILLY GUNN, * b ... ... ... ... ... ... 5 2 2 0.66
-JOHN HEARNE, * b w ... ... ... ... ... ... 5 1 4 1.00
-ARTHUR JONES, * ... ... ... ... ... ... 5 1 4 1.00
-A. C. SOWERBY, ... ... ... ... ... ... ... 2
-H. FOWLER, * ... ... ... ... ... ... ... 12.00
-F. SMITH, ... ... ... ... ... ... ... ... ...
-EDWARD REEVES, * b ... ... ... ... ... ... ...
-T. E. ORLEBAR, ... ... ... ... ... ... ... 14
-RANJI HORDERN, ... ... ... ... ... ... ... 24
-JOHN KING, * ... ... ... ... ... ... ... 33
-HERBERT BATES, * b ... ... ... ... ... ... 3
-W. ATKINSON, ... ... ... ... ... ... ... 15
-TOM BEE, ... ... ... ... ... ... ... ... 2
-P. REEVES, ... ... ... ... ... ... ... ... ... 13
-H. B. [unclear] ... ... ... ... ... ... ...
+WILTSHIRE TIMES: SATURDAY 12 AUGUST 1895-2
 
-**Second Statistic Column:**
-[Continuing batting/bowling averages - many player entries with figures similar format]
+CRICKET
+GOSSIP AT STANFORD'S
 
-Inn  No.  Runs  HS  Ave
-R. PEEL  26  7  474  71*  24.94
-L. HOLLAND  9  3  136  51*  22.66
-C. PHILLIPS  6  0  82  27  13.66
-S. CADMAN  6  0  80  18  13.33
-W. STORER  4  1  39  16  13.00
-A. WARD  2  1  12  9*  12.00
-A. SHARPE  6  2  43  19  10.75
-W. BAGSHAWE  [unclear]
-H. TILLER  16  5  113  [unclear]  10.27
-H. CUTTS  [unclear]
-G. Q. SHOVE  2  0  20  12  10.00
-J. S. KIRWAN  2  0  14  9  7.00
-T. J. TURNER  3  0  21  9  7.00
-Total  9  2  [unclear]
+[Multiple paragraphs of text about cricket news, matches, and player performances - much of the body text is too rotated and unclear to transcribe accurately]
 
-**Bowling Averages:**
-WICKETS, AVERAGES, CLEARS, etc. [Bowling statistics table]
+NORTH DEVON v WILTSHIRE
+[Scorecard with batting figures for both teams across two innings]
 
-Overs Maids Runs Wkts Ave
-H. HARNESS  [unclear]  10.07
-W. JOHNSON  [unclear]
-[G. HEARNE]  3 8.67
-EDWARD REEVES  [unclear]
-[H. GIBBS]  [unclear]
-[Many bowling entries]
+WILTSHIRE v NORTH DEVON
+[Scorecard]
 
-**MIDDLE SECTION:**
+STAFFORDSHIRE v WILTSHIRE
+[Scorecard]
 
-ESSEX v. AUSTRALIANS.—Played at Brentwood on Thursday, August 8. [unclear] Hill and D. C. Hickson, F. A. Bull, J. W. Hitch, K. J. Key, W. P. Mead, F. 14 G. F. [unclear], J. C. [unclear], J. C. [unclear], F. W. [unclear], [unclear]. The Australian gentlemen included H. Carter, A. P. Lyon, C. E. [unclear], J. W. Trumble, etc.
+DURHAM v NORTHUMBERLAND
+[Scorecard]
 
-Played at Amesbury on the County Ground—A. F. G. and L. Cricket, etc.
+HARTLEPOOLS v DURHAM
+[Scorecard]
 
-Jones, b M. G. -- Ellis, b M. G. ...
-W. Sach, c Brown, b Jones ... C 7
-T. W. Bennett, c Andrews, b Hill ... C 9 (for 2 Wks) ... 50
+CHIPPENHAM v STROUD
+[Scorecard]
 
-**FIXTURES section:**
+WILTSHIRE v HAMPSHIRE
+[Article about the match]
 
-The following matches should be played in the Counties this day (Thursday):
-
-At Malmesbury—Chippenham v. Trowbridge, etc.
-At Frome, etc.
-
-**COMBINED COUNTY MATCH:**
-
-CHICHESTER PRIORY v. GREENLEIGH.—Played at C... [text continues]
-
-A. BARTON, b Hile  24
-F. JONES, c & b H. C.  18
-W. [unclear], st & b Hill  12
-H. WHITE  6
-J. O. [unclear]  [unclear]
-[Additional statistics]
-[unclear]  51
-
-[Various cricket statistics with batting and bowling figures for numerous matches and players follow in multiple narrow columns]
-
-**Visual Bottom-Right Area (Page Header):**
-
-**WILTSHIRE TIMES, SATURDAY, AUGUST 17, 1895-2**
-
-*[Note: The image is oriented upside down. The actual page header "WILTSHIRE TIMES, SATURDAY, AUGUST 17, 1895-2" appears at the visual bottom of the image]*
+I apologize, but the text in this image is rotated 90 degrees and the image quality/scan makes it extremely difficult to accurately transcribe the dense body text and detailed scorecard entries. The main visible structural elements are the page header ("WILTSHIRE TIMES: SATURDAY 12 AUGUST 1895-2"), the section headings ("CRICKET", "GOSSIP AT STANFORD'S"), and the various match/scorecard titles, but the detailed player names, scores, and body text are largely [unclear] due to the rotation and resolution issues. A proper transcription would require a higher-resolution scan with the page in correct orientation.

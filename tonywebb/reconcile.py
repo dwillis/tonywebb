@@ -1,9 +1,10 @@
 """Multi-run OCR reconciliation with an image referee.
 
-Runs 2-3 transcription models over the same collection, auto-accepts lines
-where they agree, and asks a vision model to read the original page image
-where they disagree. Line-level alignment plus targeted adjudication turns
-"review 247 pages" into "review a few flagged lines per page."
+Runs 2 or more transcription models over the same collection, auto-accepts
+lines where they agree (with plurality voting when 3+ runs are used), and
+asks a vision model to read the original page image where they disagree.
+Line-level alignment plus targeted adjudication turns "review 247 pages"
+into "review a few flagged lines per page."
 
 The first run directory passed on the CLI is the reference (best model first);
 its line breaks and ornaments are preserved in the output. Other runs are
@@ -129,14 +130,107 @@ def align_to_reference(ref_content: list[str], other_content: list[str]) -> list
     return segments
 
 
-def _wrap_repair(ref_keys, other_keys, other_content, i1, i2, j1, j2) -> list[Segment]:
-    """Repair a ``replace`` opcode for the wrap-style difference between runs.
+# How many lines one side may wrap a single line of the other into (a safety
+# valve only -- the length early-abort in _join_match is the real bound), how
+# far ahead to search (on each side) for the next point both sides agree
+# again after a genuine difference, and how similar two lines must be to be
+# paired 1:1 as a "changed line" rather than treated as unrelated. Bounded so
+# a single misread word deep inside a long, otherwise-identical passage costs
+# a small local search, not a linear rescan of the whole page.
+_MAX_WRAP_JOIN = 64
+_RESYNC_WINDOW = 48
+_PAIR_SIMILARITY = 0.7
 
-    If joining the ref-block keys and the other-block keys yields the same
-    string, the runs agree (one wraps, one does not) → one equal segment.
-    Otherwise peel equal prefix and suffix lines off into their own equal
-    segments and leave the unsplittable core as a single replace (or, if one
-    side is fully peeled away, a ref_only/other_only).
+
+def _join_match(target: str, keys, start: int, limit: int) -> int | None:
+    """Return k >= 2 if keys[start:start+k] space-joined equals target.
+
+    Grows the join incrementally and aborts as soon as the accumulated
+    length exceeds the target's -- content-line keys are never empty, so the
+    length grows by at least 2 per line and the loop is O(len(target))
+    regardless of _MAX_WRAP_JOIN. This is what lets one run's single-line
+    paragraph match another run's 30-plus wrapped lines (the old fixed cap
+    of 8 could never bridge a real column-width paragraph wrap).
+    """
+    tlen = len(target)
+    acc = [keys[start]]
+    acc_len = len(keys[start])
+    k = 1
+    while start + k < limit and k < _MAX_WRAP_JOIN and acc_len < tlen:
+        nxt = keys[start + k]
+        acc.append(nxt)
+        acc_len += 1 + len(nxt)
+        k += 1
+        if acc_len == tlen and " ".join(acc) == target:
+            return k
+    return None
+
+
+def _fuzzy_join(target: str, keys, start: int, limit: int) -> int | None:
+    """Return k >= 1 if keys[start:start+k] space-joined is ~similar to target.
+
+    The exact-join test above handles clean re-wrapping; this handles a
+    wrapped passage that ALSO contains a small OCR difference (one misread
+    word inside a paragraph one run wrapped over many lines). Joins are only
+    scored once their length is within ~15% of the target's, and accepted at
+    _PAIR_SIMILARITY -- confining the noise to a single-position dispute
+    instead of opening an ever-growing core.
+    """
+    tlen = len(target)
+    acc = keys[start]
+    k = 1
+    best: tuple[float, int] | None = None
+    while True:
+        if acc and abs(len(acc) - tlen) <= max(8, int(0.15 * tlen)):
+            ratio = difflib.SequenceMatcher(None, target, acc).ratio()
+            if ratio >= _PAIR_SIMILARITY and (best is None or ratio > best[0]):
+                best = (ratio, k)
+        if start + k >= limit or k >= _MAX_WRAP_JOIN or len(acc) > 1.15 * tlen + 8:
+            break
+        acc = acc + " " + keys[start + k]
+        k += 1
+    return best[1] if best else None
+
+
+def _match_at(ref_keys, other_keys, ri: int, oj: int, i2: int, j2: int) -> tuple[int, int] | None:
+    """If ref/other resync at (ri, oj), return (ref_lines_consumed, other_lines_consumed).
+
+    Tries an exact single-line match first, then a wrap-join in either
+    direction (ref-is-one-other-is-many, or the reverse). Returns None if
+    none of those hold at this exact position -- a genuine difference.
+    """
+    if ref_keys[ri] == other_keys[oj]:
+        return 1, 1
+    if j2 - oj >= 2:
+        k = _join_match(ref_keys[ri], other_keys, oj, j2)
+        if k is not None:
+            return 1, k
+    if i2 - ri >= 2:
+        k = _join_match(other_keys[oj], ref_keys, ri, i2)
+        if k is not None:
+            return k, 1
+    return None
+
+
+def _wrap_repair(ref_keys, other_keys, other_content, i1, i2, j1, j2) -> list[Segment]:
+    """Repair a ``replace`` opcode, resyncing after every genuine difference
+    instead of giving up on the whole block.
+
+    Two things turn a real, small difference into one giant dispute if left
+    unhandled: (a) the runs wrap text differently -- one run keeps a whole
+    paragraph/scorecard row on one line, another wraps it across several --
+    which makes EVERY line's key differ even though the actual content
+    mostly agrees; (b) once even one of those wrap-driven "differences"
+    isn't resolved, difflib's own line-level match has no further equal
+    anchors to find, so it lumps the rest of the block into one opcode.
+
+    This walks the block position by position, matching wrap-joins (a) or
+    exact lines (the common case) as it goes, and -- only at a genuine
+    content difference (b) -- searches a bounded window for the next point
+    both sides agree again, confining the dispute to just the lines between
+    here and there. Falls back to the previous whole-block-vs-give-up
+    behavior when nothing in the window resyncs (rare; e.g. truly scrambled
+    OCR for a whole section).
     """
     ref_block = ref_keys[i1:i2]
     other_block = other_keys[j1:j2]
@@ -144,32 +238,177 @@ def _wrap_repair(ref_keys, other_keys, other_content, i1, i2, j1, j2) -> list[Se
         return [Segment("equal", (i1, i2), other_content[j1:j2])]
 
     segs: list[Segment] = []
-    # Greedy equal-prefix peel.
     ri, oj = i1, j1
-    while ri < i2 and oj < j2 and ref_keys[ri] == other_keys[oj]:
-        segs.append(Segment("equal", (ri, ri + 1), [other_content[oj]]))
-        ri += 1
-        oj += 1
-    # Greedy equal-suffix peel (from the end, not crossing the prefix).
-    suffix: list[Segment] = []
-    ri2, oj2 = i2 - 1, j2 - 1
-    while ri2 >= ri and oj2 >= oj and ref_keys[ri2] == other_keys[oj2]:
-        suffix.append(Segment("equal", (ri2, ri2 + 1), [other_content[oj2]]))
-        ri2 -= 1
-        oj2 -= 1
-    suffix.reverse()
+    core_r0: int | None = None
+    core_o0: int | None = None
 
-    ref_left = ri2 >= ri      # reference lines remain in the core
-    other_left = oj2 >= oj    # other lines remain in the core
-    if ref_left and other_left:
-        segs.append(Segment("replace", (ri, ri2 + 1), other_content[oj:oj2 + 1]))
-    elif ref_left:
-        segs.append(Segment("ref_only", (ri, ri2 + 1), []))
-    elif other_left:
-        segs.append(Segment("other_only", (ri, ri), other_content[oj:oj2 + 1]))
-    # If neither side remains, both were fully peeled (all-equal core) — nothing to add.
-    segs.extend(suffix)
+    def flush_core(r_end: int, o_end: int) -> None:
+        nonlocal core_r0, core_o0
+        if core_r0 is None:
+            return
+        ref_left = r_end > core_r0
+        other_left = o_end > core_o0
+        if ref_left and other_left:
+            segs.append(Segment("replace", (core_r0, r_end), other_content[core_o0:o_end]))
+        elif ref_left:
+            segs.append(Segment("ref_only", (core_r0, r_end), []))
+        elif other_left:
+            segs.append(Segment("other_only", (core_r0, core_r0), other_content[core_o0:o_end]))
+        core_r0 = core_o0 = None
+
+    while ri < i2 and oj < j2:
+        m = _match_at(ref_keys, other_keys, ri, oj, i2, j2)
+        if m is not None:
+            rlen, olen = m
+            flush_core(ri, oj)
+            segs.append(Segment("equal", (ri, ri + rlen), other_content[oj:oj + olen]))
+            ri += rlen
+            oj += olen
+            continue
+
+        # Nearly-identical content is the same printed passage with an
+        # OCR-level difference (a misread digit or surname) -- pair it as a
+        # bounded replace instead of letting it open a growing core. k=1
+        # pairs noisy scorecard lines 1:1; k>1 pairs one run's long
+        # paragraph line against the other's wrapped-but-slightly-noisy
+        # lines. Without pairing, dense noise leaves no clean resync anchor
+        # anywhere nearby and whole scorecards/prose columns collapse into
+        # one giant dispute.
+        k = _fuzzy_join(ref_keys[ri], other_keys, oj, j2)
+        if k is not None:
+            flush_core(ri, oj)
+            segs.append(Segment("replace", (ri, ri + 1), other_content[oj:oj + k]))
+            ri += 1
+            oj += k
+            continue
+        k = _fuzzy_join(other_keys[oj], ref_keys, ri, i2)
+        if k is not None and k > 1:
+            flush_core(ri, oj)
+            segs.append(Segment("replace", (ri, ri + k), [other_content[oj]]))
+            ri += k
+            oj += 1
+            continue
+
+        # A genuine difference. Open (or extend) the pending dispute span and
+        # search a bounded window for the next point both sides resync --
+        # via an exact match OR a wrap-join, same test as above, so we can
+        # resync back into wrapped rows on the far side of the difference,
+        # not just an exact line match.
+        if core_r0 is None:
+            core_r0, core_o0 = ri, oj
+        max_dr = i2 - ri - 1
+        max_do = j2 - oj - 1
+        anchor = None
+        for dr in range(0, min(_RESYNC_WINDOW, max_dr) + 1):
+            for do in range(0, min(_RESYNC_WINDOW, max_do) + 1):
+                if dr == 0 and do == 0:
+                    continue
+                if _match_at(ref_keys, other_keys, ri + dr, oj + do, i2, j2) is not None:
+                    anchor = (dr, do)
+                    break
+            if anchor:
+                break
+        if anchor is None:
+            # Nothing resyncs in range -- close out the rest of the block as
+            # one final dispute, same as the old give-up behavior.
+            ri, oj = i2, j2
+            break
+        dr, do = anchor
+        ri += dr
+        oj += do
+
+    flush_core(ri, oj)
+    if ri < i2:
+        segs.append(Segment("ref_only", (ri, i2), []))
+    if oj < j2:
+        segs.append(Segment("other_only", (ri, ri), other_content[oj:j2]))
     return segs
+
+
+# ── Section-order canonicalization ───────────────────────────────────────────
+
+# A match header: an all-caps-ish line containing " v " / " v. " (e.g.
+# "HIGH WYCOMBE v. MR. E. STEVENS' XI."). No lowercase before the separator.
+_SECTION_HDR = re.compile(r"^[^a-z]+\sv\.?\s")
+_SECTION_MATCH_THRESHOLD = 0.6
+
+
+def _is_section_header(key: str) -> bool:
+    return bool(_SECTION_HDR.match(key)) and len(key) < 90
+
+
+def _split_sections(content: list[str]) -> list[tuple[int, int, str]]:
+    """Split content lines into (start, end, header_key) sections at match headers."""
+    keys = [normalize_line(l) for l in content]
+    starts = [i for i, k in enumerate(keys) if _is_section_header(k)]
+    if not starts:
+        return [(0, len(content), "")]
+    secs: list[tuple[int, int, str]] = []
+    if starts[0] > 0:
+        secs.append((0, starts[0], ""))
+    bounds = starts + [len(content)]
+    for a, b in zip(bounds, bounds[1:]):
+        secs.append((a, b, keys[a]))
+    return secs
+
+
+def _reorder_sections(ref_content: list[str], other_content: list[str]) -> tuple[list[str], bool]:
+    """Reorder ``other_content``'s sections to the reference's section order.
+
+    These are scrapbook pages of pasted newspaper cuttings, and different
+    models read the collage in different orders -- the same matches appear in
+    both runs but transposed. Line-level alignment cannot bridge transposed
+    blocks (difflib keeps the longest in-order subsequence; everything out of
+    order becomes one giant dispute), so sections are matched by their
+    "X v. Y" headers and the other run is re-sequenced to the reference's
+    order before alignment. Unmatched sections stay next to the matched
+    neighbor they originally followed. Returns (content, was_reordered).
+    """
+    ref_secs = _split_sections(ref_content)
+    oth_secs = _split_sections(other_content)
+    if len(ref_secs) < 2 or len(oth_secs) < 2:
+        return other_content, False
+
+    pairs = []
+    for oi, (_, _, ok) in enumerate(oth_secs):
+        if not ok:
+            continue
+        for rix, (_, _, rk) in enumerate(ref_secs):
+            if not rk:
+                continue
+            ratio = difflib.SequenceMatcher(None, ok, rk).ratio()
+            if ratio >= _SECTION_MATCH_THRESHOLD:
+                pairs.append((ratio, oi, rix))
+    pairs.sort(reverse=True)
+    o2r: dict[int, int] = {}
+    used_r: set[int] = set()
+    for ratio, oi, rix in pairs:
+        if oi in o2r or rix in used_r:
+            continue
+        o2r[oi] = rix
+        used_r.add(rix)
+    if len(o2r) < 2:
+        return other_content, False
+
+    sort_keys: list[float] = []
+    last = -1.0
+    for oi, sec in enumerate(oth_secs):
+        if oi in o2r:
+            last = float(o2r[oi])
+            sort_keys.append(last)
+        elif oi == 0 and sec[2] == "":
+            sort_keys.append(-1.0)  # leading pre-header chunk stays first
+        else:
+            sort_keys.append(last + 0.5)  # unmatched: stay after original neighbor
+    order = sorted(range(len(oth_secs)), key=lambda oi: sort_keys[oi])
+    if order == list(range(len(oth_secs))):
+        return other_content, False
+
+    out: list[str] = []
+    for oi in order:
+        s, e, _ = oth_secs[oi]
+        out.extend(other_content[s:e])
+    return out, True
 
 
 # ── Data model ────────────────────────────────────────────────────────────────
@@ -248,6 +487,41 @@ class PageReconciliation:
             "disputes": [d.to_dict() for d in self.disputes],
             "arithmetic_flags": [f.to_dict() for f in self.arithmetic_flags],
         }
+
+
+# ── Reference election ───────────────────────────────────────────────────────
+
+
+def elect_reference(texts_by_label: list[tuple[str, str]], default_label: str) -> str:
+    """Pick the run that agrees best with the others as this page's reference.
+
+    Which model deviates structurally (splits a two-column table, fuses two
+    columns onto one line, reads the collage in a different order) varies
+    page by page, and a deviant REFERENCE poisons every pairwise alignment
+    at once -- no global "best model first" ordering fixes that. For each
+    candidate, align every other run against it and score the mean fraction
+    of its lines covered by equal segments; the outlier scores low against
+    everyone and can never win. ``default_label`` (the first CLI dir) wins
+    ties.
+    """
+    if len(texts_by_label) < 3:
+        return default_label
+    contents = {label: split_content_lines(text)[0] for label, text in texts_by_label}
+    best_label, best_score = default_label, -1.0
+    for label, ref_content in contents.items():
+        if not ref_content:
+            continue
+        cover = 0.0
+        for other_label, other_content in contents.items():
+            if other_label == label:
+                continue
+            segs = align_to_reference(ref_content, other_content)
+            eq = sum(s.ref_span[1] - s.ref_span[0] for s in segs if s.kind == "equal")
+            cover += eq / len(ref_content)
+        score = cover / (len(contents) - 1)
+        if score > best_score + 1e-9 or (abs(score - best_score) <= 1e-9 and label == default_label):
+            best_label, best_score = label, score
+    return best_label
 
 
 # ── Classification ────────────────────────────────────────────────────────────
@@ -330,10 +604,23 @@ def reconcile_page(
             ref_ornaments=ref_ornaments,
         )
 
-    coverages = [
-        (label, _run_coverage(ref_content, split_content_lines(other_text)[0]))
-        for label, other_text in active_runs
-    ]
+    def _equal_cover(cov) -> int:
+        return sum(1 for seg in cov[1].values() if seg.kind == "equal")
+
+    coverages = []
+    for label, other_text in active_runs:
+        other_content = split_content_lines(other_text)[0]
+        cov = _run_coverage(ref_content, other_content)
+        reordered_content, reordered = _reorder_sections(ref_content, other_content)
+        if reordered:
+            # Header matching can misfire (misread headers pair the wrong
+            # sections and scramble a run that was fine) -- keep the reorder
+            # only when it demonstrably aligns MORE reference lines.
+            cov2 = _run_coverage(ref_content, reordered_content)
+            if _equal_cover(cov2) > _equal_cover(cov):
+                cov = cov2
+                notes.append(f"{label}: sections reordered to match reference order")
+        coverages.append((label, cov))
     labels = [ref_label] + [label for label, _ in active_runs]
     n = len(ref_content)
 
@@ -412,21 +699,25 @@ def reconcile_page(
             stats["unanimous"] += 1
             kind = "conflict"  # placeholder; unanimous means no real dispute
         else:
-            non_ref_keys = [k for k, ls in key_counts.items() if ref_label not in ls]
-            # Find a 2-of-3 majority.
-            majority_key = None
-            for key, ls in key_counts.items():
-                if len(ls) >= 2:
-                    majority_key = key
-                    break
-            if majority_key is not None:
+            # Find a clear plurality: a key held by strictly more runs than any
+            # other key. A tie for the top count (e.g. a genuine 2-2 split
+            # across a 4-run ensemble) is NOT a majority -- with only 2-3 runs
+            # "the first key with >=2 supporters" was always a real majority
+            # over the remaining 1, but that stops being true at 4+ runs, where
+            # two distinct readings can each hold exactly half the votes.
+            counts_by_key = {key: len(ls) for key, ls in key_counts.items()}
+            top_count = max(counts_by_key.values())
+            top_keys = [key for key, count in counts_by_key.items() if count == top_count]
+            if top_count >= 2 and len(top_keys) == 1:
+                majority_key = top_keys[0]
                 majority_label = key_counts[majority_key][0]
                 chosen_lines = _variant_raw_lines(variants, majority_label)
                 resolution = "majority"
                 stats["majority"] += 1
                 kind = "conflict"
             else:
-                # Three-way disagreement → referee.
+                # No clear plurality (a tie for the top count, or every run
+                # disagrees uniquely) → referee.
                 majority_label = ref_label
                 chosen_lines = ref_text_region  # placeholder; referee may overwrite
                 resolution = "conflict"
@@ -498,59 +789,72 @@ def _region_lines_for_run(r0, r1, ref_content, seg_at, block_lines) -> list[str]
 
 
 def _build_regions(n, stable, coverages):
-    """Group contiguous disagreements into ``(r0, r1, gap_inserts)`` regions.
+    """Group disagreements into ``(r0, r1, gap_inserts)`` regions.
 
     A ref position is active when not stable. A gap (before content index g) is
-    active when any run inserts there. Maximal contiguous active-node groups
-    become regions. ``gap_inserts`` is a list of ``(gap, {label: lines})`` for
-    active gaps inside the region (so the caller can fold insertions into
-    variants and output).
+    active when any run inserts there. Contiguous active nodes group into a
+    region, but the region is CUT at any boundary that no run's multi-line
+    non-equal segment spans -- on dense scorecard pages nearly every line has
+    some run disagreeing, and without cutting, whole scorecards merge into one
+    giant dispute that votes (and referees) as a single unit. Per-line regions
+    instead let a line where only one run misread a digit resolve as an
+    ordinary 3-1 majority. A boundary inside one run's multi-line replace/
+    ref_only segment can't be cut (there is no way to attribute that run's
+    block lines to either side), and a gap insert glues its two neighbors.
+
+    Each active gap belongs to exactly ONE region (tracked via ``consumed``):
+    previously a trailing gap was folded into the region ending at it and then
+    revisited as its own insertion-only region, double-counting the inserted
+    lines in two disputes.
     """
     # Collect inserts per run per gap. coverages entries are (label, coverage)
     # where coverage = (segments, seg_at, block_lines, inserts).
-    gap_has_insert = set()
     gap_insert_map: dict[int, dict[str, list[str]]] = {}
     for label, cov in coverages:
-        inserts = cov[3]
-        for g, lines in inserts.items():
-            gap_has_insert.add(g)
+        for g, lines in cov[3].items():
             gap_insert_map.setdefault(g, {})[label] = lines
 
+    def cuttable(r: int) -> bool:
+        """Can the boundary between positions r-1 and r be a region edge?"""
+        if r in gap_insert_map:
+            return False  # an insertion sits on this boundary; keep it glued
+        for _, cov in coverages:
+            seg = cov[1].get(r - 1)
+            if seg is not None and seg is cov[1].get(r) and seg.kind != "equal":
+                return False
+        return True
+
     regions: list[tuple[int, int, list[tuple[int, dict[str, list[str]]]]]] = []
+    consumed_gaps: set[int] = set()
     r = 0
     while r <= n:
-        active_gap = r in gap_has_insert
+        active_gap = r in gap_insert_map and r not in consumed_gaps
         active_ref = r < n and not stable[r]
         if not (active_gap or active_ref):
             r += 1
             continue
-        # Start a region. r0 is the first ref index covered (or r if insertion-only).
-        # Walk forward consuming contiguous active nodes.
         r0 = r
         region_gaps: list[tuple[int, dict[str, list[str]]]] = []
-        # Leading gap insertion at r0 (if ref r0 is active it still belongs to region).
         if active_gap:
             region_gaps.append((r, gap_insert_map[r]))
-        # Consume ref positions and internal/trailing gaps until a break.
-        r1 = r
-        j = r
-        if active_ref:
-            while j < n and not stable[j]:
-                j += 1
-            r1 = j
-            # Internal + trailing gaps within (r0, r1] are part of the region.
-            for g in range(r0 + 1, r1 + 1):
-                if g in gap_has_insert:
-                    region_gaps.append((g, gap_insert_map[g]))
-            # A trailing gap at r1 (just past the last active ref line) is contiguous too.
-            if r1 in gap_has_insert and (r1, gap_insert_map[r1]) not in region_gaps:
-                region_gaps.append((r1, gap_insert_map[r1]))
-            regions.append((r0, r1, region_gaps))
-            r = r1
-        else:
+            consumed_gaps.add(r)
+        if not active_ref:
             # Insertion-only region at gap r (ref r is stable or out of range).
             regions.append((r, r, region_gaps))
             r += 1
+            continue
+        # Consume ref positions until a stable position or a cuttable boundary.
+        j = r + 1
+        while j < n and not stable[j] and not cuttable(j):
+            j += 1
+        r1 = j
+        # Internal + trailing gaps within (r0, r1] are part of the region.
+        for g in range(r0 + 1, r1 + 1):
+            if g in gap_insert_map and g not in consumed_gaps:
+                region_gaps.append((g, gap_insert_map[g]))
+                consumed_gaps.add(g)
+        regions.append((r0, r1, region_gaps))
+        r = r1
     return regions
 
 
@@ -899,10 +1203,10 @@ def _chosen_preview(d: dict) -> str:
 def register_parser(subparsers):
     p = subparsers.add_parser(
         "reconcile",
-        help="Reconcile 2-3 OCR runs; auto-accept agreements, referee disagreements.",
+        help="Reconcile 2+ OCR runs; auto-accept agreements, referee disagreements.",
     )
     p.add_argument("run_dirs", nargs="+",
-                   help="2-3 run directories; FIRST is the reference (best model first).")
+                   help="2 or more run directories; FIRST is the reference (best model first).")
     p.add_argument("--output-dir", default="reconciled/",
                    help="Directory for reconciled per-page .txt files.")
     p.add_argument("--referee-model", default=config.DEFAULT_RECONCILE_MODEL,
@@ -987,25 +1291,20 @@ def run(args) -> None:
             print(f"Skipping page {page} (already reconciled)")
             continue
 
-        ref_text = ref_pages.get(page)
-        if ref_text is None:
-            # Reference missing for this page: use the longest available other as a
-            # fallback spine and note it. (Reference is expected to be complete.)
-            fallback = max(
-                ((label, p[page]) for label, p in others if page in p),
-                key=lambda x: len(x[1]), default=None,
-            )
-            if fallback is None:
-                print(f"  ⚠ Page {page}: no run has it; skipping")
-                continue
-            ref_text = fallback[1]
-            ref_label_page = fallback[0]
-            note_prefix = [f"reference missing; used {fallback[0]} as reference"]
-        else:
-            ref_label_page = ref_label
-            note_prefix = []
-
-        runs = [(label, p[page]) for label, p in others if page in p]
+        avail = [(label, p[page]) for label, p in run_label_pages if page in p]
+        if not avail:
+            print(f"  ⚠ Page {page}: no run has it; skipping")
+            continue
+        # Which model deviates structurally varies page by page; elect the
+        # run that agrees best with the others as this page's reference
+        # (the first CLI dir wins ties). This also covers pages the first
+        # dir is missing entirely.
+        ref_label_page = elect_reference(avail, avail[0][0])
+        ref_text = dict(avail)[ref_label_page]
+        runs = [(label, text) for label, text in avail if label != ref_label_page]
+        note_prefix = []
+        if ref_label_page != ref_label:
+            note_prefix = [f"reference: {ref_label_page} (elected over {ref_label})"]
 
         print(f"Processing page {page}")
         rec = reconcile_page(page, ref_text, runs, ref_label=ref_label_page)
