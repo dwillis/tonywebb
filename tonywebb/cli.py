@@ -16,6 +16,7 @@ from . import (
     promote_reviewed,
     reconcile,
     transcribe,
+    willis_compare,
 )
 
 
@@ -39,6 +40,7 @@ def build_parser() -> argparse.ArgumentParser:
         reconcile,
         compare,
         build_browser,
+        willis_compare,
         clubs,
     ):
         module.register_parser(subparsers)

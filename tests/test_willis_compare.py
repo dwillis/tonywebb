@@ -1,5 +1,11 @@
 """Tests for willis_compare.py — Willis-vs-model comparison row building."""
 
+import csv
+import json
+import re
+
+import pytest
+
 from tonywebb.evaluate import IndexRow
 from tonywebb.willis_compare import build_comparison_rows
 
@@ -84,3 +90,72 @@ class TestBuildComparisonRows:
         rows = build_comparison_rows(truth, model, fuzzy_threshold=0.8)
         for r in rows:
             assert r["similarity"] is None
+
+
+def _write_csv(path, rows):
+    with path.open("w", newline="", encoding="utf-8") as f:
+        writer = csv.writer(f)
+        writer.writerow(["matchup", "page", "date", "content_type", "collection", "pages"])
+        for row in rows:
+            writer.writerow(row)
+
+
+class TestRunWillisCompare:
+    def test_writes_output_file(self, tmp_path, monkeypatch):
+        _write_csv(tmp_path / "match_index_willis.csv", [
+            ["Team A v Team B", "1", "18950527", "match information", "coll", ""],
+        ])
+        _write_csv(tmp_path / "match_index_modelx.csv", [
+            ["Team A v Team B", "1", "18950527", "match information", "coll", ""],
+        ])
+
+        monkeypatch.chdir(tmp_path)
+        from tonywebb.willis_compare import run_willis_compare
+        run_willis_compare(
+            pattern="match_index_*.csv",
+            truth_path="match_index_willis.csv",
+            output_path="browser/willis_compare.html",
+        )
+
+        out = tmp_path / "browser" / "willis_compare.html"
+        assert out.exists()
+
+    def test_truth_file_excluded_from_models(self, tmp_path, monkeypatch):
+        _write_csv(tmp_path / "match_index_willis.csv", [
+            ["Team A v Team B", "1", "18950527", "match information", "coll", ""],
+        ])
+        _write_csv(tmp_path / "match_index_modelx.csv", [
+            ["Team A v Team B", "1", "18950527", "match information", "coll", ""],
+        ])
+
+        monkeypatch.chdir(tmp_path)
+        from tonywebb.willis_compare import run_willis_compare
+        run_willis_compare(
+            pattern="match_index_*.csv",
+            truth_path="match_index_willis.csv",
+            output_path="willis_compare.html",
+        )
+
+        html = (tmp_path / "willis_compare.html").read_text()
+        match = re.search(r'<script id="data" type="application/json">(.*?)</script>', html, re.DOTALL)
+        assert match
+        data = json.loads(match.group(1))
+        assert data["models"] == ["modelx"]
+        assert "willis" not in data["models"]
+
+    def test_missing_truth_file_does_not_crash(self, tmp_path, monkeypatch, capsys):
+        monkeypatch.chdir(tmp_path)
+        from tonywebb.willis_compare import run_willis_compare
+        run_willis_compare(truth_path="does_not_exist.csv")
+        captured = capsys.readouterr()
+        assert "not found" in captured.out.lower()
+        assert not (tmp_path / "browser" / "willis_compare.html").exists()
+
+
+class TestCLI:
+    def test_registered_in_parser(self):
+        from tonywebb.cli import build_parser
+        parser = build_parser()
+        args = parser.parse_args(["willis-compare", "--pattern", "x.csv"])
+        assert args.pattern == "x.csv"
+        assert args.command == "willis-compare"

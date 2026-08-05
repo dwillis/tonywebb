@@ -17,6 +17,7 @@ EXPECTED_SUBCOMMANDS = {
     "reconcile",
     "compare",
     "browse",
+    "willis-compare",
     "clubs",
 }
 

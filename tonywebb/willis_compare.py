@@ -5,7 +5,12 @@ generation this feeds into.
 
 from __future__ import annotations
 
+import glob
+import json
+from pathlib import Path
+
 from . import evaluate
+from .build_browser import label
 
 
 def _row(page: int, status: str, content_type: str, willis: dict | None, model: dict | None, similarity: float | None) -> dict:
@@ -84,3 +89,72 @@ def build_comparison_rows(
     # side has a row) so ordering within a page is stable and deterministic.
     rows.sort(key=lambda r: (r["page"], (r["willis"] or r["model"] or {}).get("matchup", "")))
     return rows
+
+
+def run_willis_compare(
+    pattern: str = "match_indexes/match_index_*.csv",
+    truth_path: str = "match_indexes/match_index_willis.csv",
+    output_path: str = "browser/willis_compare.html",
+    fuzzy_threshold: float = 0.8,
+) -> None:
+    truth_file = Path(truth_path)
+    if not truth_file.exists():
+        print(f"Ground truth not found: {truth_file}")
+        return
+    truth_rows, _ = evaluate.load_index(truth_file)
+
+    files = sorted(
+        p for p in glob.glob(pattern)
+        if Path(p).resolve() != truth_file.resolve()
+    )
+    if not files:
+        print(f"No files matched {pattern} (besides the truth file).")
+        return
+
+    models: list[str] = []
+    data: dict[str, list[dict]] = {}
+    for path in files:
+        name = label(path)
+        model_rows, _ = evaluate.load_index(Path(path))
+        data[name] = build_comparison_rows(truth_rows, model_rows, fuzzy_threshold)
+        models.append(name)
+
+    payload = json.dumps({"models": models, "data": data}, ensure_ascii=False)
+    html = _build_html().replace("__DATA__", payload)
+
+    out = Path(output_path)
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text(html, encoding="utf-8")
+    print(f"Wrote {output_path} ({len(models)} model(s) vs {truth_path})")
+
+
+def _build_html() -> str:
+    # Filled in with the real two-column page-by-page template in Task 3.
+    # The <script id="data"> wrapper matches build_browser.py's convention
+    # so this task's tests (which only check the embedded models list and
+    # file existence) pass without depending on Task 3's work.
+    return (
+        '<!doctype html><html><body>'
+        '<script id="data" type="application/json">__DATA__</script>'
+        '</body></html>'
+    )
+
+
+# ── CLI ──────────────────────────────────────────────────────────────────────
+
+def register_parser(subparsers):
+    p = subparsers.add_parser(
+        "willis-compare",
+        help="Generate a self-contained HTML page comparing match_index_*.csv "
+             "files against match_index_willis.csv, page by page.",
+    )
+    p.add_argument("--pattern", default="match_indexes/match_index_*.csv")
+    p.add_argument("--truth", default="match_indexes/match_index_willis.csv")
+    p.add_argument("--output", "-o", default="browser/willis_compare.html")
+    p.add_argument("--fuzzy-threshold", type=float, default=0.8)
+    p.set_defaults(func=run)
+    return p
+
+
+def run(args) -> None:
+    run_willis_compare(args.pattern, args.truth, args.output, args.fuzzy_threshold)
