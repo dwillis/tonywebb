@@ -129,15 +129,196 @@ def run_willis_compare(
 
 
 def _build_html() -> str:
-    # Filled in with the real two-column page-by-page template in Task 3.
-    # The <script id="data"> wrapper matches build_browser.py's convention
-    # so this task's tests (which only check the embedded models list and
-    # file existence) pass without depending on Task 3's work.
-    return (
-        '<!doctype html><html><body>'
-        '<script id="data" type="application/json">__DATA__</script>'
-        '</body></html>'
-    )
+    return """<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Willis Comparison Browser</title>
+<style>
+  :root { color-scheme: light dark; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; margin: 1rem; }
+  header { display: flex; flex-wrap: wrap; gap: .75rem; align-items: center; margin-bottom: 1rem; }
+  input[type=search] { padding: .4rem .6rem; min-width: 240px; font-size: 1rem; }
+  select { padding: .35rem .55rem; font-size: .95rem; }
+  .meta { color: #888; font-size: .85rem; margin-left: auto; }
+
+  .page-block { border: 1px solid #ccc5; border-radius: 6px; margin-bottom: 1rem; overflow: hidden; }
+  .page-header { display: flex; align-items: center; gap: .75rem; padding: .5rem .75rem; background: #00000008; }
+  .page-header h3 { margin: 0; font-size: 1rem; }
+  .toggle-img { font-size: .82rem; cursor: pointer; background: #eee; border: 1px solid #ccc; border-radius: 3px; padding: 2px 8px; }
+  .page-preview img { max-width: 100%; max-height: 600px; border: 1px solid #ccc; margin: .5rem .75rem; display: block; }
+
+  .col-headers { display: flex; font-size: .78rem; color: #888; padding: .3rem .75rem 0; }
+  .col-headers .cmp-col { padding: 0 .75rem; }
+
+  .cmp-row { display: flex; border-top: 1px solid #ccc3; }
+  .cmp-col { flex: 1; padding: .4rem .75rem; min-width: 0; }
+  .cmp-col.willis { border-right: 1px solid #ccc3; }
+  .cmp-status { width: 90px; flex: none; padding: .4rem .5rem; font-size: .78rem; text-align: center; align-self: center; }
+  .empty-cell { color: #aaa; font-style: italic; }
+
+  .cmp-row.status-matched { border-left: 4px solid #28a745; }
+  .cmp-row.status-missed { border-left: 4px solid #dc3545; background: #f8d7da22; }
+  .cmp-row.status-surplus { border-left: 4px solid #ffc107; background: #fff3cd22; }
+  .cmp-row.status-unindexed { border-left: 4px solid #6c757d; background: #00000008; }
+</style>
+</head>
+<body>
+<header>
+  <h2 style="margin:0">Willis Comparison Browser</h2>
+  <label>Model:
+    <select id="model"></select>
+  </label>
+  <input id="q" type="search" placeholder="Search matchup, date, or page...">
+  <label>Status:
+    <select id="status">
+      <option value="all">any</option>
+      <option value="matched">matched</option>
+      <option value="missed">missed (Willis only)</option>
+      <option value="surplus">surplus (model only, Willis-covered page)</option>
+      <option value="unindexed">unindexed (page beyond Willis's range)</option>
+    </select>
+  </label>
+  <label>Type:
+    <select id="contentType"><option value="">(any)</option></select>
+  </label>
+  <span class="meta" id="meta"></span>
+</header>
+<div id="pages"></div>
+<script id="data" type="application/json">__DATA__</script>
+<script>
+const DATA = JSON.parse(document.getElementById('data').textContent);
+const MODELS = DATA.models;
+
+const IMG_URL = 'https://archive.acscricket.com/research/tw/tw_newspaper_cuttings_1895/files/assets/common/page-html5-substrates/page{page}_5.jpg';
+
+const modelSel = document.getElementById('model');
+for (const m of MODELS) {
+  const o = document.createElement('option');
+  o.value = m; o.textContent = m;
+  modelSel.appendChild(o);
+}
+
+const pagesEl = document.getElementById('pages');
+const meta = document.getElementById('meta');
+const q = document.getElementById('q');
+const statusSel = document.getElementById('status');
+const typeSel = document.getElementById('contentType');
+
+let typesPopulatedFor = null;
+
+[modelSel, q, statusSel, typeSel].forEach(el => el.addEventListener('input', render));
+
+function esc(s) {
+  return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+function render() {
+  const rows = DATA.data[modelSel.value] || [];
+
+  if (typesPopulatedFor !== modelSel.value) {
+    typeSel.innerHTML = '<option value="">(any)</option>';
+    const types = [...new Set(rows.map(r => r.content_type))].sort();
+    for (const t of types) {
+      const o = document.createElement('option');
+      o.value = t; o.textContent = t;
+      typeSel.appendChild(o);
+    }
+    typesPopulatedFor = modelSel.value;
+  }
+
+  const term = q.value.trim().toLowerCase();
+  const statusFilter = statusSel.value;
+  const typeFilter = typeSel.value;
+
+  const filtered = rows.filter(r => {
+    if (statusFilter !== 'all' && r.status !== statusFilter) return false;
+    if (typeFilter && r.content_type !== typeFilter) return false;
+    if (term) {
+      const hay = [
+        r.page,
+        r.willis && r.willis.matchup, r.willis && r.willis.date,
+        r.model && r.model.matchup, r.model && r.model.date,
+      ].filter(Boolean).join(' ').toLowerCase();
+      if (!hay.includes(term)) return false;
+    }
+    return true;
+  });
+
+  const byPage = new Map();
+  for (const r of filtered) {
+    if (!byPage.has(r.page)) byPage.set(r.page, []);
+    byPage.get(r.page).push(r);
+  }
+
+  pagesEl.innerHTML = '';
+  for (const [page, pageRows] of [...byPage.entries()].sort((a, b) => a[0] - b[0])) {
+    const block = document.createElement('div');
+    block.className = 'page-block';
+
+    const padded = String(page).padStart(4, '0');
+    const imgUrl = IMG_URL.replace('{page}', padded);
+    const header = document.createElement('div');
+    header.className = 'page-header';
+    header.innerHTML = '<h3>Page ' + esc(page) + '</h3>' +
+      '<button class="toggle-img" data-img="' + esc(imgUrl) + '">Show page image</button>';
+    block.appendChild(header);
+
+    const imgContainer = document.createElement('div');
+    imgContainer.className = 'page-preview';
+    imgContainer.style.display = 'none';
+    block.appendChild(imgContainer);
+
+    const colHeaders = document.createElement('div');
+    colHeaders.className = 'col-headers';
+    colHeaders.innerHTML = '<div class="cmp-col">Willis</div><div class="cmp-col">' +
+      esc(modelSel.value) + '</div><div class="cmp-status"></div>';
+    block.appendChild(colHeaders);
+
+    for (const r of pageRows) {
+      const row = document.createElement('div');
+      row.className = 'cmp-row status-' + r.status;
+      const willisHtml = r.willis
+        ? esc(r.willis.matchup) + (r.willis.date ? ' <small>(' + esc(r.willis.date) + ')</small>' : '')
+        : '<span class="empty-cell">&mdash;</span>';
+      const modelHtml = r.model
+        ? esc(r.model.matchup) + (r.model.date ? ' <small>(' + esc(r.model.date) + ')</small>' : '')
+        : '<span class="empty-cell">&mdash;</span>';
+      row.innerHTML =
+        '<div class="cmp-col willis">' + willisHtml + '</div>' +
+        '<div class="cmp-col">' + modelHtml + '</div>' +
+        '<div class="cmp-status">' + esc(r.status) + '</div>';
+      block.appendChild(row);
+    }
+
+    pagesEl.appendChild(block);
+  }
+
+  meta.textContent = filtered.length + ' row(s) across ' + byPage.size + ' page(s)';
+}
+
+document.addEventListener('click', function(e) {
+  const btn = e.target.closest('.toggle-img');
+  if (!btn) return;
+  const url = btn.dataset.img;
+  const container = btn.closest('.page-header').nextElementSibling;
+  if (container.style.display === 'none') {
+    container.style.display = '';
+    if (!container.innerHTML) {
+      container.innerHTML = '<img loading="lazy" src="' + url + '">';
+    }
+    btn.textContent = 'Hide page image';
+  } else {
+    container.style.display = 'none';
+    btn.textContent = 'Show page image';
+  }
+});
+
+render();
+</script>
+</body>
+</html>
+"""
 
 
 # ── CLI ──────────────────────────────────────────────────────────────────────

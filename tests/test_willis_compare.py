@@ -159,3 +159,53 @@ class TestCLI:
         args = parser.parse_args(["willis-compare", "--pattern", "x.csv"])
         assert args.pattern == "x.csv"
         assert args.command == "willis-compare"
+
+
+class TestHTMLTemplate:
+    def test_html_contains_key_elements(self, tmp_path, monkeypatch):
+        _write_csv(tmp_path / "match_index_willis.csv", [
+            ["Team A v Team B", "1", "18950527", "match information", "coll", ""],
+        ])
+        _write_csv(tmp_path / "match_index_modelx.csv", [
+            ["Team A v Team B", "1", "18950527", "match information", "coll", ""],
+            ["Team E v Team F", "62", "18950801", "match information", "coll", ""],
+        ])
+
+        monkeypatch.chdir(tmp_path)
+        from tonywebb.willis_compare import run_willis_compare
+        run_willis_compare(
+            pattern="match_index_*.csv",
+            truth_path="match_index_willis.csv",
+            output_path="willis_compare.html",
+        )
+
+        html = (tmp_path / "willis_compare.html").read_text()
+        assert "Willis Comparison Browser" in html
+        assert 'id="model"' in html
+        assert 'id="status"' in html
+        assert 'id="q"' in html
+        assert "unindexed" in html
+        assert "Show page image" in html or "data-img" in html
+
+    def test_json_embedded_and_valid(self, tmp_path, monkeypatch):
+        _write_csv(tmp_path / "match_index_willis.csv", [
+            ["Team A v Team B", "1", "18950527", "match information", "coll", ""],
+        ])
+        _write_csv(tmp_path / "match_index_modelx.csv", [
+            ["Team A v Team B", "1", "18950527", "match information", "coll", ""],
+        ])
+
+        monkeypatch.chdir(tmp_path)
+        from tonywebb.willis_compare import run_willis_compare
+        run_willis_compare(
+            pattern="match_index_*.csv",
+            truth_path="match_index_willis.csv",
+            output_path="willis_compare.html",
+        )
+
+        html = (tmp_path / "willis_compare.html").read_text()
+        match = re.search(r'<script id="data" type="application/json">(.*?)</script>', html, re.DOTALL)
+        assert match
+        data = json.loads(match.group(1))
+        assert data["models"] == ["modelx"]
+        assert data["data"]["modelx"][0]["status"] == "matched"
