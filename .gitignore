@@ -9,6 +9,9 @@ wheels/
 # Virtual environments
 .venv
 
+# Git worktrees used for isolated feature development
+.worktrees/
+
 # Generated data and bulky artifacts — organized under folders but not tracked
 # (regenerable by re-running the tonywebb CLI, or local-only reference images)
 raw_responses/
