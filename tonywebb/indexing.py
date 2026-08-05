@@ -344,9 +344,6 @@ def merge_consecutive_continuations(csv_path: Path) -> MergeResult:
         except (ValueError, TypeError):
             unparseable_rows.append(row)
             continue
-        # Relies on normalize_and_dedup() having already deduped within a
-        # page upstream -- two rows sharing the same (key, page) here would
-        # silently overwrite, bypassing the audit log below.
         rows_by_key.setdefault(key, {})[page] = row
 
     dropped_log_entries: list[dict] = []
