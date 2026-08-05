@@ -14,6 +14,7 @@ The collection is a 247-page FlippingBook archive of Victorian cricket newspaper
    - `tonywebb index-scorecards` — a focused pass that indexes *which match reports* include a full scorecard.
 3. **Analysis and assembly** — comparing model outputs, scoring them against a manually-built ground truth, and merging them into one deliverable index:
    - `tonywebb compare` / `tonywebb browse` — cross-model agreement.
+   - `tonywebb willis-compare` — page-by-page comparison of any model against `match_index_willis.csv`, with a model-switching dropdown.
    - `tonywebb evaluate` — score a model's index against `match_index_willis.csv`.
    - `tonywebb consensus` — merge every `match_index_*.csv` into one submittable index via majority vote.
    - `tonywebb promote-reviewed` — append your accepted review-queue rows into the Willis ground truth.
@@ -238,7 +239,18 @@ uv run tonywebb promote-reviewed match_index_reviewed.csv             # then app
 uv run tonywebb compare --pattern match_indexes/match_index_*.csv -o reports/compare_results.md
 uv run tonywebb browse --pattern match_indexes/match_index_*.csv -o browser/compare_browser.html
 uv run tonywebb clubs --pattern match_indexes/match_index_*.csv   # writes clubs.csv in the repo root
+
+uv run tonywebb willis-compare
 ```
+
+`willis-compare` defaults to `match_indexes/match_index_*.csv` vs
+`match_index_willis.csv`, writing `browser/willis_compare.html`. Where `browse`
+shows cross-model agreement, `willis-compare` is a page-by-page view of one
+model against the Willis ground truth at a time, switchable via a dropdown,
+classifying every row as **matched** (Willis and the model agree), **missed**
+(in Willis, not the model), **surplus** (in the model, not Willis, on a
+Willis-covered page), or **unindexed** (in the model, on a page outside
+Willis's covered range).
 
 ## Data file layout
 
@@ -253,7 +265,7 @@ Generated data and reports live in subfolders, not the repo root. Only `clubs.cs
 | `transcripts/` | `full_text_output_*.txt` concatenated transcriptions |
 | `stats/` | `player_stats_*.json`, `stats_index_*.csv`, `scorecard_index_*.csv`, `scorecards_*.json` |
 | `reports/` | `compare_results.md`, `notes.md`, `llm-indexing-report.md` |
-| `browser/` | `compare_browser.html` |
+| `browser/` | `compare_browser.html`, `willis_compare.html` |
 | `docs/` | reference documents (e.g. the indexing guide draft) |
 | `review/` | `resolved_low_conf_entries.csv` review queue |
 
