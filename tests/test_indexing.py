@@ -5,6 +5,7 @@ and promote-reviewed.
 """
 
 import csv
+import json
 from pathlib import Path
 
 from tonywebb.indexing import recompute_pages_column
@@ -134,8 +135,6 @@ class TestRecomputePagesColumn:
         assert {r["page"] for r in rows} == {"1", "5"}
 
 
-import json as json_module
-
 from tonywebb.indexing import MergeResult, merge_consecutive_continuations
 
 
@@ -216,7 +215,7 @@ class TestMergeConsecutiveContinuations:
         ])
         result = merge_consecutive_continuations(path)
         assert result.log_path.exists()
-        entries = [json_module.loads(line) for line in result.log_path.read_text().splitlines()]
+        entries = [json.loads(line) for line in result.log_path.read_text().splitlines()]
         assert len(entries) == 1
         assert entries[0]["dropped_page"] == 10
         assert entries[0]["merged_into_page"] == 9
@@ -270,3 +269,61 @@ class TestMergeConsecutiveContinuations:
         rows = _read_rows(path)
         assert len(rows) == 1
         assert result.merged_count == 1
+
+
+from unittest import mock
+
+from tonywebb import cli
+
+
+class _FakeResponse:
+    def __init__(self, text):
+        self._text = text
+
+    def text(self):
+        return self._text
+
+
+class _FakeModel:
+    model_id = "fake-model"
+
+    def __init__(self, raw_text):
+        self.raw_text = raw_text
+        self.calls = 0
+
+    def prompt(self, *a, **k):
+        self.calls += 1
+        return _FakeResponse(self.raw_text)
+
+
+class TestRunIndexExtractionMergesConsecutivePages:
+    def test_consecutive_page_duplicate_merged_end_to_end(self, tmp_path, monkeypatch, capsys):
+        input_dir = tmp_path / "pages"
+        input_dir.mkdir()
+        (input_dir / "tw_newspaper_cuttings_1895_9.txt").write_text("Dunstable Second XI v Houghton, page 9 text")
+        (input_dir / "tw_newspaper_cuttings_1895_10.txt").write_text("continuation text, no header")
+
+        fake_raw = json.dumps({"entries": [
+            {"title": "Dunstable Second XI v Houghton", "date": "18950800", "content_type": "match information"},
+        ]})
+        fake_model = _FakeModel(fake_raw)
+
+        monkeypatch.chdir(tmp_path)
+        out_csv = tmp_path / "match_index_fake-model.csv"
+        with mock.patch("tonywebb.indexing.resolve_model", return_value=fake_model), \
+             mock.patch("tonywebb.pipeline.time.sleep"):
+            cli.main([
+                "extract-matches", "--input", str(input_dir), "--model", "fake-model",
+                "--output", str(out_csv),
+            ])
+
+        rows = _read_rows(out_csv)
+        assert len(rows) == 1
+        assert rows[0]["page"] == "9"
+        assert rows[0]["pages"] == "2"
+
+        merge_log = tmp_path / "match_index_fake-model.merges.jsonl"
+        assert merge_log.exists()
+
+        captured = capsys.readouterr()
+        assert "merged" in captured.out.lower()

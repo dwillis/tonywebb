@@ -584,6 +584,16 @@ def run_index_extraction(
             print(f"  page {d['page']}: {d['matchup']} [{d['date']}] first seen on page {d['first_page']}")
 
     if csv_path.exists():
-        changed = recompute_pages_column(csv_path)
-        if changed:
-            print(f"Updated 'pages' count for {changed} row(s) spanning more than one page.")
+        merge_result = merge_consecutive_continuations(csv_path)
+        if merge_result.merged_count:
+            print(
+                f"{merge_result.merged_count} entry(ies) merged into an earlier page's row "
+                f"(continuation, auto-resolved; see {merge_result.log_path} for what was dropped)."
+            )
+        if merge_result.remaining_duplicates:
+            print(
+                f"{len(merge_result.remaining_duplicates)} entry(ies) also appear on a "
+                f"non-adjacent page (kept; may be a separate write-up, review manually):"
+            )
+            for d in merge_result.remaining_duplicates:
+                print(f"  page {d['page']}: {d['matchup']} [{d['date']}]")
