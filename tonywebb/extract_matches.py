@@ -83,17 +83,30 @@ CONTENT TYPES (most common for this collection listed first):
    separate player-averages table on the page. Do not default to "team
    information" just because there's no player table to pair it with --
    the presence of season NUMBERS (not just prose) is what makes it
-   "statistics".
+   "statistics". This does NOT absorb a dated match-by-match results list
+   printed alongside such a summary: that list is its own "team
+   information" entry as well -- see content type 3(b).
    Title format: "Team Name player statistics" or "Team Name team aggregates".
    Examples: "Sunningdale School player statistics",
              "Biscuit Factory team aggregates".
 
-3. "team information" — A fixture list, schedule, or narrative recap for a
-   team with NO numeric season record. If the text states win/loss/drawn
-   counts or aggregate runs for/against, it's "statistics" (see above),
-   not "team information", even without a player-averages table alongside.
+3. "team information" — Any of these, for one named team:
+   (a) A fixture list or schedule — that team's upcoming matches.
+   (b) A DATED MATCH-BY-MATCH LIST of its season's results (rows like
+       "May 11 ... Benham Park ... Won"). This list is its own
+       "Team Name match list" entry EVEN WHEN a win/loss summary sits
+       beside it -- the summary is separately "statistics" (team
+       aggregates), so that page yields BOTH entries. What belongs to
+       "statistics" alone is a BARE prose summary with no dated list under
+       it ("have won six and lost three" and nothing more).
+   (c) A club NOTICE or announcement — vacant dates, seeking opponents,
+       a change of ground or secretary, contact details for fixtures
+       ("... have a vacant date next Saturday. Apply Mr A Webb").
+       Title this one with just the club name, no "match list" suffix.
+   (d) A narrative recap of the team's season carrying no numbers.
    Title format: "Team Name" or "Team Name match list".
-   Examples: "Newbury match list", "Reading School match list".
+   Examples: "Newbury match list", "Reading School match list",
+             "Stockcross match list", "Earley St Peter's".
 
 4. "player information" — Player rosters, lists of player names with roles,
    OR a shared paragraph of brief (one- or two-sentence) character
@@ -139,11 +152,15 @@ IMPORTANT RULES:
   "An Eleven", etc.) that team has on the page.
 - Do NOT create a "match information" entry for a match that has not been
   played yet. An individual match merely previewed or announced in prose --
-  future-tense language like "will play", "have no fixture for to-morrow",
-  "the final will again be fought out by X and Y" -- gets NO entry of ANY
-  content_type; do not re-tag it as "newspaper cuttings" or "fixture
-  information" instead. Past-tense result language ("was played on... and
-  resulted in a win for...") is what makes a match indexable.
+  future-tense language like "will play" or "the final will again be fought
+  out by X and Y" -- gets NO "match information" entry; do not re-tag that
+  match as "newspaper cuttings" or "fixture information" instead. Past-tense
+  result language ("was played on... and resulted in a win for...") is what
+  makes a MATCH indexable.
+  This rule is about individual matches only. It never suppresses a club's
+  own fixture list, season results list, or notice -- those are "team
+  information" entries in their own right (content type 3), however
+  future-tense their wording.
   EXCEPTION -- a club's OWN PUBLISHED FIXTURE LIST is a different thing and
   IS indexable. A titled block setting out one club's schedule (a season
   card, a cricket-week programme, a "FIXTURES" or "TO-MORROW'S FIXTURES"
