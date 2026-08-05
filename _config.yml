@@ -1,0 +1,15 @@
+exclude:
+  - browser
+  - eval
+  - gemini-31-pp
+  - match_indexes
+  - minimax-m3
+  - muse-spark-11
+  - "qwen3.5:397b"
+  - reconciled
+  - reports
+  - review
+  - stats
+  - tests
+  - tonywebb
+  - transcripts
