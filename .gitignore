@@ -19,3 +19,5 @@ jpgs/
 older/
 docs/
 stats/scorecards_*.json
+
+*.DS_Store
