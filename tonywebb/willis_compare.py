@@ -120,6 +120,12 @@ def run_willis_compare(
         models.append(name)
 
     payload = json.dumps({"models": models, "data": data}, ensure_ascii=False)
+    # Escape "<" so a matchup like "Kent v Surrey </script>" (plausible OCR
+    # noise) can never spell out "</script>" inside the raw <script> element
+    # we embed this JSON in -- the HTML tokenizer ends the element at the
+    # first literal "</script" regardless of JSON string-escaping. "<"
+    # is valid JSON and round-trips through JSON.parse transparently.
+    payload = payload.replace("<", "\\u003c")
     html = _build_html().replace("__DATA__", payload)
 
     out = Path(output_path)

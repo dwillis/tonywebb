@@ -151,6 +151,43 @@ class TestRunWillisCompare:
         assert "not found" in captured.out.lower()
         assert not (tmp_path / "browser" / "willis_compare.html").exists()
 
+    def test_matchup_with_script_tag_does_not_break_embedded_json(self, tmp_path, monkeypatch):
+        # A matchup value containing "</script>" is plausible OCR/LLM noise,
+        # not a contrived attack. If it were embedded verbatim, the HTML
+        # tokenizer would end the <script id="data"> element at the first
+        # literal "</script" -- regardless of JSON string-escaping -- and
+        # truncate the payload, breaking JSON.parse for every model.
+        malicious = "Kent v Surrey </script><script>alert(1)</script>"
+        _write_csv(tmp_path / "match_index_willis.csv", [
+            ["Team A v Team B", "1", "18950527", "match information", "coll", ""],
+        ])
+        _write_csv(tmp_path / "match_index_modelx.csv", [
+            [malicious, "1", "18950527", "match information", "coll", ""],
+        ])
+
+        monkeypatch.chdir(tmp_path)
+        from tonywebb.willis_compare import run_willis_compare
+        run_willis_compare(
+            pattern="match_index_*.csv",
+            truth_path="match_index_willis.csv",
+            output_path="willis_compare.html",
+        )
+
+        html = (tmp_path / "willis_compare.html").read_text()
+        # No literal "</script>" should appear before the intended closing
+        # tag of the data script element -- i.e. the embedded JSON itself
+        # must not contain an unescaped "</script>".
+        match = re.search(r'<script id="data" type="application/json">(.*?)</script>', html, re.DOTALL)
+        assert match
+        data = json.loads(match.group(1))  # must not raise
+        rows = data["data"]["modelx"]
+        matchups = [
+            (r["model"] or {}).get("matchup")
+            for r in rows
+            if r["model"]
+        ]
+        assert malicious in matchups
+
 
 class TestCLI:
     def test_registered_in_parser(self):
