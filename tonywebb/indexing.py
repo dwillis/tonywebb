@@ -10,9 +10,7 @@ shared machinery so each command only supplies its own prompt and parser.
 from __future__ import annotations
 
 import csv
-import json
 import logging
-from dataclasses import dataclass
 from pathlib import Path
 from typing import Callable
 
@@ -293,119 +291,6 @@ def recompute_pages_column(csv_path: Path) -> int:
         writer.writeheader()
         writer.writerows(rows)
     return changed
-
-
-@dataclass
-class MergeResult:
-    """Result of merge_consecutive_continuations()."""
-    merged_count: int
-    log_path: Path
-    remaining_duplicates: list[dict]  # [{matchup, page, date, content_type}, ...]
-
-
-def _page_sort_key(row: dict) -> int:
-    try:
-        return int((row.get("page") or "").strip())
-    except (ValueError, TypeError):
-        return 10**9
-
-
-def merge_consecutive_continuations(csv_path: Path) -> MergeResult:
-    """Collapse same-entry rows on immediately-consecutive pages into one row
-    on the first page, with `pages` set to the run length.
-
-    A continuation onto the very next page is overwhelmingly the extraction
-    prompt's "do NOT create a new entry for it" rule being violated by the
-    model, not a genuinely separate write-up -- unlike a duplicate on a
-    non-adjacent page (a strong signal of a real separate write-up
-    elsewhere in the collection, see _row_key()'s docstring), which is left
-    exactly as today: both rows kept, flagged for human review via
-    `remaining_duplicates`.
-
-    Every dropped row is appended to a `<csv stem>.merges.jsonl` audit log
-    next to csv_path (only created if something was actually merged), so a
-    wrong merge is always recoverable -- it's removed from the CSV, not
-    silently gone.
-
-    Unlike recompute_pages_column(), this rewrites the file sorted by page.
-    """
-    with csv_path.open(newline="", encoding="utf-8") as f:
-        reader = csv.DictReader(f)
-        fieldnames = reader.fieldnames
-        rows = list(reader)
-
-    rows_by_key: dict[tuple[str, str, str], dict[int, dict]] = {}
-    unparseable_rows: list[dict] = []
-    for row in rows:
-        content_type = (row.get("content_type") or "match information").strip().lower()
-        key = _row_key(row.get("matchup", ""), row.get("date", ""), content_type)
-        try:
-            page = int((row.get("page") or "").strip())
-        except (ValueError, TypeError):
-            unparseable_rows.append(row)
-            continue
-        rows_by_key.setdefault(key, {})[page] = row
-
-    dropped_log_entries: list[dict] = []
-    survivors_by_key: dict[tuple[str, str, str], list[dict]] = {}
-
-    for key, by_page in rows_by_key.items():
-        pages_sorted = sorted(by_page)
-        runs: list[list[int]] = []
-        for page in pages_sorted:
-            if runs and page == runs[-1][-1] + 1:
-                runs[-1].append(page)
-            else:
-                runs.append([page])
-
-        key_survivors = []
-        for run in runs:
-            first_page = run[0]
-            survivor = by_page[first_page]
-            survivor["pages"] = str(len(run))
-            key_survivors.append(survivor)
-            for page in run[1:]:
-                dropped = by_page[page]
-                dropped_log_entries.append({
-                    "dropped_page": page,
-                    "matchup": dropped.get("matchup", ""),
-                    "date": dropped.get("date", ""),
-                    "content_type": (dropped.get("content_type") or "match information").strip().lower(),
-                    "merged_into_page": first_page,
-                })
-        survivors_by_key[key] = key_survivors
-
-    log_path = csv_path.with_name(csv_path.stem + ".merges.jsonl")
-    if dropped_log_entries:
-        with log_path.open("a", encoding="utf-8") as f:
-            for entry in dropped_log_entries:
-                f.write(json.dumps(entry, ensure_ascii=False) + "\n")
-
-    surviving_rows: list[dict] = list(unparseable_rows)
-    remaining_duplicates: list[dict] = []
-    for key_survivors in survivors_by_key.values():
-        surviving_rows.extend(key_survivors)
-        if len(key_survivors) > 1:
-            for row in key_survivors:
-                remaining_duplicates.append({
-                    "matchup": row.get("matchup", ""),
-                    "page": row.get("page", ""),
-                    "date": row.get("date", ""),
-                    "content_type": row.get("content_type", ""),
-                })
-
-    surviving_rows.sort(key=_page_sort_key)
-
-    with csv_path.open("w", newline="", encoding="utf-8") as f:
-        writer = csv.DictWriter(f, fieldnames=fieldnames)
-        writer.writeheader()
-        writer.writerows(surviving_rows)
-
-    return MergeResult(
-        merged_count=len(dropped_log_entries),
-        log_path=log_path,
-        remaining_duplicates=remaining_duplicates,
-    )
 
 
 # ── LLM extraction ───────────────────────────────────────────────────────────
