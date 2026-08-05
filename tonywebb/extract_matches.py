@@ -130,19 +130,30 @@ IMPORTANT RULES:
 - Match scorecard details (individual batting/bowling figures within a match
   report) are part of the match, NOT separate "statistics" entries.
   "statistics" means end-of-season averages tables for a team.
-- If a page contains a team's fixture list AND that team's batting/bowling
-  averages, create BOTH a "team information" entry AND a "statistics" entry.
+- A team's fixture list and that team's batting/bowling averages are SEPARATE
+  entries: create BOTH a "team information" entry AND a "statistics" entry.
+  The fixture list earns its own "team information" entry whether or not any
+  averages appear alongside it.
 - Exactly one "Team Name player statistics" entry per team per page, no
   matter how many separate tables (batting, bowling, First XI, Second XI,
   "An Eleven", etc.) that team has on the page.
-- Do NOT create "fixture information" entries for lists of upcoming or
-  unplayed fixtures. Only create entries for matches that have RESULTS.
-  This means SKIP the content entirely (no entry of ANY content_type) --
-  do not re-tag it as "newspaper cuttings" or anything else instead.
-  Future-tense language ("will play", "have no fixture for to-morrow",
-  "the final will again be fought out by X and Y") signals unplayed
-  fixtures to skip, as opposed to past-tense results ("was played on...
-  and resulted in a win for...").
+- Do NOT create a "match information" entry for a match that has not been
+  played yet. An individual match merely previewed or announced in prose --
+  future-tense language like "will play", "have no fixture for to-morrow",
+  "the final will again be fought out by X and Y" -- gets NO entry of ANY
+  content_type; do not re-tag it as "newspaper cuttings" or "fixture
+  information" instead. Past-tense result language ("was played on... and
+  resulted in a win for...") is what makes a match indexable.
+  EXCEPTION -- a club's OWN PUBLISHED FIXTURE LIST is a different thing and
+  IS indexable. A titled block setting out one club's schedule (a season
+  card, a cricket-week programme, a "FIXTURES" or "TO-MORROW'S FIXTURES"
+  column) is a "team information" entry titled "Team Name match list" --
+  see content type 3 above. Index the LIST, one entry per club whose
+  schedule is printed; do NOT index the individual unplayed matches inside
+  it. A page whose only content is such a fixture list still yields these
+  entries -- it is not an empty page.
+  Examples: "Newbury match list", "Reading School match list",
+            "Herefordshire Club and Ground match list".
 - If a match report continues from a previous page (starts mid-scorecard
   with no header), do NOT create a new entry for it. Only create entries
   for content that BEGINS on this page.
