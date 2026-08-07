@@ -81,3 +81,44 @@ def test_user_prompt_mentions_collection_season():
     prompt = build_user_prompt(page_num=3, season="1939")
     assert "1939" in prompt
     assert "1895" not in prompt
+
+
+@pytest.mark.parametrize(
+    "collection_arg, expected_dir",
+    [
+        # --collection omitted: from_arg(None) short-circuits to the
+        # DEFAULT_COLLECTION singleton.
+        (None, "gpt-5.4"),
+        # --collection explicitly set to the default collection's slug/URL:
+        # from_arg() constructs a NEW Collection instance here, == but not
+        # `is` DEFAULT_COLLECTION -- regression test for that distinction.
+        ("tw_newspaper_cuttings_1895", "gpt-5.4"),
+        (
+            "https://archive.acscricket.com/research/tw/tw_newspaper_cuttings_1895/index.html",
+            "gpt-5.4",
+        ),
+        # A genuinely different collection still gets its own directory.
+        ("tw_newspaper_cuttings_1939", "gpt-5.4-1939"),
+    ],
+)
+def test_run_default_output_dir(monkeypatch, collection_arg, expected_dir):
+    from tonywebb.cli import build_parser
+    import tonywebb.transcribe as transcribe
+
+    captured = {}
+
+    def fake_run_bulk(model, page_nums, local_dir, session, output_dir, collection):
+        captured["output_dir"] = output_dir
+
+    monkeypatch.setattr(transcribe, "_run_bulk", fake_run_bulk)
+    monkeypatch.setattr(transcribe.llm, "get_model", lambda name: object())
+    monkeypatch.setattr(transcribe, "new_session", lambda: object())
+
+    argv = ["transcribe", "--pages", "1"]
+    if collection_arg is not None:
+        argv += ["--collection", collection_arg]
+    args = build_parser().parse_args(argv)
+
+    transcribe.run(args)
+
+    assert captured["output_dir"] == expected_dir

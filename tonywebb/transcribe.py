@@ -168,7 +168,7 @@ def run(args) -> None:
         _run_concatenated(model, page_nums, local_dir, session, args.output, collection)
     else:
         default_dir = (
-            args.model if collection is config.DEFAULT_COLLECTION
+            args.model if collection == config.DEFAULT_COLLECTION
             else f"{args.model}-{collection.season}"
         )
         _run_bulk(model, page_nums, local_dir, session, args.output_dir or default_dir, collection)
