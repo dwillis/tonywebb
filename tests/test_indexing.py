@@ -132,3 +132,28 @@ class TestRecomputePagesColumn:
         rows = _read_rows(path)
         assert len(rows) == 2
         assert {r["page"] for r in rows} == {"1", "5"}
+
+
+def test_key_dates_block_1939():
+    from tonywebb.indexing import key_dates_block
+    block = key_dates_block("1939")
+    assert "29 May 1939" in block       # Whit-Monday
+    assert "7 August 1939" in block     # August Bank Holiday
+
+
+def test_key_dates_block_1895_uses_corrected_whit_monday():
+    # KEY_1895_DATES is now generated from the fixed holiday_dates() (Task 4),
+    # so it reflects 3 June, not the old hardcoded (and wrong) 27 May.
+    from tonywebb.indexing import KEY_1895_DATES, key_dates_block
+    assert key_dates_block("1895") == KEY_1895_DATES
+    assert "3 June 1895" in KEY_1895_DATES
+    assert "27 May 1895" not in KEY_1895_DATES
+
+
+def test_normalize_and_dedup_season_floor():
+    # An entry with no resolvable date floors to {season}0000.
+    from tonywebb.indexing import normalize_and_dedup
+    entries = [{"matchup": "Luton v Leighton", "content_type": "match information",
+                "date": "", "date_phrase": ""}]
+    out, _ = normalize_and_dedup(entries, page_num=1, publication_date=None, season="1939")
+    assert out[0]["date"] == "19390000"

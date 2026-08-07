@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import csv
 import logging
+from datetime import date
 from pathlib import Path
 from typing import Callable
 
@@ -19,6 +20,7 @@ from .llm_common import no_thinking_kwargs
 from .normalize import (
     ClubRegistry,
     detect_publication_date,
+    holiday_dates,
     matchup_key,
     normalize_date,
     normalize_matchup,
@@ -53,15 +55,27 @@ STYLE_RULES = """STYLE RULES (apply to all titles):
   * Drop trailing "CC" or "Cricket Club" from team names.
   * Use title case."""
 
-KEY_1895_DATES = """KEY 1895 DATES (for resolving historical date references):
-- Whit-Monday (Bank Holiday): 27 May 1895
-- Whit-Tuesday: 28 May 1895
-- Good Friday: 12 April 1895
-- Easter Monday: 15 April 1895
-- August Bank Holiday: 5 August 1895
+def key_dates_block(season: str) -> str:
+    """KEY DATES prompt block for a season, from normalize.holiday_dates()."""
+    year = int(season)
+    d = holiday_dates(year)
+
+    def fmt(key):
+        month, day = d[key]
+        return date(year, month, day).strftime("%-d %B %Y")
+
+    return f"""KEY {season} DATES (for resolving historical date references):
+- Whit-Monday (Bank Holiday): {fmt("whit monday")}
+- Whit-Tuesday: {fmt("whit tuesday")}
+- Good Friday: {fmt("good friday")}
+- Easter Monday: {fmt("easter monday")}
+- August Bank Holiday: {fmt("august bank holiday")}
 When the text says "Whit-Monday", "Bank Holiday", etc., use these dates.
 The PUBLICATION DATE is NOT the match date — matches are typically
 reported days after they were played."""
+
+
+KEY_1895_DATES = key_dates_block("1895")
 
 
 def build_date_context(page_text: str) -> str:
@@ -91,6 +105,7 @@ def normalize_and_dedup(
     allowed_types: set[str] | None = None,
     registry: ClubRegistry | None = None,
     publication_date=None,
+    season: str = config.SEASON,
 ) -> tuple[list[dict], list[dict]]:
     """Normalize title/date and drop duplicates within a page.
 
@@ -128,16 +143,16 @@ def normalize_and_dedup(
             continue
 
         raw_title = entry.get("matchup", "") or entry.get("title", "")
-        resolved = resolve_date_phrase(entry.get("date_phrase"), publication_date)
+        resolved = resolve_date_phrase(entry.get("date_phrase"), publication_date, year=int(season))
         date = resolved if resolved else normalize_date(entry.get("date", ""))
         # Date convention: full YYYYMMDD, YYYYMM00 for known month / unknown
-        # day, YYYY0000 for year-only. The whole collection is 1895, so the
-        # year is always known -- a date is never empty. Floor anything the
-        # model left blank (or that failed to resolve) to the season year so
-        # every row carries a date that downstream matching/consensus can key
-        # on. See normalize_date() for the encoding rules.
+        # day, YYYY0000 for year-only. The collection is a single season, so
+        # the year is always known -- a date is never empty. Floor anything
+        # the model left blank (or that failed to resolve) to the season year
+        # so every row carries a date that downstream matching/consensus can
+        # key on. See normalize_date() for the encoding rules.
         if not date:
-            date = f"{config.SEASON}0000"
+            date = f"{season}0000"
 
         # Weekend-results convention: a Friday or Saturday paper's match
         # reports are for the previous Saturday (e.g. a Friday 16 Aug paper
@@ -333,11 +348,21 @@ def run_index_extraction(
     if not input_path.exists():
         raise SystemExit(f"Input not found: {input_path}")
 
+    collection = config.Collection.from_arg(getattr(args, "collection", None))
+
     pages = load_pages(input_path)
 
     safe_model = config.safe_model_name(args.model)
-    csv_path = Path(args.output) if args.output else Path(f"{csv_prefix}_{safe_model}.csv")
-    raw_log_path = Path(f"{raw_log_prefix}_{safe_model}.jsonl")
+    csv_default = (
+        f"{csv_prefix}_{safe_model}.csv" if collection == config.DEFAULT_COLLECTION
+        else f"{csv_prefix}_{safe_model}_{collection.season}.csv"
+    )
+    csv_path = Path(args.output) if args.output else Path(csv_default)
+    raw_log_default = (
+        f"{raw_log_prefix}_{safe_model}.jsonl" if collection == config.DEFAULT_COLLECTION
+        else f"{raw_log_prefix}_{safe_model}_{collection.season}.jsonl"
+    )
+    raw_log_path = Path(raw_log_default)
     raw_log = RawResponseLog(raw_log_path)
 
     page_filter = parse_page_spec(args.pages)
@@ -422,7 +447,7 @@ def run_index_extraction(
         )
         normalized, discarded = normalize_and_dedup(
             entries or [], page_result.page, allowed_types=allowed_types, registry=registry,
-            publication_date=pub_date,
+            publication_date=pub_date, season=collection.season,
         )
         page_dupes = track_cross_page(global_seen, normalized)
         cross_page_dupes.extend(page_dupes)
