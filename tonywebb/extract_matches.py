@@ -206,7 +206,7 @@ EXAMPLES OF CORRECT EXTRACTION:
 Example 1 — Match report with a date reference:
   Text: "KENSWORTH v. DUNSTABLE VICTORIA.--Played on Whit-Monday..."
   Correct: {{"title": "Kensworth v Dunstable Victoria",
-             "date_phrase": "on Whit-Monday", "date": "18950527",
+             "date_phrase": "on Whit-Monday", "date": "18950603",
              "content_type": "match information"}}
 
 Example 2 — Match report with scorecard:

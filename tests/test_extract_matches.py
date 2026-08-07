@@ -166,7 +166,7 @@ class TestNormalizeAndDedupDatePhrase:
             "date_phrase": "on Whit-Monday", "date": "18950601",  # model's own guess is wrong
         }]
         result, _ = normalize_and_dedup(entries, page_num=1)
-        assert result[0]["date"] == "18950527"  # deterministic resolution wins
+        assert result[0]["date"] == "18950603"  # deterministic resolution wins
 
     def test_weekday_phrase_needs_publication_date(self):
         entries = [{
@@ -430,7 +430,7 @@ class TestBuildUserPrompt:
     def test_contains_few_shot_examples(self):
         prompt = build_user_prompt(1, "Some text")
         assert "EXAMPLES OF CORRECT EXTRACTION" in prompt
-        assert "18950527" in prompt
+        assert "18950603" in prompt
 
     def test_contains_anti_over_extraction_rules(self):
         prompt = build_user_prompt(1, "Some text")

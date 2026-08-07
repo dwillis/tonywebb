@@ -255,14 +255,49 @@ def relative_dates(pub: date) -> dict[str, str]:
 # Asking for the verbatim date phrase and resolving it here in Python removes
 # that failure mode -- this is a lookup/regex problem, not a reasoning one.
 
-_HOLIDAY_DATES_1895 = {
-    "whit monday": (5, 27), "whit-monday": (5, 27),
-    "whit tuesday": (5, 28), "whit-tuesday": (5, 28),
-    "good friday": (4, 12),
-    "easter monday": (4, 15),
-    "august bank holiday": (8, 5),
-    "bank holiday": (8, 5),
-}
+def _easter(year: int) -> date:
+    """Gregorian Easter Sunday (Anonymous Gregorian computus)."""
+    a = year % 19
+    b, c = divmod(year, 100)
+    d, e = divmod(b, 4)
+    f = (b + 8) // 25
+    g = (b - f + 1) // 3
+    h = (19 * a + b - d - g + 15) % 30
+    i, k = divmod(c, 4)
+    l = (32 + 2 * e + 2 * i - h - k) % 7
+    m = (a + 11 * h + 22 * l) // 451
+    month, day = divmod(h + l - 7 * m + 114, 31)
+    return date(year, month, day + 1)
+
+
+def holiday_dates(year: int) -> dict[str, tuple[int, int]]:
+    """Movable-feast (month, day) lookup for a season, computed from Easter.
+
+    Whit Monday/Tuesday = Easter + 50/51 days; the August Bank Holiday is
+    the first Monday of August (the pre-1971 rule, correct for every season
+    in this archive). Applies uniformly to 1895 too -- the collection's
+    original hand-set table had Whit-Monday wrong (27 May; should be 3 June,
+    since Easter 1895 was 14 April). Good Friday/Easter Monday/August Bank
+    Holiday were already right and are unchanged by this computation.
+    """
+    e = _easter(year)
+    whit_mon = e + timedelta(days=50)
+    whit_tue = e + timedelta(days=51)
+    good_fri = e - timedelta(days=2)
+    easter_mon = e + timedelta(days=1)
+    aug = date(year, 8, 1)
+    aug += timedelta(days=(0 - aug.weekday()) % 7)
+    return {
+        "whit monday": (whit_mon.month, whit_mon.day),
+        "whit-monday": (whit_mon.month, whit_mon.day),
+        "whit tuesday": (whit_tue.month, whit_tue.day),
+        "whit-tuesday": (whit_tue.month, whit_tue.day),
+        "good friday": (good_fri.month, good_fri.day),
+        "easter monday": (easter_mon.month, easter_mon.day),
+        "august bank holiday": (aug.month, aug.day),
+        "bank holiday": (aug.month, aug.day),
+    }
+
 
 _LAST_WEEK_RE = re.compile(r"last\s+week", re.IGNORECASE)
 _WEEKDAY_RE = re.compile(
@@ -283,7 +318,7 @@ _DAY_MONTH_RE = re.compile(
 def resolve_date_phrase(phrase: str | None, publication_date: date | None, year: int = 1895) -> str | None:
     """Deterministically resolve a verbatim date reference to YYYYMMDD.
 
-    Handles: named 1895 holidays ("on Whit-Monday"), explicit month/day
+    Handles: named holidays for the season ("on Whit-Monday"), explicit month/day
     ("5 August" or "August 5th"), and weekday names relative to the page's
     publication date ("on Saturday", with a "last week" qualifier pushing the
     result back an additional 7 days, e.g. "Friday in last week").
@@ -297,7 +332,7 @@ def resolve_date_phrase(phrase: str | None, publication_date: date | None, year:
     if not p:
         return None
 
-    for name, (month, day) in _HOLIDAY_DATES_1895.items():
+    for name, (month, day) in holiday_dates(year).items():
         if name in p:
             return f"{year}{month:02d}{day:02d}"
 

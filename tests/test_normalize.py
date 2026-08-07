@@ -254,10 +254,10 @@ class TestResolveDatePhrase:
         assert resolve_date_phrase("", date(1895, 6, 8)) is None
 
     def test_whit_monday(self):
-        assert resolve_date_phrase("on Whit-Monday", date(1895, 6, 8)) == "18950527"
+        assert resolve_date_phrase("on Whit-Monday", date(1895, 6, 8)) == "18950603"
 
     def test_whit_tuesday(self):
-        assert resolve_date_phrase("Whit Tuesday", date(1895, 6, 8)) == "18950528"
+        assert resolve_date_phrase("Whit Tuesday", date(1895, 6, 8)) == "18950604"
 
     def test_good_friday(self):
         assert resolve_date_phrase("played on Good Friday", None) == "18950412"
@@ -307,7 +307,37 @@ class TestResolveDatePhrase:
 
     def test_holiday_takes_priority_over_weekday(self):
         # Even if a weekday name also appears, an explicit holiday name wins.
-        assert resolve_date_phrase("on Whit-Monday (a Monday)", date(1895, 6, 8)) == "18950527"
+        assert resolve_date_phrase("on Whit-Monday (a Monday)", date(1895, 6, 8)) == "18950603"
+
+
+class TestHolidayDates:
+    def test_1895_computed_matches_all_four_previously_correct_holidays(self):
+        from tonywebb.normalize import holiday_dates
+        d = holiday_dates(1895)
+        assert d["good friday"] == (4, 12)
+        assert d["easter monday"] == (4, 15)
+        assert d["august bank holiday"] == (8, 5)
+
+    def test_1895_whit_monday_bug_fixed(self):
+        # Was hardcoded to 27 May; Easter 1895 was 14 April, so Whit-Monday
+        # (Easter + 50 days) is actually 3 June.
+        from tonywebb.normalize import holiday_dates
+        assert holiday_dates(1895)["whit monday"] == (6, 3)
+        assert holiday_dates(1895)["whit tuesday"] == (6, 4)
+
+    def test_1939_computed(self):
+        from tonywebb.normalize import holiday_dates
+        d = holiday_dates(1939)
+        assert d["good friday"] == (4, 7)       # Easter 1939 = 9 April
+        assert d["easter monday"] == (4, 10)
+        assert d["whit monday"] == (5, 29)
+        assert d["whit tuesday"] == (5, 30)
+        assert d["august bank holiday"] == (8, 7)  # first Monday of August
+        assert d["bank holiday"] == (8, 7)
+
+    def test_resolve_whit_monday_1939(self):
+        from tonywebb.normalize import resolve_date_phrase
+        assert resolve_date_phrase("on Whit-Monday", None, year=1939) == "19390529"
 
 
 # ── ClubRegistry ───────────────────────────────────────────────────────────
