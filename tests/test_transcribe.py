@@ -63,3 +63,21 @@ class TestTranscribePage:
         assert "F. Dickens c Gladman .. .. 6    b Tompkins .. .. 0" in prompt
         assert "F. Love, b L Samm .. 12   E. Goodyear, b Darby .. 33" in prompt
         assert "Do NOT un-flatten" in prompt
+
+
+def test_transcribe_parser_accepts_collection_url():
+    from tonywebb.cli import build_parser
+    args = build_parser().parse_args([
+        "transcribe",
+        "--collection",
+        "https://archive.acscricket.com/research/tw/tw_newspaper_cuttings_1939/index.html",
+        "--pages", "1",
+    ])
+    assert args.collection.endswith("1939/index.html")
+
+
+def test_user_prompt_mentions_collection_season():
+    from tonywebb.transcribe import build_user_prompt
+    prompt = build_user_prompt(page_num=3, season="1939")
+    assert "1939" in prompt
+    assert "1895" not in prompt

@@ -67,7 +67,8 @@ class TestBackwardCompatibleDefaults:
         args = parser.parse_args(["transcribe"])
         assert args.model == "gpt-5.4"
         assert args.start_page == 1
-        assert args.end_page == 61
+        # None means "auto-detect the collection's page count" (see config.Collection).
+        assert args.end_page is None
 
     def test_evaluate_default_truth_file(self):
         parser = build_parser()

@@ -6,7 +6,7 @@ sends each to a vision-capable LLM for verbatim transcription.
 
 Two output modes:
   - Bulk (default): one .txt file per page in an output directory, resumable.
-    Outputs: {output_dir}/tw_newspaper_cuttings_1895_{page}.txt
+    Outputs: {output_dir}/{slug}_{page}.txt
   - Concatenated (--output/-o): a single file (or stdout) with "PAGE N"
     separators, matching the full_text_output_*.txt format.
 """
@@ -19,7 +19,7 @@ from pathlib import Path
 import llm
 
 from . import config
-from .images import fetch_image, new_session
+from .images import discover_page_count, fetch_image, new_session
 from .llm_common import no_thinking_kwargs
 from .pipeline import parse_page_spec
 
@@ -43,11 +43,11 @@ MIN_EXPECTED_CHARS = 500
 PAGE_HEADER = "=" * 60 + "\nPAGE {page}\n" + "=" * 60
 
 
-def transcribe_page(model, page_num: int, image_bytes: bytes, media_type: str) -> str:
-    """Send the page image to the model and return the verbatim transcription."""
-    user_prompt = (
+def build_user_prompt(page_num: int, season: str = config.SEASON) -> str:
+    """Build the transcription prompt for a given page and collection season."""
+    return (
         f"This is page {page_num} from the Tony Webb minor counties collection "
-        f"of cricket newspaper cuttings (1895).\n\n"
+        f"of cricket newspaper cuttings ({season}).\n\n"
         f"Transcribe the COMPLETE text of the ENTIRE page exactly as it appears. "
         f"Start at the top-left corner and work through every heading, every column, "
         f"every player name, every figure, and every line of text all the way to the "
@@ -82,6 +82,13 @@ def transcribe_page(model, page_num: int, image_bytes: bytes, media_type: str) -
         f".. 33\" stays one line, not one team's whole innings followed by the other "
         f"team's whole innings)."
     )
+
+
+def transcribe_page(
+    model, page_num: int, image_bytes: bytes, media_type: str, season: str = config.SEASON
+) -> str:
+    """Send the page image to the model and return the verbatim transcription."""
+    user_prompt = build_user_prompt(page_num, season)
     if not image_bytes:
         raise ValueError(f"Page {page_num}: image_bytes is empty — nothing to transcribe")
 
@@ -92,11 +99,13 @@ def transcribe_page(model, page_num: int, image_bytes: bytes, media_type: str) -
     return response.text().strip()
 
 
-def _transcribe_with_retry(model, page_num: int, image_bytes: bytes, media_type: str) -> str | None:
+def _transcribe_with_retry(
+    model, page_num: int, image_bytes: bytes, media_type: str, season: str = config.SEASON
+) -> str | None:
     text = None
     for attempt in range(1, config.TRANSCRIBE_RETRY_ATTEMPTS + 1):
         try:
-            text = transcribe_page(model, page_num, image_bytes, media_type)
+            text = transcribe_page(model, page_num, image_bytes, media_type, season=season)
             break
         except Exception as e:
             print(f"  ⚠ Attempt {attempt}/{config.TRANSCRIBE_RETRY_ATTEMPTS} failed: {e}", file=sys.stderr)
@@ -112,6 +121,7 @@ def register_parser(subparsers):
         "transcribe",
         help="Transcribe page images via a vision-capable LLM.",
     )
+    config.add_collection_arg(p)
     p.add_argument("--model", default=config.DEFAULT_TRANSCRIBE_MODEL)
     p.add_argument(
         "--pages",
@@ -120,7 +130,10 @@ def register_parser(subparsers):
              "Overrides --start-page/--end-page.",
     )
     p.add_argument("--start-page", type=int, default=1)
-    p.add_argument("--end-page", type=int, default=61)
+    p.add_argument(
+        "--end-page", type=int, default=None,
+        help="Last page (default: auto-detected from the archive)",
+    )
     p.add_argument("--local-dir", default=None, help="Directory of local JPG files.")
     p.add_argument(
         "--output-dir", default=None,
@@ -136,40 +149,54 @@ def register_parser(subparsers):
 
 
 def run(args) -> None:
+    collection = config.Collection.from_arg(args.collection)
     local_dir = Path(args.local_dir) if args.local_dir else None
+    session = new_session()
     page_filter = parse_page_spec(args.pages)
     if page_filter:
         page_nums = sorted(page_filter)
     else:
-        page_nums = list(range(args.start_page, args.end_page + 1))
+        end_page = args.end_page
+        if end_page is None:
+            end_page = discover_page_count(collection, session=session)
+            print(f"{collection.slug}: {end_page} pages")
+        page_nums = list(range(args.start_page, end_page + 1))
 
     model = llm.get_model(args.model)
-    session = new_session()
 
     if args.output is not None:
-        _run_concatenated(model, page_nums, local_dir, session, args.output)
+        _run_concatenated(model, page_nums, local_dir, session, args.output, collection)
     else:
-        _run_bulk(model, page_nums, local_dir, session, args.output_dir or args.model)
+        default_dir = (
+            args.model if collection is config.DEFAULT_COLLECTION
+            else f"{args.model}-{collection.season}"
+        )
+        _run_bulk(model, page_nums, local_dir, session, args.output_dir or default_dir, collection)
 
 
-def _run_bulk(model, page_nums: list[int], local_dir: Path | None, session, output_dir: str) -> None:
+def _run_bulk(
+    model, page_nums: list[int], local_dir: Path | None, session, output_dir: str,
+    collection: config.Collection,
+) -> None:
     out_dir = Path(output_dir)
     out_dir.mkdir(exist_ok=True)
 
     for page_num in page_nums:
-        out_file = out_dir / f"tw_newspaper_cuttings_1895_{page_num}.txt"
+        out_file = out_dir / collection.page_filename(page_num)
         if out_file.exists() and out_file.stat().st_size > 0:
             print(f"Skipping page {page_num} (already exists)")
             continue
 
         print(f"Processing page {page_num}")
         try:
-            image_bytes, media_type = fetch_image(page_num, local_dir=local_dir, session=session)
+            image_bytes, media_type = fetch_image(
+                page_num, local_dir=local_dir, session=session, collection=collection
+            )
         except Exception as e:
             print(f"  ⚠ Could not fetch page {page_num}: {e}")
             continue
 
-        text = _transcribe_with_retry(model, page_num, image_bytes, media_type)
+        text = _transcribe_with_retry(model, page_num, image_bytes, media_type, season=collection.season)
         if text is None:
             print(f"  ✗ Skipping page {page_num} after {config.TRANSCRIBE_RETRY_ATTEMPTS} failed attempts")
             continue
@@ -181,18 +208,23 @@ def _run_bulk(model, page_nums: list[int], local_dir: Path | None, session, outp
     print(f"\nDone. Text files saved to {out_dir}/")
 
 
-def _run_concatenated(model, page_nums: list[int], local_dir: Path | None, session, output: str) -> None:
+def _run_concatenated(
+    model, page_nums: list[int], local_dir: Path | None, session, output: str,
+    collection: config.Collection,
+) -> None:
     out_fh = sys.stdout if output == "-" else open(output, "w", encoding="utf-8")
     try:
         for i, page_num in enumerate(page_nums):
             print(f"Page {page_num} …", file=sys.stderr)
             try:
-                image_bytes, media_type = fetch_image(page_num, local_dir=local_dir, session=session)
+                image_bytes, media_type = fetch_image(
+                    page_num, local_dir=local_dir, session=session, collection=collection
+                )
             except Exception as e:
                 print(f"  ✗ Skipping page {page_num}: {e}", file=sys.stderr)
                 continue
 
-            text = _transcribe_with_retry(model, page_num, image_bytes, media_type)
+            text = _transcribe_with_retry(model, page_num, image_bytes, media_type, season=collection.season)
             if text is None:
                 print(f"  ✗ Skipping page {page_num} after {config.TRANSCRIBE_RETRY_ATTEMPTS} failed attempts.",
                       file=sys.stderr)
