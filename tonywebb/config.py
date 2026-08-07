@@ -2,6 +2,7 @@
 
 import logging
 import re
+from dataclasses import dataclass
 
 COLLECTION_NAME = "Tony Webb minor counties collection"
 SEASON = "1895"
@@ -17,6 +18,77 @@ BASE_JPG = (
 def page_url(page_num: int) -> str:
     """Return the image URL for a given page number. Suffix _5 is the maximum resolution."""
     return BASE_JPG.format(page=page_num)
+
+
+ARCHIVE_ROOT = "https://archive.acscricket.com/research/tw"
+
+# Accepts a full collection URL (any path under the collection), a URL with a
+# trailing slash, or a bare slug like "tw_newspaper_cuttings_1939".
+_COLLECTION_ARG_RE = re.compile(
+    r"^(?:https?://archive\.acscricket\.com/research/tw/)?"
+    r"(?P<slug>tw_[a-z0-9_]+?)(?:/.*)?$"
+)
+
+
+@dataclass(frozen=True)
+class Collection:
+    """One Tony Webb FlippingBook collection (a single season's cuttings)."""
+
+    slug: str    # e.g. "tw_newspaper_cuttings_1939"
+    season: str  # e.g. "1939"
+
+    @property
+    def base_url(self) -> str:
+        return f"{ARCHIVE_ROOT}/{self.slug}"
+
+    def page_url(self, page_num: int) -> str:
+        """Image URL for a page. Suffix _5 is the maximum resolution."""
+        return (
+            f"{self.base_url}/files/assets/common/page-html5-substrates/"
+            f"page{page_num:04d}_5.jpg"
+        )
+
+    def page_filename(self, page_num: int) -> str:
+        """Per-page transcription filename, e.g. tw_newspaper_cuttings_1939_3.txt."""
+        return f"{self.slug}_{page_num}.txt"
+
+    @classmethod
+    def from_arg(cls, arg: str | None) -> "Collection":
+        """Resolve a --collection value (URL or slug) to a Collection.
+
+        None means the default 1895 collection, so every existing invocation
+        keeps working unchanged.
+        """
+        if not arg:
+            return DEFAULT_COLLECTION
+        m = _COLLECTION_ARG_RE.match(arg.strip())
+        if not m:
+            raise SystemExit(
+                f"Unrecognized collection {arg!r}. Expected a URL like "
+                f"{ARCHIVE_ROOT}/tw_newspaper_cuttings_1939/index.html or a "
+                f"slug like tw_newspaper_cuttings_1939."
+            )
+        slug = m.group("slug")
+        year_m = re.search(r"(18|19|20)\d{2}", slug)
+        if not year_m:
+            raise SystemExit(
+                f"Could not find a season year in collection slug {slug!r}."
+            )
+        return cls(slug=slug, season=year_m.group(0))
+
+
+DEFAULT_COLLECTION = Collection(slug="tw_newspaper_cuttings_1895", season=SEASON)
+
+
+def add_collection_arg(parser) -> None:
+    """Attach the shared --collection flag to a subcommand parser."""
+    parser.add_argument(
+        "--collection",
+        default=None,
+        help="Collection URL or slug (e.g. "
+             "https://archive.acscricket.com/research/tw/tw_newspaper_cuttings_1939/index.html). "
+             "Default: the 1895 collection.",
+    )
 
 
 # Seconds to wait between API calls to avoid rate-limiting.
