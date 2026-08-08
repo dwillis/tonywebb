@@ -35,11 +35,11 @@ SYSTEM_PROMPT = (
 
 # ── Prompt building ──────────────────────────────────────────────────────────
 
-def build_user_prompt(page_num: int, page_text: str) -> str:
+def build_user_prompt(page_num: int, page_text: str, season: str = config.SEASON) -> str:
     date_context = build_date_context(page_text)
 
     return f"""Below is the transcribed text of page {page_num} from the Tony Webb
-minor counties collection of cricket newspaper cuttings (1895).
+minor counties collection of cricket newspaper cuttings ({season}).
 
 {date_context}
 Find every match report on this page that includes a SCORECARD: a list of
@@ -62,10 +62,10 @@ For each match report WITH a scorecard, create an entry in "entries" with:
     is present.
   - "date": your own best-effort YYYYMMDD guess, used only as a fallback if
     "date_phrase" can't be resolved. Use "YYYYMMDD" when the day is known,
-    "YYYYMM00" (e.g. "18950800") when the month is known but the day isn't,
-    and "YYYY0000" (e.g. "18950000") when only the year is clear. The whole
-    collection is 1895, so the year is ALWAYS known -- never leave "date"
-    empty; if nothing else applies, use "18950000".
+    "YYYYMM00" (e.g. "{season}0800") when the month is known but the day isn't,
+    and "YYYY0000" (e.g. "{season}0000") when only the year is clear. The whole
+    collection is {season}, so the year is ALWAYS known -- never leave "date"
+    empty; if nothing else applies, use "{season}0000".
   - "content_type": "match information"
   - "collection": "Tony Webb minor counties collection"
   - "page": {page_num}
@@ -86,7 +86,7 @@ EXAMPLE — has a scorecard (include):
   "Dr. Stuart, b Tilley ... 0\\nA. Cuthinson, b Tilley ... 17\\n...
   Extras ... 6\\nTotal ... 45"
   → {{"title": "Roberts and Roberts v County Asylum", "date_phrase": "",
-      "date": "18950616", "content_type": "match information"}}
+      "date": "{season}0616", "content_type": "match information"}}
 
 EXAMPLE — no scorecard (exclude):
   "NEWBURY v SPEEN.--Newbury won by 20 runs."
@@ -127,6 +127,7 @@ def register_parser(subparsers):
     p.add_argument("--input", "-i", default=config.DEFAULT_TEXT_INPUT)
     p.add_argument("--model", "-m", default=config.DEFAULT_INDEX_SCORECARDS_MODEL)
     p.add_argument("--output", "-o", default=None)
+    config.add_collection_arg(p)
     p.add_argument(
         "--pages",
         default=None,
@@ -137,9 +138,11 @@ def register_parser(subparsers):
 
 
 def run(args) -> None:
+    collection = config.Collection.from_arg(args.collection)
+
     run_index_extraction(
         args,
-        prompt_builder=build_user_prompt,
+        prompt_builder=lambda n, t: build_user_prompt(n, t, season=collection.season),
         system_prompt=SYSTEM_PROMPT,
         parse_response=_parse_response,
         csv_prefix="scorecard_index",
