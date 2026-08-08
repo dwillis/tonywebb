@@ -997,7 +997,8 @@ REFEREE_SCHEMA_INSTRUCTION = (
 )
 
 
-def build_referee_prompt(page: int, disputes: list[Dispute]) -> tuple[str, str]:
+def build_referee_prompt(page: int, disputes: list[Dispute],
+                          season: str = config.SEASON) -> tuple[str, str]:
     """Build (system_prompt, user_prompt) batching every dispute for one page.
 
     Variants are labeled neutrally as Version 1/2/3 — never model names — with
@@ -1006,7 +1007,7 @@ def build_referee_prompt(page: int, disputes: list[Dispute]) -> tuple[str, str]:
     system = transcribe.SYSTEM_PROMPT + REFEREE_EXTRA
     lines = [
         f"This is page {page} from the Tony Webb minor counties collection of "
-        f"cricket newspaper cuttings (1895). Several OCR engines transcribed "
+        f"cricket newspaper cuttings ({season}). Several OCR engines transcribed "
         f"this page and disagreed on the passages below. For each dispute, read "
         f"the corresponding region of the image and transcribe exactly what is "
         f"printed there.",
@@ -1027,14 +1028,14 @@ def build_referee_prompt(page: int, disputes: list[Dispute]) -> tuple[str, str]:
 
 
 def call_referee(model, page: int, image_bytes: bytes, media_type: str,
-                 disputes: list[Dispute]):
+                 disputes: list[Dispute], season: str = config.SEASON):
     """One vision call resolving all of a page's disputes. Returns (items, raw, error).
 
     ``items`` is the parsed ``disputes`` list (possibly empty / partial). The
     raw response is returned even on failure for logging. Missing ids /
     unparseable entries degrade to ``unresolved`` upstream — never fail the page.
     """
-    system, user = build_referee_prompt(page, disputes)
+    system, user = build_referee_prompt(page, disputes, season=season)
     attachment = llm.Attachment(content=image_bytes, type=media_type)
 
     def fn():
@@ -1207,6 +1208,7 @@ def register_parser(subparsers):
     )
     p.add_argument("run_dirs", nargs="+",
                    help="2 or more run directories; FIRST is the reference (best model first).")
+    config.add_collection_arg(p)
     p.add_argument("--output-dir", default="reconciled/",
                    help="Directory for reconciled per-page .txt files.")
     p.add_argument("--referee-model", default=config.DEFAULT_RECONCILE_MODEL,
@@ -1230,6 +1232,8 @@ def register_parser(subparsers):
 def run(args) -> None:
     if len(args.run_dirs) < 2:
         raise SystemExit("reconcile needs at least 2 run directories (first = reference).")
+
+    collection = config.Collection.from_arg(args.collection)
 
     page_filter = parse_page_spec(args.pages)
     dry_run = args.dry_run
@@ -1286,7 +1290,7 @@ def run(args) -> None:
     for page in sorted(all_pages):
         if page_filter and page not in page_filter:
             continue
-        out_file = out_dir / f"tw_newspaper_cuttings_1895_{page}.txt"
+        out_file = out_dir / collection.page_filename(page)
         if out_file.exists() and out_file.stat().st_size > 0:
             print(f"Skipping page {page} (already reconciled)")
             continue
@@ -1314,13 +1318,15 @@ def run(args) -> None:
         undecided = [d for d in rec.disputes if d.resolution in ("conflict", "missing_line")]
         if undecided and not no_referee and not dry_run:
             try:
-                image_bytes, media_type = fetch_image(page, local_dir=local_dir, session=session)
+                image_bytes, media_type = fetch_image(page, local_dir=local_dir, session=session,
+                                                        collection=collection)
             except Exception as e:
                 print(f"  ⚠ Could not fetch image for page {page}: {e}; leaving disputes unresolved",
                       file=sys.stderr)
                 image_bytes = None
             if image_bytes is not None:
-                items, raw, error = call_referee(model, page, image_bytes, media_type, undecided)
+                items, raw, error = call_referee(model, page, image_bytes, media_type, undecided,
+                                                  season=collection.season)
                 if raw_log is not None:
                     raw_log.write(page, raw, model=args.referee_model)
                 if error:

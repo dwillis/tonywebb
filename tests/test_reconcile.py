@@ -542,3 +542,27 @@ class TestCLI:
         assert not conflicts.exists()
         out = capsys.readouterr().out
         assert "Dry run" in out
+
+    def test_reconcile_output_filename_uses_collection_slug(self, tmp_path, monkeypatch):
+        text = "alpha line one\nbravo line two\ncharlie line three\n" * 5
+        ref = self._write_run(tmp_path, "refrun", {1: text})
+        runA = self._write_run(tmp_path, "runA", {1: text})
+        out_dir = tmp_path / "reconciled"
+        conflicts = tmp_path / "conflicts.jsonl"
+        report = tmp_path / "report.md"
+        monkeypatch.chdir(tmp_path)
+        self._run_cli([
+            "reconcile", str(ref), str(runA), "--no-referee",
+            "--collection", "tw_newspaper_cuttings_1939",
+            "--output-dir", str(out_dir), "--conflicts", str(conflicts),
+            "--report", str(report),
+        ])
+        assert (out_dir / "tw_newspaper_cuttings_1939_1.txt").exists()
+        assert not (out_dir / "tw_newspaper_cuttings_1895_1.txt").exists()
+
+
+class TestCollectionSupport:
+    def test_build_referee_prompt_season_1939(self):
+        system, user = build_referee_prompt(1, [], season="1939")
+        assert "1939" in system or "1939" in user
+        assert "1895" not in system and "1895" not in user
