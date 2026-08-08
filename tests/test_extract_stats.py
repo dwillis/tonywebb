@@ -9,6 +9,7 @@ from tonywebb.extract_stats import (
     _normalize_player,
     _normalize_team_entry,
     _parse_response,
+    build_user_prompt,
     merge_teams,
 )
 
@@ -98,3 +99,24 @@ class TestMergeTeams:
         merged, added = merge_teams(merged, [{"name": "Reading", "players": []}], page_num=5)
         assert added == 0
         assert merged[0]["pages_seen"] == [1, 5]
+
+
+# ── Season / collection parameterization ───────────────────────────────────
+
+
+def test_build_user_prompt_season_1939():
+    prompt = build_user_prompt(1, "SOME PAGE TEXT", season="1939")
+    assert "cuttings (1939)" in prompt
+
+
+def test_parser_accepts_collection():
+    from tonywebb.cli import build_parser
+    args = build_parser().parse_args(["extract-stats", "--collection",
+                                      "tw_newspaper_cuttings_1939"])
+    assert args.collection == "tw_newspaper_cuttings_1939"
+
+
+def test_normalize_team_entry_uses_season():
+    entry = {"name": "Abingdon", "players": []}
+    out = _normalize_team_entry(entry, page_num=1, season="1939")
+    assert out["season"] == "1939"

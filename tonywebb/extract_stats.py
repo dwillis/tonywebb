@@ -34,9 +34,9 @@ SYSTEM_PROMPT = (
 
 # ── Prompt building ───────────────────────────────────────────────────────────
 
-def build_user_prompt(page_num: int, page_text: str) -> str:
+def build_user_prompt(page_num: int, page_text: str, season: str = config.SEASON) -> str:
     return f"""Below is the transcribed text of page {page_num} from the Tony Webb
-minor counties collection of cricket newspaper cuttings (1895).
+minor counties collection of cricket newspaper cuttings ({season}).
 
 Extract all statistics from end-of-season averages tables on this page.
 These are summary tables (NOT individual match scorecards).
@@ -99,9 +99,9 @@ def _parse_response(raw: str) -> list[dict]:
     return teams
 
 
-def extract_teams(model, page_num: int, page_text: str) -> tuple[list[dict], str]:
+def extract_teams(model, page_num: int, page_text: str, season: str = config.SEASON) -> tuple[list[dict], str]:
     """Returns (teams, raw_response_text). Raises JSONExtractError on bad shape."""
-    prompt = build_user_prompt(page_num, page_text)
+    prompt = build_user_prompt(page_num, page_text, season=season)
     response = model.prompt(prompt, system=SYSTEM_PROMPT, **no_thinking_kwargs(model))
     raw = response.text()
     return _parse_response(raw), raw
@@ -157,7 +157,7 @@ def _normalize_player(entry: dict) -> dict | None:
     return out
 
 
-def _normalize_team_entry(entry: dict, page_num: int) -> dict | None:
+def _normalize_team_entry(entry: dict, page_num: int, season: str = config.SEASON) -> dict | None:
     """Validate and normalize a team statistics block. Returns None to discard."""
     if not isinstance(entry, dict):
         return None
@@ -167,7 +167,7 @@ def _normalize_team_entry(entry: dict, page_num: int) -> dict | None:
 
     out: dict = {
         "name": name,
-        "season": config.SEASON,
+        "season": season,
         "page": page_num,
     }
 
@@ -204,6 +204,7 @@ def merge_teams(
     existing: list[dict],
     new_entries: list[dict],
     page_num: int,
+    season: str = config.SEASON,
 ) -> tuple[list[dict], int]:
     """
     Merge new team entries into existing, deduplicating by team name.
@@ -213,7 +214,7 @@ def merge_teams(
     added = 0
 
     for raw in new_entries:
-        entry = _normalize_team_entry(raw, page_num)
+        entry = _normalize_team_entry(raw, page_num, season=season)
         if entry is None:
             continue
         key = _team_key(entry)
@@ -242,6 +243,7 @@ def register_parser(subparsers):
     p.add_argument("--input", "-i", default=config.DEFAULT_TEXT_INPUT)
     p.add_argument("--model", "-m", default=config.DEFAULT_EXTRACT_STATS_MODEL)
     p.add_argument("--output", "-o", default=None)
+    config.add_collection_arg(p)
     p.add_argument(
         "--pages",
         default=None,
@@ -252,6 +254,8 @@ def register_parser(subparsers):
 
 
 def run(args) -> None:
+    collection = config.Collection.from_arg(args.collection)
+
     input_path = Path(args.input)
     if not input_path.exists():
         raise SystemExit(f"Input not found: {input_path}")
@@ -259,8 +263,16 @@ def run(args) -> None:
     pages = load_pages(input_path)
 
     safe_model = config.safe_model_name(args.model)
-    json_path = Path(args.output) if args.output else Path(f"player_stats_{safe_model}.json")
-    raw_log_path = Path(f"raw_responses_stats_{safe_model}.jsonl")
+    json_default = (
+        f"player_stats_{safe_model}.json" if collection == config.DEFAULT_COLLECTION
+        else f"player_stats_{safe_model}_{collection.season}.json"
+    )
+    json_path = Path(args.output) if args.output else Path(json_default)
+    raw_log_default = (
+        f"raw_responses_stats_{safe_model}.jsonl" if collection == config.DEFAULT_COLLECTION
+        else f"raw_responses_stats_{safe_model}_{collection.season}.jsonl"
+    )
+    raw_log_path = Path(raw_log_default)
     raw_log = RawResponseLog(raw_log_path)
 
     page_filter = parse_page_spec(args.pages)
@@ -298,7 +310,7 @@ def run(args) -> None:
     total_errors = 0
 
     def extract_fn(page_num: int, page_text: str) -> tuple[list[dict], str]:
-        return extract_teams(model, page_num, page_text)
+        return extract_teams(model, page_num, page_text, season=collection.season)
 
     def on_result(page_result) -> None:
         nonlocal all_teams, total_added, total_errors
@@ -306,7 +318,7 @@ def run(args) -> None:
         raw = page_result.raw
         error = page_result.error
 
-        all_teams, added = merge_teams(all_teams, teams_raw or [], page_result.page)
+        all_teams, added = merge_teams(all_teams, teams_raw or [], page_result.page, season=collection.season)
         total_added += added
 
         processed_pages.add(page_result.page)
@@ -317,7 +329,7 @@ def run(args) -> None:
                 {
                     "metadata": {
                         "collection": config.COLLECTION_NAME,
-                        "season": config.SEASON,
+                        "season": collection.season,
                         "model": args.model,
                         "pages_processed": len(processed_pages),
                     },
@@ -352,7 +364,7 @@ def run(args) -> None:
             {
                 "metadata": {
                     "collection": config.COLLECTION_NAME,
-                    "season": config.SEASON,
+                    "season": collection.season,
                     "model": args.model,
                     "pages_processed": len(processed_pages),
                     "total_teams": len(all_teams),
