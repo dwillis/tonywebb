@@ -4,7 +4,7 @@ Tools for transcribing and indexing the [Tony Webb minor counties cricket newspa
 
 ## Overview
 
-The collection is a 247-page FlippingBook archive of Victorian cricket newspaper cuttings. The pipeline has three stages:
+The collection is a 247-page FlippingBook archive of Victorian cricket newspaper cuttings. Every command also accepts a `--collection <url-or-slug>` flag to point at a different Tony Webb collection instead — e.g. the 1939 collection (`https://archive.acscricket.com/research/tw/tw_newspaper_cuttings_1939/index.html`, 77 pages) — and defaults to the 1895 collection described here when omitted. The pipeline has three stages:
 
 1. **Transcription** (`tonywebb transcribe`) — fetches each page image and asks a vision LLM to transcribe the text verbatim, saving one `.txt` file per page. `tonywebb clean-transcriptions` fixes OCR-layer artifacts (dot leaders, soft-wrap hyphens, known typos) in the result. `tonywebb reconcile` runs 2–3 models over the collection and reconciles them with an image referee, auto-accepting agreements and adjudicating only the lines where they disagree — a drop-in higher-accuracy input for the extraction stage.
 2. **Extraction** — reads the transcribed text and asks an LLM to pull out structured data:
@@ -41,12 +41,21 @@ Run any command with `uv run tonywebb <command> --help`.
 uv run tonywebb transcribe --model claude-sonnet-4.6 --start-page 1 --end-page 247
 ```
 
-Output is saved to `{model}/tw_newspaper_cuttings_1895_{page}.txt` (bulk mode). Already-completed pages are skipped automatically on re-runs.
+Output is saved to `{model}/tw_newspaper_cuttings_1895_{page}.txt` (bulk mode). Already-completed pages are skipped automatically on re-runs. If you omit both `--pages` and `--end-page`, the CLI no longer stops at page 61 — it auto-detects the collection's actual page count from the archive and transcribes the whole thing; an explicit `--end-page` (as in the example above) still overrides that.
 
 To use locally-saved JPGs instead of fetching from the archive:
 ```bash
 uv run tonywebb transcribe --model claude-sonnet-4.6 --pages 24 --local-dir jpgs/
 ```
+
+To transcribe a different Tony Webb collection, pass `--collection`:
+```bash
+# Transcribe the 1939 collection (page count auto-detected: 77 pages)
+uv run tonywebb transcribe --model claude-sonnet-4.6 \
+  --collection https://archive.acscricket.com/research/tw/tw_newspaper_cuttings_1939/index.html
+```
+
+For any collection other than the default 1895 one, the bulk-mode output directory also defaults to `{model}-{season}/` instead of `{model}/` (e.g. `claude-sonnet-4.6-1939/` above), so outputs from different seasons don't mix; an explicit `--output-dir` overrides this.
 
 To write a single concatenated file (the `full_text_output_*.txt` format) instead of per-page files:
 ```bash
@@ -59,9 +68,10 @@ uv run tonywebb transcribe --model gpt-5.4 --pages 1,3,5-10 --output full_text_o
 |------|---------|-------------|
 | `--model` | `gpt-5.4` | LLM model ID (must support image attachments) |
 | `--pages` | — | Specific pages/ranges, e.g. `1,3,5-10` (overrides `--start-page`/`--end-page`) |
-| `--start-page` / `--end-page` | `1` / `61` | Page range (bulk mode) |
+| `--collection` | 1895 collection | Collection URL or slug, e.g. `tw_newspaper_cuttings_1939` |
+| `--start-page` / `--end-page` | `1` / auto-detected | Page range (bulk mode); explicit `--end-page` overrides auto-detection |
 | `--local-dir` | — | Directory of local JPGs to use instead of fetching |
-| `--output-dir` | `{model}/` | Per-page output directory (bulk mode) |
+| `--output-dir` | `{model}/` (`{model}-{season}/` for non-default `--collection`) | Per-page output directory (bulk mode) |
 | `--output` / `-o` | — | Write a single concatenated file/stdout instead of per-page files |
 
 ## Stage 1b: Clean transcriptions
@@ -120,11 +130,20 @@ Already-reconciled pages (non-empty output `.txt`) are skipped on re-runs; the r
 uv run tonywebb extract-matches --input claude-sonnet-4.6/ --model gpt-5.4
 ```
 
+To extract from a different collection, pass the same `--collection` value used for transcription:
+```bash
+# Extract its match index
+uv run tonywebb extract-matches --collection tw_newspaper_cuttings_1939 \
+  -i claude-sonnet-4.6-1939/
+```
+
 Accepts either a directory of per-page `.txt` files or a single concatenated text file. Already-processed pages are skipped on re-runs.
 
 Output:
 - `match_index_{model}.csv` — one row per entry found (18 content types: match reports, statistics, biographies, etc.)
 - `raw_responses_{model}.jsonl` — raw LLM output per page for diagnostics
+
+For any collection other than the default 1895 one, both filenames get a season suffix instead — `match_index_{model}_{season}.csv` / `raw_responses_{model}_{season}.jsonl` — so outputs from different collections don't collide; an explicit `--output`/`-o` overrides the CSV name. The same convention applies to `extract-stats`, `index-stats`, and `index-scorecards`.
 
 **CSV format**
 
@@ -141,7 +160,8 @@ Penzance v Helston, 62, 18950809, match information, Tony Webb minor counties co
 |------|---------|-------------|
 | `--input` / `-i` | `full_text_output_gemini31pro.txt` | Input file or directory |
 | `--model` / `-m` | `qwen3.5:397b-cloud` | LLM model ID |
-| `--output` / `-o` | `match_index_{model}.csv` | Output CSV path |
+| `--collection` | 1895 collection | Collection URL or slug, e.g. `tw_newspaper_cuttings_1939` |
+| `--output` / `-o` | `match_index_{model}.csv` (`_{season}` suffix for non-default `--collection`) | Output CSV path |
 | `--pages` | — | Specific pages, e.g. `1,3,5-10` |
 | `--content-types` | all | Filter by type, e.g. `match information,statistics` |
 
