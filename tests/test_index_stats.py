@@ -64,6 +64,19 @@ class TestBuildUserPrompt:
         prompt = index_stats.build_user_prompt(24, PAGE_145)
         assert "LEICESTER DAILY PRESS" in prompt
 
+    def test_build_user_prompt_season_1939(self):
+        prompt = index_stats.build_user_prompt(1, "SOME PAGE TEXT", season="1939")
+        assert "cuttings (1939)" in prompt
+        assert "19390800" in prompt
+        assert "19390000" in prompt
+        assert "KEY 1939 DATES" in prompt
+        assert "18950000" not in prompt
+
+    def test_parser_accepts_collection(self):
+        from tonywebb.cli import build_parser
+        args = build_parser().parse_args(["index-stats", "--collection", "tw_newspaper_cuttings_1939"])
+        assert args.collection == "tw_newspaper_cuttings_1939"
+
 
 # ── Response parsing ───────────────────────────────────────────────────────
 

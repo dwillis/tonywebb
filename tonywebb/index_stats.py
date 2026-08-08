@@ -16,7 +16,7 @@ Outputs:
 """
 
 from . import config
-from .indexing import KEY_1895_DATES, STYLE_RULES, build_date_context, run_index_extraction
+from .indexing import STYLE_RULES, build_date_context, key_dates_block, run_index_extraction
 from .llm_common import JSONExtractError, parse_json_object
 
 SYSTEM_PROMPT = (
@@ -31,11 +31,11 @@ SYSTEM_PROMPT = (
 
 # ── Prompt building ──────────────────────────────────────────────────────────
 
-def build_user_prompt(page_num: int, page_text: str) -> str:
+def build_user_prompt(page_num: int, page_text: str, season: str = config.SEASON) -> str:
     date_context = build_date_context(page_text)
 
     return f"""Below is the transcribed text of page {page_num} from the Tony Webb
-minor counties collection of cricket newspaper cuttings (1895).
+minor counties collection of cricket newspaper cuttings ({season}).
 
 {date_context}
 Find every END-OF-SEASON AVERAGES TABLE on this page — batting averages,
@@ -50,8 +50,8 @@ covered by a single entry for that team):
   - "title": "Team Name player statistics" (drop trailing CC/Cricket Club,
     use county names as used today, title case)
   - "date": as YYYYMMDD. Averages tables are usually undated (season-long) —
-    use "18950000" unless the text ties the table to a specific month, in
-    which case use month precision (e.g. "18950800"). Do not guess a day.
+    use "{season}0000" unless the text ties the table to a specific month, in
+    which case use month precision (e.g. "{season}0800"). Do not guess a day.
   - "content_type": "statistics"
   - "collection": "Tony Webb minor counties collection"
   - "page": {page_num}
@@ -64,7 +64,7 @@ as a team, rather than per-player figures), create a SECOND entry:
 
 {STYLE_RULES}
 
-{KEY_1895_DATES}
+{key_dates_block(season)}
 
 RULES:
 - Do NOT create an entry for an individual match scorecard (a report of one
@@ -83,7 +83,7 @@ EXAMPLE:
   followed by separate "BATTING AVERAGES" and "BOWLING AVERAGES" tables for
   the 1st XI, and then another pair of batting/bowling tables for "THE
   SECOND ELEVEN", is still just ONE entry:
-  {{"title": "Abingdon player statistics", "date": "18950000",
+  {{"title": "Abingdon player statistics", "date": "{season}0000",
     "content_type": "statistics"}}
 
 Return ONLY a JSON object with a single key "entries" (array).
@@ -121,6 +121,7 @@ def register_parser(subparsers):
     p.add_argument("--input", "-i", default=config.DEFAULT_TEXT_INPUT)
     p.add_argument("--model", "-m", default=config.DEFAULT_INDEX_STATS_MODEL)
     p.add_argument("--output", "-o", default=None)
+    config.add_collection_arg(p)
     p.add_argument(
         "--pages",
         default=None,
@@ -131,9 +132,11 @@ def register_parser(subparsers):
 
 
 def run(args) -> None:
+    collection = config.Collection.from_arg(args.collection)
+
     run_index_extraction(
         args,
-        prompt_builder=build_user_prompt,
+        prompt_builder=lambda n, t: build_user_prompt(n, t, season=collection.season),
         system_prompt=SYSTEM_PROMPT,
         parse_response=_parse_response,
         csv_prefix="stats_index",
