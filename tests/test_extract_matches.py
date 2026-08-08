@@ -533,6 +533,19 @@ class TestBuildUserPrompt:
         prompt = build_user_prompt(1, "KENSWORTH v DUNSTABLE VICTORIA")
         assert "KENSWORTH v DUNSTABLE VICTORIA" in prompt
 
+    def test_build_user_prompt_season_1939(self):
+        prompt = build_user_prompt(1, "SOME PAGE TEXT", season="1939")
+        assert "cuttings (1939)" in prompt
+        assert "19390800" in prompt        # month-known example
+        assert "19390000" in prompt        # year-only floor
+        assert "18950800" not in prompt
+
+    def test_parser_accepts_collection(self):
+        from tonywebb.cli import build_parser
+        args = build_parser().parse_args(["extract-matches", "--collection",
+                                          "tw_newspaper_cuttings_1939"])
+        assert args.collection == "tw_newspaper_cuttings_1939"
+
 
 # ── Valid content types ────────────────────────────────────────────────────
 

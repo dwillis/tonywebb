@@ -33,11 +33,11 @@ SYSTEM_PROMPT = (
 
 # ── Prompt building ──────────────────────────────────────────────────────────
 
-def build_user_prompt(page_num: int, page_text: str) -> str:
+def build_user_prompt(page_num: int, page_text: str, season: str = config.SEASON) -> str:
     date_context = build_date_context(page_text)
 
     return f"""Below is the transcribed text of page {page_num} from the Tony Webb
-minor counties collection of cricket newspaper cuttings (1895).
+minor counties collection of cricket newspaper cuttings ({season}).
 
 {date_context}
 For each distinct piece of cricket content on this page, create an entry
@@ -50,10 +50,10 @@ in "entries" with:
     just quote the phrase. Use "" if no date reference is present at all.
   - "date": your own best-effort YYYYMMDD guess, used only as a fallback if
     "date_phrase" can't be resolved. Use "YYYYMMDD" when the day is known,
-    "YYYYMM00" (e.g. "18950800") when the month is known but the day isn't,
-    and "YYYY0000" (e.g. "18950000") when only the year is clear. The whole
-    collection is 1895, so the year is ALWAYS known -- never leave "date"
-    empty; if nothing else applies, use "18950000".
+    "YYYYMM00" (e.g. "{season}0800") when the month is known but the day isn't,
+    and "YYYY0000" (e.g. "{season}0000") when only the year is clear. The whole
+    collection is {season}, so the year is ALWAYS known -- never leave "date"
+    empty; if nothing else applies, use "{season}0000".
   - "content_type": one of the allowed types below
   - "collection": "Tony Webb minor counties collection"
   - "page": {page_num}
@@ -206,7 +206,7 @@ EXAMPLES OF CORRECT EXTRACTION:
 Example 1 — Match report with a date reference:
   Text: "KENSWORTH v. DUNSTABLE VICTORIA.--Played on Whit-Monday..."
   Correct: {{"title": "Kensworth v Dunstable Victoria",
-             "date_phrase": "on Whit-Monday", "date": "18950603",
+             "date_phrase": "on Whit-Monday", "date": "{season}0603",
              "content_type": "match information"}}
 
 Example 2 — Match report with scorecard:
@@ -216,7 +216,7 @@ Example 2 — Match report with scorecard:
 
 Example 3 — A weekday reference:
   Text: "The match was played on Friday"
-  Correct: {{"date_phrase": "on Friday", "date": "18950607"}}
+  Correct: {{"date_phrase": "on Friday", "date": "{season}0607"}}
   (Fill "date" with your own best guess, but "date_phrase" is what actually
   determines the final date — copy it verbatim.)
 
@@ -269,7 +269,7 @@ Example 7 — A roundup's date stated once, covering several recaps:
   these paragraphs don't mention a day at all.
   Incorrect: giving "Liverpool v Oxton" and the other day-less recaps an
   empty date_phrase and a "date" guess of the publication date (e.g.
-  "18950914"). These are a roundup of LAST week's results, not results
+  "{season}0914"). These are a roundup of LAST week's results, not results
   from publication day -- guessing the publication date as the match date
   is confident-looking but wrong.
 
@@ -353,6 +353,7 @@ def register_parser(subparsers):
     p.add_argument("--input", "-i", default=config.DEFAULT_TEXT_INPUT)
     p.add_argument("--model", "-m", default=config.DEFAULT_EXTRACT_MATCHES_MODEL)
     p.add_argument("--output", "-o", default=None)
+    config.add_collection_arg(p)
     p.add_argument(
         "--pages",
         default=None,
@@ -378,9 +379,11 @@ def run(args) -> None:
             raise SystemExit(f"Unknown content type(s): {invalid}. Valid: {VALID_CONTENT_TYPES}")
         print(f"Types : {', '.join(sorted(content_filter))}")
 
+    collection = config.Collection.from_arg(args.collection)
+
     run_index_extraction(
         args,
-        prompt_builder=build_user_prompt,
+        prompt_builder=lambda n, t: build_user_prompt(n, t, season=collection.season),
         system_prompt=SYSTEM_PROMPT,
         parse_response=_parse_response,
         csv_prefix="match_index",
