@@ -20,6 +20,8 @@ The collection is a 247-page FlippingBook archive of Victorian cricket newspaper
    - `tonywebb promote-reviewed` — append your accepted review-queue rows into the Willis ground truth.
    - `tonywebb clubs` — regenerate the canonical team-name registry (`clubs.csv`).
 
+**Known limitation:** stage 3's commands (`compare`, `browse`, `willis-compare`, `evaluate`, `consensus`, `promote-reviewed`, `clubs`) and `build-browser` don't accept `--collection` and remain 1895-only — they depend on the hand-built `match_index_willis.csv` ground truth, which only exists for the 1895 collection. Running them against another collection's output isn't supported.
+
 ## Setup
 
 ```bash
