@@ -6,7 +6,7 @@ Redbourn suffered another defeat on Saturday—when they lost at Woodside Park b
 
 Woodside Park.
 G. H. Brackley, c D. Flatt, b
-  C. Cooper ............... 11
+  C. Cooper .. 11
 G. Radley, hit wkt., b C. Cooper  1
 W. Donohue, b C. Cooper .. .. 16
 W. Claxton, b C. Cooper .. .. 80
@@ -24,21 +24,21 @@ Bowling: Gurney 1—28, Collins
 
 Redbourn.
 D. C. Flatt, st Claxton, b
-  Brackley .............. 22
+  Brackley .. 22
 F. E. Arnold, b Brackley .. ..  1
 H. W. Luck, c Sandy, b
-  Brackley ..............  7
-C. Flatt, c Gray, b Brackley ..  3
+  Brackley .. 7
+C. Flatt, c Gray, b Brackley .. 3
 T. L. Richards, b Irwin .. ..  1
 C. V. H. Cooper, c Brackley, b
-  Chapman .............. 35
+  Chapman .. 35
 W. H. Gurney, b Irwin .. .. .. 11
 J. R. Collins, c Gray, b Irwin  12
 C. Tipper, not out .. .. .. ..  3
 T. Cooper, c Claxton, b Irwin  0
 T. Kingham, lbw. b Irwin .. ..  3
-                          Extras ..  1
-            Total .......... 99
+                          Extras .. 1
+            Total .. 99
 
 **BEDMOND WIN AT NASH MILLS.**
 
@@ -47,24 +47,23 @@ Bedmond succeeded by three wickets at Nash Mills, on Saturday. Nash Mills had a 
 Nash Mills.
 First Innings.
 J. Rice, c B. Williams, b Big-
-  gerstaff .............. 17
+  gerstaff .. 17
 W. Lomas, c Gentle, b Big-
-  gerstaff .............. 15
+  gerstaff .. 15
 D. Shatford, b Biggerstaff .. ..  4
 W. Armstrong, b Allbone .. ..  0
 F. Reynolds, c Flowers, b
-  Allbone ...............  0
+  Allbone .. 0
 H. Walker, not out .. .. .. ..  2
 A. Reed, b Allbone .. .. .. ..  0
 S. Walker, run out .. .. .. ..  4
 S. Hutchins, c Flowers, b Big-
-  gerstaff ..............  1
+  gerstaff .. 1
 R. Hutchins, b Biggerstaff .. ..  0
 A. Stollery, c Biggerstaff, b
-                     Extras ..  1
-              Total .......... 43
-Bowling: Allbone 3—10, Bigger-
-staff 6—32.
+                     Extras .. 1
+              Total .. 43
+Bowling: Allbone 3—10, Biggerstaff 6—32.
 
 Second innings: 62 for 7 declared
 (W. Armstrong 20, S. Walker 19.
@@ -80,12 +79,12 @@ R. Williams, b S. Walker .. ..  1
 F. Salwood, c Rice, b Armstrong  5
 A. Flowers, b S. Walker .. ..  6
 E. Allbone, c Reynolds, b S.
-  Walker ...............  0
+  Walker .. 0
 A. Johnston, c and b S. Walker  0
-H. Gentle, b S. Walker .. .. ..  7
+H. Gentle, b S. Walker .. .. .. 7
 P. Godman, not out .. .. .. ..  2
-                          Extras ..  1
-            Total .......... 25
+                          Extras .. 1
+            Total .. 25
 Bowling: Armstrong 4—16, S.
 Walker 6—8.
 
@@ -101,17 +100,17 @@ Armstrong 3—41, S. Walker
 P. Aston was in excellent form for Rodexcen on Sunday, when they succeeded at Hatfield Hyde by 23 runs. He made top score of 43 and took seven wickets for 37. C. Folds played a fine knock of 42 for Hatfield Hyde when things were going badly. Scores:—
 
 Rodexcen.
-H. Fladon, b Tomlin .. .. ..  1
+H. Fladon, b Tomlin .. .. .. 1
 W. Cope, lbw. b Kimpton .. ..  3
 P. Aston, b Tomlin .. .. .. .. 43
 E. Coulson, b Kimpton .. .. .. 42
 J. Gray, b Tomlin .. .. .. ..  2
 R. Geoffrey, c Hard, b Tomlin  0
 A. Dias, c Kimpton, b Tomlin  4
-J. Slater, b Kimpton .. .. ..  0
+J. Slater, b Kimpton .. .. .. 0
 
 H. Faulkner, c Whitmore, b
-  Kimpton ..............  5
+  Kimpton .. 5
 F. Fletcher, not out .. .. .. .. 17
 R. A. Gray, not out .. .. .. ..  1
                           Extras .. 34
@@ -122,17 +121,17 @@ Bowling: Kimpton 4—53, Tomlin
 Hatfield Hyde.
 Williams, c Master, b Aston .. 14
 Hards, c Cope, b Aston .. .. .. 14
-Spencer, c and b Aston .. .. ..  5
-Tomlin, c Faulkner, b Aston ..  6
-Redbourn, c Cope, b J. Gray ..  0
+Spencer, c and b Aston .. .. .. 5
+Tomlin, c Faulkner, b Aston .. 6
+Redbourn, c Cope, b J. Gray .. 0
 Hulks, c Fletcher, b Aston .. ..  2
 Kimpton, run out .. .. .. .. .. 12
 C. Folds, c Slater, b Aston .. .. 42
-Crawley, b Aston .. .. .. .. ..  0
+Crawley, b Aston .. .. .. .. .. 0
 Rickin, b Faulkner .. .. .. .. 13
 Wynn, not out .. .. .. .. .. ..  1
                           Extras .. 14
-            Total .......... 125
+            Total .. 125
 Bowling: J. Gray 1—54, Aston
 7—37, Faulkner 1—20.
 
@@ -144,21 +143,21 @@ Bushey.
 D. F. Smee, c Flnerty, b Gentle 15
 J. D. Wards, c Bull, b Butler  3
 T. D. Brockwell, c Kitchen, b
-  Butler ...............  9
+  Butler .. 9
 G. R. Walker, c Kitchen, b Bull  1
 A. R. Golding, c Usher, b
-  Kitchen .............. 51
+  Kitchen .. 51
 R. G. R. Walker, c and b
-  Kitchen ..............  0
+  Kitchen .. 0
 F. H. Mawer, c Swinstead, b
-  Gentle ...............  0
+  Gentle .. 0
 C. W. Newberry, st Swinstead,
-  b Cornu .............. 17
+  b Cornu .. 17
 J. Yates, not out .. .. .. .. .. 31
 M. J. Service, b Butler .. .. .. 11
 J. Addis, b Butler .. .. .. ..  0
-                          Extras ..  8
-            Total .......... 146
+                          Extras .. 8
+            Total .. 146
 Bowling: Bull 1—28, Butler
 4—28, Gentle 2—36, Kitchen
 2—9, Cornu 1—15.
@@ -168,15 +167,15 @@ D. Shepherd, lbw. b Smee .. .. 11
 R. J. V. Spurway, b Smee .. ..  1
 G. Cornu, c Golding, b Yates  74
 F. K. Butler, c Newberry, b
-  Yates ............... 26
+  Yates .. 26
 R. T. Kitchen, b Golding .. .. .. 27
 G. A. Usher, c Yates, b Brock-
-  well ............... 13
+  well .. 13
 M. Van der Borgh, c Walker, b
-  Brockwell ............  0
-P. Swinstead, not out .. .. ..  9
-                          Extras ..  1
-            Total .......... 162
+  Brockwell .. 0
+P. Swinstead, not out .. .. .. 9
+                          Extras .. 1
+            Total .. 162
 C. Gentle, K. Finerity and J. Bull
 did not bat.
 Bowling: Golding 1—38, Smee
@@ -194,10 +193,10 @@ W. H. Ridout, b Walters .. ..  1
 J. Kellock, c Ward, b Harvey  60
 J. Milner, b Harvey .. .. .. .. 18
 M. C. Evans, not out .. .. .. .. 20
-G. Sanderson, b Harvey .. .. ..  0
+G. Sanderson, b Harvey .. .. .. 0
 B. Moses, c Dunsford, b Walters  8
-C. W. Craig, b Walters .. .. ..  0
-A. Wilkins, b Mendows .. .. ..  9
+C. W. Craig, b Walters .. .. .. 0
+A. Wilkins, b Mendows .. .. .. 9
 E. Evans, not out .. .. .. .. .. 22
                           Extras .. 16
        Total (9 wkts. dec.) .. 226
@@ -206,9 +205,9 @@ Bowling: Walters 5—73.
 North Highgate.
 J. Ward, c Ridout, b E. Evans  9
 H. Eldridge, c Craig, b E.
-  Evans ...............  5
+  Evans .. 5
 E. Wadsworth, st Craig, b
-  Attewell ............. 10
+  Attewell .. 10
 P. Long, b E. Evans .. .. .. ..  1
 G. Akers, c Milner, b E. Evans 19
 T. Dunsford, b Attewell .. .. .. 10
@@ -217,8 +216,8 @@ J. Mendows, b Attewell .. .. .. 22
 F. Walters, b Milner .. .. .. ..  4
 C. Walters, not out .. .. .. ..  4
 N. Robinson, c Craig, b Milner  2
-                          Extras ..  4
-              Total .......... 103
+                          Extras .. 4
+              Total .. 103
 Bowling: E. Evans 4—35,
 Attewell 4—36, Milner 2—11.
 
@@ -229,16 +228,16 @@ With C. T. Howard (56) and R. C. Carter (25) making a grand second-wicket stand 
 Welwyn Garden City.
 R. J. Sims, c and b G. Horsler  7
 R. C. Carter, lbw. b W. King .. 25
-C. T. Howard, b D. Horsler ..  56
+C. T. Howard, b D. Horsler .. 56
 R. N. Haigh, b P. King .. ..  0
 K. J. Pettis, st Young, b G.
-  Horsler ..............  6
+  Horsler .. 6
 G. M. Bulloch, b G. Horsler .. 11
 J. Dixon, b Cole, b G. Horsler  8
 P. K. O'Brien, b D. Horsler .. 21
 J. Howard, run out .. .. .. ..  9
 F. Carroll, not out .. .. .. ..  2
-                          Extras ..  8
+                          Extras .. 8
         Total (9 wkts dec.) .. 153
 J. Reast did not bat.
 Bowling: D. Horsler 2—34, G.
@@ -246,19 +245,19 @@ Horsler 4—56, W. King 1—28, P.
 King 1—23.
 
 Hexton.
-W. King, b Reast .. .. .. .. ..  8
+W. King, b Reast .. .. .. .. .. 8
 H. Fisher, c Carter, b O'Brien  6
 S. Wilson, c and b Pettis .. .. 21
 R. Waller, c and b Pettis .. .. 11
-F. Clark, run out .. .. .. .. ..  3
-R. Cole, b Pettis .. .. .. .. ..  3
-J. Davies, c Howard, b Pettis ..  6
+F. Clark, run out .. .. .. .. .. 3
+R. Cole, b Pettis .. .. .. .. .. 3
+J. Davies, c Howard, b Pettis .. 6
 D. Horsler, c O'Brien, b Pettis  2
 A. Young, st Carter, b Pettis .. 10
-P. King, not out .. .. .. .. ..  6
-G. Simkins, c Dixon, b Pettis ..  9
+P. King, not out .. .. .. .. .. 6
+G. Simkins, c Dixon, b Pettis .. 9
                           Extras .. 14
-             Total ..........  99
+             Total .. 99
 Bowling: Reast 1—19, O'Brien
 2—31, Pettis 6—35.
 
@@ -271,16 +270,16 @@ F. Lambkin, b Saxton .. .. .. .. 14
 R. Simons, b O'Brien .. .. .. ..  2
 F. Glenister, c Haigh, b O'Brien  0
 B. Crownshaw, c Haigh, b
-  O'Brien ..............  7
+  O'Brien .. 7
 A. Briere, c Howard, b Reast .. 25
-P. Briers, b Pettis .. .. .. .. ..  7
+P. Briers, b Pettis .. .. .. .. .. 7
 C. Sharp, c Carter, b O'Brien 27
-R. Crownshaw, b Reast .. .. ..  1
-E. Taylor, not out .. .. .. .. ..  4
-K. Glenister, b O'Brien .. .. ..  0
-R. Presland, b O'Brien .. .. ..  0
-                          Extras ..  8
-             Total ..........  90
+R. Crownshaw, b Reast .. .. .. 1
+E. Taylor, not out .. .. .. .. .. 4
+K. Glenister, b O'Brien .. .. .. 0
+R. Presland, b O'Brien .. .. .. 0
+                          Extras .. 8
+             Total .. 90
 Bowling: Reast 2—25, O'Brien
 6—19, Saxton 1—11, Pettis 1—27.
 
@@ -288,18 +287,18 @@ Welwyn Garden City
 R. C. Carter, lbw. b Briers .. ..  1
 R. J. Sims, b Crownshaw .. .. .. 11
 R. C. Pakes, st Simons, b
-  Crownshaw ............  7
+  Crownshaw .. 7
 C. T. Howard, b Crownshaw .. ..  0
 R. M. Haigh, b Briers .. .. .. ..  0
 K. J. Pettis, b Briers .. .. .. ..  0
 G. M. Bulloch, c Glenister, b
-  Crownshaw ............  8
+  Crownshaw .. 8
 L. Oughton, b Briers .. .. .. ..  1
 P. O'Brien, b Briers .. .. .. ..  2
-H. M. Saxton, b Briers .. .. ..  0
-J. Reast, not out .. .. .. .. ..  0
-                          Extras ..  2
-              Total ..........  32
+H. M. Saxton, b Briers .. .. .. 0
+J. Reast, not out .. .. .. .. .. 0
+                          Extras .. 2
+              Total .. 32
 Bowling: Crownshaw 4—21,
 Briers 6—9.
 
@@ -310,38 +309,37 @@ Welwyn won their local "Derby" game at Digswell Park with Welwyn Garden City II.
 Welwyn.
 C. Pateman, b Gordon .. .. .. .. 28
 G. Prince, c Thomas, b White-
-  head ................. 14
+  head .. 14
 R. Pressley, c Masters, b Chil-
-  cott ..................  4
+  cott .. 4
 D. Baverstock, c Lambert, b
-  Whitehead ............  1
+  Whitehead .. 1
 G. Pateman, b Whitehead .. .. .. 11
 A. Dear, c Sub, b Fisher .. .. .. 23
 F. Dear, c Thomas, b Gordon 10
-R. Rawlinson, b Chilcott .. .. ..  1
+R. Rawlinson, b Chilcott .. .. .. 1
 J. Hillward, not out .. .. .. .. 18
 L. Adams, c Chilcott, b Fisher  9
-H. E. Webb, b Whitehead .. .. ..  5
+H. E. Webb, b Whitehead .. .. .. 5
                           Extras .. 14
-              Total .......... 137
-Bowling: Fisher 2—26, White-
-head 4—32, Chilcott 2—52, Gordon
+              Total .. 137
+Bowling: Fisher 2—26, Whitehead 4—32, Chilcott 2—52, Gordon
 2—30.
 
 Welwyn Garden City II.
 W. R. Lambert, Dear .. .. .. ..  1
 C. H. A. Hards, b Dear .. .. .. .. 10
-J. Harland, b Dear .. .. .. .. ..  4
+J. Harland, b Dear .. .. .. .. .. 4
 L. F. Masters, b Pateman .. .. .. 26
 C. Chillcott, c Dear, b Pateman  5
-G. Gordon, run out .. .. .. .. ..  5
+G. Gordon, run out .. .. .. .. .. 5
 R. J. Thomas, c Pateman, b
-  Dear ................. 18
-A. Whitehead, lbw. b Pateman ..  0
+  Dear .. 18
+A. Whitehead, lbw. b Pateman .. 0
 R. Fisher, c Rawlinson, b Dear  3
 F. V. Mauger, not out .. .. .. .. 10
-                          Extras ..  0
-              Total ..........  80
+                          Extras .. 0
+              Total .. 80
 Bowling: Dear 6—50, Pateman
 3—12.
 
@@ -351,18 +349,18 @@ F. England (6—19) bowled well for Bricket Wood and Munden on Saturday when the
 
 Northbank.
 G. Beach, c Charter, b England 37
-D. Green, b Beck .. .. .. .. ..  3
-C. Jeffries, c Quinlan, b Beck ..  2
+D. Green, b Beck .. .. .. .. .. 3
+C. Jeffries, c Quinlan, b Beck .. 2
 R. Wells, c Quinlan, b England  3
-F. Cartwright b England .. .. ..  1
+F. Cartwright b England .. .. .. 1
 V. Cray, c Thompson, b Dun-
-  ham .................  2
+  ham .. 2
 T. Munday, b England .. .. .. ..  8
 J. Munday, b England .. .. .. ..  0
 E. Saunders, hit wkt. b England  0
 F. Farthing, not out .. .. .. ..  1
-                          Extras ..  2
-             Total ..........  59
+                          Extras .. 2
+             Total .. 59
 Bowling: England 6—19, Beck
 2—29, Dunham 1—9.
 
@@ -377,9 +375,9 @@ R. Hawkins, run out .. .. .. ..  5
 T. Beck, c Collier, b Cray .. ..  0
 A. Quinlan, b Jeffries .. .. .. ..  1
 R. Thompson, b Cray .. .. .. ..  1
-L. Charter, not out .. .. .. .. ..  3
-                          Extras ..  3
-             Total ..........  72
+L. Charter, not out .. .. .. .. .. 3
+                          Extras .. 3
+             Total .. 72
 Bowling: Beach 5—30, Green
 2—29, Cray 3—3, Jeffries 1—6.
 

@@ -19,19 +19,19 @@ E. Kanter b Wooll-                     H. W. Neilan lbw b
   head .. .. .. .. 12                  Kanter .. .. .. .. 7
 M. Croft b Percival 16                 K. C. Bennett lbw b
 C. D. Smallwood b                        Moore .. .. .. .. 12
-  Percival .. .. ..  0                J. W. Davis b Moore 20
+  Percival .. .. .. 0                J. W. Davis b Moore 20
 G. H. Moore run out  1                 H. S. Tiger c and b
 J. Grayling c and b                       Kanter .. .. .. .. 4
   Grieshaber .. ..  6                  A. V. Percival hit wkt
 K. McCanlis b Grie-                       b Kanter .. .. .. 2
-  shaber .. .. ..  0                   H. F. Fox c Hop-
+  shaber .. .. .. 0                   H. F. Fox c Hop-
 R. Davey b Grieshaber  0                  wood b Moore .. .. 4
 H. Allenway not out 11                 C. J. Woollhead b
 K. G. Downing b                            Moore .. .. .. .. 3
   Neilan .. .. .. .. 20                C. L. Grieshaber b
                                           Hopwood .. .. .. 23
                                      C. E. Tarry not out .. 1
-       Extras .. 20                          Extras ..  7
+       Extras .. 20                          Extras .. 7
                                           ─────                    ─────
        Total .. 155                          Total .. 86
 
@@ -59,11 +59,11 @@ C. J. Woollhead b                        D. H. Pave c Butler
   Bott .. .. .. ..  0                     b Neilan .. .. .. 0
 C. L. Grieshaber b                       M. H. Lloyd-Davis b
   Flatman .. .. .. 15                      Woollhead .. .. .. 1
-H. Birch not out ..  2                  A. W. Flatman c
+H. Birch not out .. 2                  A. W. Flatman c
                                           Thirkill b Neilan .. 9
-       Extras ..  9                           Extras ..  1
+       Extras .. 9                           Extras .. 1
                                           ─────                    ─────
-       Total ..  82                          Total .. 43
+       Total .. 82                          Total .. 43
 
 **RIGHT COLUMN**
 
@@ -91,14 +91,14 @@ W. J. Streather not                          Jarvis .. .. .. .. 0
 E. M. Till st Bennett                       W. Jarvis .. .. .. 2
   b W. G. Bott .. .. 15                  K. L. Simpson lbw b
 L. W. Spratley b W.                          J. Caudle .. .. .. 11
-  G. Bott .. .. ..  0                    A. H. M. Salmon b K.
+  G. Bott .. .. .. 0                    A. H. M. Salmon b K.
 C. W. Jarvis c Jack-                        G. Fidler .. .. .. 9
   son b Capt. Webb  1                     Capt. Webb lbw b J.
 D. S. Lewis b W. G.                          Caudle .. .. .. .. 0
   Bott .. .. .. ..  0                    W. G. Bott b K. G.
 K. B. West c Howard                         Fidler .. .. .. .. 1
   b W. G. Bott .. .. 21                  S. Bradfield not out 0
-              Extras ..  4                     Extras ..  1
+              Extras .. 4                     Extras .. 1
               ─────                              ─────
        Total .. 78                              Total .. 58
 
@@ -136,8 +136,8 @@ A. Langford and J.                          Hamilton .. .. .. 15
                                          W. N. Sansom not out  7
                                          H. E. Adams did not
                                            bat.
-                                          Extras ..  4
-       Extras ..  9                          ─────
+                                          Extras .. 4
+       Extras .. 9                          ─────
                                           Total (9 wkts) .. 119
        ─────
 Total (7 wkts dec) .. 152

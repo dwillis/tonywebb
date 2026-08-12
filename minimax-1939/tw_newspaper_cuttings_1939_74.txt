@@ -14,18 +14,18 @@ The list is:
                                 No.  Times    Total  Inns.  Most
                                 Inns.  not    runs.         Avge.
                                        out.
-N. F. Lane ....                  11     0      405   74    36.81
-R. H. Stimpson ..                16     7      229   *75   25.11
-A. L. Goodall ....               11     3      182   *57   22.75
-R. I. S. Eade ....               12     0      215   58    17.92
-N. Pearson ....                   8     1      121   51    17.71
-C. J. S. Mitchell ..             19     0      312   53    16.44
-D. C. Rendrick ..                23     5      322   *12   16.1
-C. J. D. Burgess ..              15     1      189   53    15.75
-A. Grimsdell ....                15     3      158   *26   13.16
-B. Gardner ....                  11     1      140   *48   14.00
+N. F. Lane .. 11     0      405   74    36.81
+R. H. Stimpson .. 16     7      229   *75   25.11
+A. L. Goodall .. 11     3      182   *57   22.75
+R. I. S. Eade .. 12     0      215   58    17.92
+N. Pearson .. 8     1      121   51    17.71
+C. J. S. Mitchell .. 19     0      312   53    16.44
+D. C. Rendrick .. 23     5      322   *12   16.1
+C. J. D. Burgess .. 15     1      189   53    15.75
+A. Grimsdell .. 15     3      158   *26   13.16
+B. Gardner .. 11     1      140   *48   14.00
 R. C. H. Connolly                7     0       61   39     8.71
-E. G. Hawes ..                    5     3       51   20     8.5
+E. G. Hawes .. 5     3       51   20     8.5
 
 *Signifies not out.
 
