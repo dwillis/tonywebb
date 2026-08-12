@@ -4,53 +4,53 @@ REDBOURN'S COLLAPSE.
 Redbourn suffered another defeat on Saturday when they lost at Woodside Park by 62 runs because their batting did not come up to the standard of their bowling and fielding. R. Claxton (80) hit hard for Woodside Park, who declared with 161 for 9. Redbourn soon lost five wickets for 54. W. H. Gurney (11) assisted C. V. H. Cooper (35) to lift the score to 66 for 6 and J. R. Colliss (12) helped Cooper to take the total to 92 for 7, but the eighth and ninth wickets fell without addition and the innings closed for 99. Scores:-
 
 Woodside Park.
-G. H. Brackley, c D. Flatt, b J. Cooper ............ 11
+G. H. Brackley, c D. Flatt, b J. Cooper .. 11
 G. Radley, hit wkt., b C. Cooper .. 0
-W. Donohue, b C. Cooper ......... 16
-R. Claxton, b C. Cooper .......... 80
-B. Sharp, b C. Cooper ........... 0
-J. Chapman, b Gurney ........... 2
+W. Donohue, b C. Cooper .. 16
+R. Claxton, b C. Cooper .. 80
+B. Sharp, b C. Cooper .. 0
+J. Chapman, b Gurney .. 2
 M. Gray, c Tipper, b C. Cooper .. 10
-J. Robinson, run out ............ 0
+J. Robinson, run out .. 0
 E. Elliott, c C. Flatt, b Colliss . 10
-A. Jandy, not out ................ 11
-Extras .......................... 21
+A. Jandy, not out .. 11
+Extras .. 21
 Total (9 wkts dec.)... 161
 Bowling: Gurney 1—28, Colliss 1—25, Cooper 6—75.
 
 Redbourn.
-D. C. Flatt, st Claxton, b Brackley .................. 22
-F. E. Arnold, b Brackley ..... 1
-H. W. Luck, c Gandy, b Brackley .................... 7
+D. C. Flatt, st Claxton, b Brackley .. 22
+F. E. Arnold, b Brackley .. 1
+H. W. Luck, c Gandy, b Brackley .. 7
 C. Flatt, c Gray, b Brackley .. 3
-T. I. Richards, b Irwin ........ 1
-C. V. H. Cooper, c Brackley, b Chapman ............. 35
-W. H. Gurney, b Irwin ........ 11
+T. I. Richards, b Irwin .. 1
+C. V. H. Cooper, c Brackley, b Chapman .. 35
+W. H. Gurney, b Irwin .. 11
 J. R. Colliss, c Gray, b Irwin . 12
-C. G. Tipper, not out .......... 3
+C. G. Tipper, not out .. 3
 Dr. Cooper, c Claxton, b Irwin 0
-T. Kingham, lbw, b Irwin ...... 3
-Extras .......................... 1
-Total ........................... 99
+T. Kingham, lbw, b Irwin .. 3
+Extras .. 1
+Total .. 99
 
 BEDMOND WIN AT NASH MILLS.
 Bedmond succeeded by three wickets at Nash Mills, on Saturday. Nash Mills had a first innings lead of 18 and declared with 62 for 7 in their second venture, but Bedmond rose to the occasion and replied with 83 for 7, made in twenty-five minutes, to win the game. H. Gentle, of Bedmond, had to be taken to Hospital to have stitches inserted in a cut over his eye, but returned to the fray and took five wickets for 39. Scores:-
 
 Nash Mills
 First Innings.
-J. Rice, c B. Williams, b Biggerstaff .............. 17
-W. Lomas, c Gentle, b Biggerstaff .................. 13
+J. Rice, c B. Williams, b Biggerstaff .. 17
+W. Lomas, c Gentle, b Biggerstaff .. 13
 D. Shatford, b Biggerstaff ... 4
-W. Armstrong, b Albone ...... 0
-F. Reynolds, c Flowers, b Albone ................... 0
-H. Walker, not out ............ 2
-A. Reed, b Albone ............ 0
-S. Walker, run out ............ 4
-S. Hutchins, c Flowers, b Biggerstaff .............. 1
-B. Hutchins b Biggerstaff .... 1
-A. Stollery, b Biggerstaff .... 0
-Extras .......................... 1
-Total ........................... 43
+W. Armstrong, b Albone .. 0
+F. Reynolds, c Flowers, b Albone .. 0
+H. Walker, not out .. 2
+A. Reed, b Albone .. 0
+S. Walker, run out .. 4
+S. Hutchins, c Flowers, b Biggerstaff .. 1
+B. Hutchins b Biggerstaff .. 1
+A. Stollery, b Biggerstaff .. 0
+Extras .. 1
+Total .. 43
 Bowling: Albone 3—10, Biggerstaff 6—32.
 
 Second innings: 62 for 7 declared (W. Armstrong 20, S. Walker 19.—Bowling: Gentle 5—39).
@@ -58,18 +58,18 @@ Second innings: 62 for 7 declared (W. Armstrong 20, S. Walker 19.—Bowling: Gen
 Bedmond.
 First Innings.
 W. Biggerstaff, b Armstrong .. 0
-T. Ward, lbw, b S. Walker .... 4
-R. Williams, b Armstrong ..... 0
-D. Sourbutts, b Armstrong .... 0
-R. Williams, b S. Walker ..... 1
+T. Ward, lbw, b S. Walker .. 4
+R. Williams, b Armstrong .. 0
+D. Sourbutts, b Armstrong .. 0
+R. Williams, b S. Walker .. 1
 F. Sawood, c Rice, b Armstrong 5
-A. Flowers, b S. Walker ...... 5
-E. Albone, c Reynolds; b S. Walker .................. 0
+A. Flowers, b S. Walker .. 5
+E. Albone, c Reynolds; b S. Walker .. 0
 A. Johnston, c and b S. Walker 0
-H. Gentle, b S. Walker ....... 7
-P. Godman, not out ........... 2
-Extras .......................... 1
-Total ........................... 25
+H. Gentle, b S. Walker .. 7
+P. Godman, not out .. 2
+Extras .. 1
+Total .. 25
 Bowling: Armstrong 4—16, S. Walker 6—8.
 
 Second innings: 83 for 7 (P. Godman 20 not out, D. Sourbutts 18, F. Albone 14, A. Johnston 13, R. Williams 10.—Bowling: Armstrong 3—41, S. Walker 3—41).
@@ -78,12 +78,12 @@ P. ASTON'S FIELD DAY.
 P. Aston was in excellent form for Rodezion on Sunday, when they succeeded at Hatfield Hyde by 23 runs. He made top score of 43 and took seven wickets for 37. C. Folda played a fine knock of 42 for Hatfield Hyde when things were going badly. Scores:-
 
 Rodezion.
-H. Elsdon, b Tomlin .......... 1
-W. Cope, lbw, b Kimpton .... 3
-P. Aston, b Tomlin ........... 43
-L. Coulson, b Kimpton ........ 42
-J. Gray, b Tomlin ............ 2
+H. Elsdon, b Tomlin .. 1
+W. Cope, lbw, b Kimpton .. 3
+P. Aston, b Tomlin .. 43
+L. Coulson, b Kimpton .. 42
+J. Gray, b Tomlin .. 2
 R. Goodyear, c Hard, b Tomlin 0
 A. Dias, c Kimpton, b Tomlin 0
-J. Slater, b Kimpton ......... 0
+J. Slater, b Kimpton .. 0
 [unclear] [unclear] [unclear] [unclear] [unclear] [unclear] [unclear] [unclear] [unclear] [unclear] [unclear] [unclear] [unclear] [unclear] [unclear] [unclear] [unclear] [unclear] [unclear] [unclear] [unclear] [unclear] [unclear] [unclear] [unclear] [unclear] [unclear] [unclear] [unclear] [unclear] [unclear] [unclear] [unclear] [unclear] [

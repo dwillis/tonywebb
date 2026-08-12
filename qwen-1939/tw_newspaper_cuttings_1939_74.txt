@@ -20,7 +20,7 @@ N. Pearson       8    1   124  51 17.71
 C. J. R. Mitchell .. 19    0   512  55 16.44
 D. C. Kendrick .. 25    3   322 *12 16.1
 C. J. D. Burgess  15    1   189  55 15.75
-A. Grimsdell ..  15    3   158  26 15.16
+A. Grimsdell .. 15    3   158  26 15.16
 R. Gardner      11    1   140 *48 14.00
 R. C. H. Connolly  7    0    61  59  8.71
 E. G. Hawes      9    3    51  20  8.5
