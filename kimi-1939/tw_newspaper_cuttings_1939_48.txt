@@ -5,13 +5,13 @@ E. T. KILLICK'S GOOD INNINGS AGAINST ST. ALBANS.
 The Rev. E. T. Killick, the Eng. land, Middlesex and Cambridge University player, batted splendidly for Letchworth at Clarence Park, on Saturday. He had made 72 not out when Letchworth, who batted first, declared with 153 for 4. A. G. Hacker (28) and G. F. Funnell (27). St. Albans' opening pair. put on 57 before they were parted, but after that wickets fell quickly and at the close of the game, which was left drawn, St. Albans had made 92 for 5. Scores:—
 
 Letchworth.
-T. T. Dice, c Minshull, b S. Rabone .................... 7
-H. Smith, lbw, b Lismore ........ 14
+T. T. Dice, c Minshull, b S. Rabone .. 7
+H. Smith, lbw, b Lismore .. 14
 J. Grey, c Weatherhead, b Bell 32
-Rev. E. T. Killick, not out .... 73
-C. Kay, c sub., b Minshull .... 24
-T. Fenton, not out ............... 0
-Extras ............................. 4
+Rev. E. T. Killick, not out .. 73
+C. Kay, c sub., b Minshull .. 24
+T. Fenton, not out .. 0
+Extras .. 4
 ——
 Total (4 wkts. dec.)... 153
 
@@ -19,16 +19,16 @@ F. Luckhurst, R. Pedder, P. Quick. C. Mills and J. H. Richie did not bat.
 Bowling: Minshull 1—45, S. Rabone 1—21, Lismore 1—43, Bell 1—21.
 
 St. Albans.
-A. S. Hacker, b Mills ............ 28
-G. F. Beaumont, b Mills ....... 27
-S. J. Hammond, st Fenton, b Grey ............................. 1
-N. F. K. Porter, c Richie, b Grey ............................. 9
-W. L. Clark, not out ............. 6
-S. H. Rabone, c Pedder, b H. Smith ............................. 13
-H. S. Rabone, not out ........... 1
-Extras ............................. 7
+A. S. Hacker, b Mills .. 28
+G. F. Beaumont, b Mills .. 27
+S. J. Hammond, st Fenton, b Grey .. 1
+N. F. K. Porter, c Richie, b Grey .. 9
+W. L. Clark, not out .. 6
+S. H. Rabone, c Pedder, b H. Smith .. 13
+H. S. Rabone, not out .. 1
+Extras .. 7
 ——
-Total (5 wkts.) ....... 92
+Total (5 wkts.) .. 92
 
 W. Lismore, D. H. A. Bell, F. Minshull and G. Weatherhead did not bat.
 Bowling: Smith 1—31, Mills 2—10, Grey 2—23.
@@ -38,36 +38,36 @@ ST. ALBANS BEAT OLD ALBANIANS.
 St. Albans beat the Old Albanians by three wickets at Clarence Park, on Sunday. With J. T. Marriott, who took 6 wickets for 22 runs in eight overs, bowling well, St. Albans dismissed the Old Boys for 55. A collapse ensued after the sixth wicket fell at 74. When St. Albans had seven wickets down for 65, a close finish seemed likely, but L. Lismore (26 not out) and G. Weatherhead (12) knocked off the runs without further loss. Scores:—
 
 Old Albanians.
-K. Griffiths, b Marriott ....... 13
-F. F. George, b Minshull ...... 0
-F. Arnold, b S. Rabone ........ 0
+K. Griffiths, b Marriott .. 13
+F. F. George, b Minshull .. 0
+F. Arnold, b S. Rabone .. 0
 M. A. Wigze, lbw, b Lismore. 18
-H. W. Adams, c Clark, b Marriott ............................. 16
-H. Grubb, c Weatherhead, b Marriott ........................... 4
-J. S. Owen, c S. Rabone, b Bell ............................. 8
-C. Dunham, c Turner, b Marriott ............................. 1
-J. G. Shackley, b Marriott .... 2
-G. D. Wigze, not out ........... 3
-W. Fenton, b Marriott ......... 0
-Extras ............................. 13
+H. W. Adams, c Clark, b Marriott .. 16
+H. Grubb, c Weatherhead, b Marriott .. 4
+J. S. Owen, c S. Rabone, b Bell .. 8
+C. Dunham, c Turner, b Marriott .. 1
+J. G. Shackley, b Marriott .. 2
+G. D. Wigze, not out .. 3
+W. Fenton, b Marriott .. 0
+Extras .. 13
 ——
-Total ........................... 83
+Total .. 83
 
 Bowling: Minshull 1—14, S. Rabone 1—18, Lismore 1—6, Marriott 6—22, Bell 1—8.
 
 St. Albans.
 L. H. Crocker, lbw, b George 3
-A. S. Hacker, b M. Wigze ..... 2
-D. B. Turner, c Grubb, b Fenton ............................. 6
-D. H. A. Bell, c Dunham, b M. Wigze ............................. 14
-W. L. Clark, c George, b M. Wigze ............................. 13
+A. S. Hacker, b M. Wigze .. 2
+D. B. Turner, c Grubb, b Fenton .. 6
+D. H. A. Bell, c Dunham, b M. Wigze .. 14
+W. L. Clark, c George, b M. Wigze .. 13
 H. S. Rabone, lbw, b George . 1
-F. Minshull, c G. Wigze, b Fenton ............................. 2
-W. Lismore, not out ............ 26
+F. Minshull, c G. Wigze, b Fenton .. 2
+W. Lismore, not out .. 26
 G. Weatherhead, b M. Wigze ... 12
-Extras ............................. 8
+Extras .. 8
 ——
-Total (8 wkts.) ....... 87
+Total (8 wkts.) .. 87
 
 S. H. Rabone and J. T. Marriott did not bat.
 Bowling: M. Wigze 4—36, George 2—25, Fenton 2—18.
@@ -82,37 +82,37 @@ L. O. King, of Radlett, performed the "hat trick" for the Herts County Club on F
 
 St. Albans.
 A. S. Hacker, c Oliver, b King 14
-A. D. Hastall, c D. Hopkinson, b King ............................. 0
-L. Crocker, lbw, b Marsh ...... 11
+A. D. Hastall, c D. Hopkinson, b King .. 0
+L. Crocker, lbw, b Marsh .. 11
 A. J. Barnes, c Oliver, b King 3
-W. Lismore, c sub., b King .... 8
+W. Lismore, c sub., b King .. 8
 H. E. Hopcroft, c Tee, b Marsh 6
-T. M. Keeling, b King .......... 0
-J. Ewing, b King ................ 0
-L. Hydes, b King ................ 24
-J. Henry, not out ............... 3
-W. Haygreen, b Marsh .......... 0
-Extras ............................. 7
+T. M. Keeling, b King .. 0
+J. Ewing, b King .. 0
+L. Hydes, b King .. 24
+J. Henry, not out .. 3
+W. Haygreen, b Marsh .. 0
+Extras .. 7
 ——
-Total ........................... 76
+Total .. 76
 
 Bowling: King 7—33, Oliver 0—10, Marsh 3—26.
 
 Herts County Club.
-J. A. R. Oliver, c Crocker, b Lismore ............................. 56
+J. A. R. Oliver, c Crocker, b Lismore .. 56
 W. H. Brian Smith, b Lismore 6
-J. K. Tee, c and b Ewing ....... 5
-D. H. Hopkinson, b Hacker ..... 5
-L. O. King, c Haygreen, b Hacker ............................. 67
+J. K. Tee, c and b Ewing .. 5
+D. H. Hopkinson, b Hacker .. 5
+L. O. King, c Haygreen, b Hacker .. 67
 A. D. Hopkinson, b Lismore ... 56
 A. W. Cox, c Henry, b Hacker 33
-S. H. Newman, b Hacker ....... 0
+S. H. Newman, b Hacker .. 0
 S. P. Mole, c Ewing, b Rastall 1
-W. H. Marsh, b Hacker ........ 0
-H. Pearce, not out .............. 28
-Extras ............................. 6
+W. H. Marsh, b Hacker .. 0
+H. Pearce, not out .. 28
+Extras .. 6
 ——
-Total ........................... 260
+Total .. 260
 
 Bowling: Ewing 1—47, Lismore 3—94, Keeling 0—22, Barnes 0—22, Hacker 5—42, Rastall 1—27.
 
@@ -123,13 +123,13 @@ The County Club's match at Haileybury ended in a draw. The College batted first 
 Haileybury College.
 J. R. Charter, lbw, b Oliver ... 0
 I. N. Sauter, c Davies, b Oliver 1
-W. J. H. Shephard, c Brazier, b Marsh ............................. 59
-A. Fairbairn, c Macdonald, b Longton ............................. 84
-A. B. Sheldon, not out .......... 33
+W. J. H. Shephard, c Brazier, b Marsh .. 59
+A. Fairbairn, c Macdonald, b Longton .. 84
+A. B. Sheldon, not out .. 33
 J. D. Burridge, c Marsh, b Cox 6
-L. K. Purkiss, run out .......... 2
-D. A. Creaton, not out .......... 2
-Extras ............................. 7
+L. K. Purkiss, run out .. 2
+D. A. Creaton, not out .. 2
+Extras .. 7
 ——
 Total (6 wkts. dec.)... 194
 
@@ -138,13 +138,13 @@ Bowling: Oliver 2—54, Cox 1—43, Marsh 1—64, Longton 1—10.
 Herts County Club.
 F. R. Longton, lbw, b Hardy... 4
 R. Brazier, c Burridge, b Ross 23
-D. N. Macdonald, c Sheldon, b Fairbairn ............................. 48
-J. A. R. Oliver, not out ....... 61
-E. P. Keysell, c Burridge, b Purkiss ............................. 8
-A. H. Hopkinson, not out ....... 14
-Extras ............................. 14
+D. N. Macdonald, c Sheldon, b Fairbairn .. 48
+J. A. R. Oliver, not out .. 61
+E. P. Keysell, c Burridge, b Purkiss .. 8
+A. H. Hopkinson, not out .. 14
+Extras .. 14
 ——
-Total (4 wkts.) ....... 173
+Total (4 wkts.) .. 173
 
 Bowling: Hardy 1—37, Purkiss 1—35, Ross 1—31, J. H. Fairbairn 1—18.
 
@@ -153,36 +153,36 @@ AN EXCITING FINISH.
 St. Albans' second team lost their return match with Dickinson's, at Apsley, on Saturday, by one wicket after an exciting finish. J. H. Crocker (16) and D. B. Turner (14) put on 32 for St. Albans' first wicket, but the side collapsed after that and the innings closed for 65. Dickinson's had eight wickets down for 46, but D. Clarke (28 not out) played soundly. When the last man went in, four runs were still needed and, amid excitement, were secured. Scores:—
 
 St. Albans II.
-L. H. Crocker, c Picton, b McCarthy ............................. 16
-D. J. Turner, run out ........... 14
-A. J. Barnes, c Picton, b McCarthy ............................. 0
-E. R. Campbell, c Picton, b McCarthy ............................. 0
-L. Ryder, b Samson ............ 4
+L. H. Crocker, c Picton, b McCarthy .. 16
+D. J. Turner, run out .. 14
+A. J. Barnes, c Picton, b McCarthy .. 0
+E. R. Campbell, c Picton, b McCarthy .. 0
+L. Ryder, b Samson .. 4
 O. D. Smith, lbw, b Picton ... 6
 H. E. Hopcroft, b McCarthy ... 0
-J. W. Hirons, b Hucklesby .... 9
-T. M. Keeling, not out ......... 0
-J. Ewing, b Hucklesby ......... 0
+J. W. Hirons, b Hucklesby .. 9
+T. M. Keeling, not out .. 0
+J. Ewing, b Hucklesby .. 0
 K. L. Walsh, lbw, b Hucklesby 0
-Extras ............................. 10
+Extras .. 10
 ——
-Total ........................... 65
+Total .. 65
 
 Dickinson's (Apsley).
-S. Overhead, lbw, b Ewing .... 2
-C. E. Moore, st Walsh, b Barnes ............................. 9
-F. Kemp, c Hopcroft, b Camp. bell ............................. 3
+S. Overhead, lbw, b Ewing .. 2
+C. E. Moore, st Walsh, b Barnes .. 9
+F. Kemp, c Hopcroft, b Camp. bell .. 3
 L. Picton, c Hopcroft, b Ewing 6
-D. Clarke, not out .............. 28
-T. Parr, lbw, b Barnes ......... 0
+D. Clarke, not out .. 28
+T. Parr, lbw, b Barnes .. 0
 R. McCarthy, c Walsh, b Ewing 5
-R. Hucklesby, b Throne, b Ewing ............................. 1
-D. Rockall, b Throne, b Ewing ............................. 0
-T. Sanson, b Ewing .............. 5
+R. Hucklesby, b Throne, b Ewing .. 1
+D. Rockall, b Throne, b Ewing .. 0
+T. Sanson, b Ewing .. 5
 T. Douth, st Walsh, b Barnes . 5
-Extras ............................. 7
+Extras .. 7
 ——
-Total ........................... 71
+Total .. 71
 
 Bowling: Ewing 6—22, Campbell 1—12, Barnes 3—30.
 
@@ -193,13 +193,13 @@ The clock saved St. Albans III. at Cell Barnes, being 66 behind with only two wi
 Cell Barnes Colony.
 W. Ketley, c Lambirth, b Jones 68
 L. Smith, c Sheridan, b Jones . 0
-J. Boon, lbw, b Jones ............ 37
-A. Reynolds, not out ............ 19
-G. Jackson, lbw, b Thomas .... 2
-C. Walker, b Morley ............ 8
-T. Wildman, c Sheridan, b Jones ............................. 2
-T. Oughton, not out ............ 1
-Extras ............................. 2
+J. Boon, lbw, b Jones .. 37
+A. Reynolds, not out .. 19
+G. Jackson, lbw, b Thomas .. 2
+C. Walker, b Morley .. 8
+T. Wildman, c Sheridan, b Jones .. 2
+T. Oughton, not out .. 1
+Extras .. 2
 ——
 Total (6 wkts. dec.)... 141
 
@@ -209,17 +209,17 @@ Bowling: Jones 4—38, Morley 1—25, Thomas 1—17.
 St. Albans III.
 Lambirth, c Jackson, b Mayles 3
 Henry, c Jackson, b Mayles ... 0
-Sheridan, b Nunn ............... 2
-Thomas, b Nunn ................. 0
+Sheridan, b Nunn .. 2
+Thomas, b Nunn .. 0
 Morley, c Mayles, b Reynolds... 10
-Cotton, c and b Mayles ........ 28
-Read, run out ................... 8
-Jones, b Reynolds .............. 1
-Gough, not out .................. 6
-Green, not out .................. 3
-Extras ............................. 14
+Cotton, c and b Mayles .. 28
+Read, run out .. 8
+Jones, b Reynolds .. 1
+Gough, not out .. 6
+Green, not out .. 3
+Extras .. 14
 ——
-Total (8 wkts.) ....... 75
+Total (8 wkts.) .. 75
 
 McDougal did not bat.
 Bowling: Gunn 1—25, Mayles 4—13, Reynolds 2—10.
@@ -231,16 +231,16 @@ K. A. GRIFFITHS BATS WELL FOR OLD BOYS.
 The Old Albanians' match with Abbot's Langley, on Saturday, was left drawn. F. J. Glenister, R. G. Simons, A. W. Briers and F. Carlisle all batted well for Abbot's Langley, while K. A. Griffiths (61 not out) was in capital form for the Old Boys. His opening partnership with R. F. George (32) yielded 61. Two more wickets fell cheaply, but with F. Jarry (12 not out) he had added 49 in an unbroken fourth-wicket stand when the end came. Scores:—
 
 Abbot's Langley.
-R. Crowsnshaw, b Wigze ....... 1
-R. G. Simons, b Fenton ....... 31
-A. W. Briers, c Wigze, b Fenton ............................. 41
-K. R. Imeson, run out .......... 11
-F. J. Glenister, c Jarry, b Fenton ............................. 10
-B. T. L. Cooper, c Wigze, b Jarry ............................. 0
-P. Carlisle, not out .............. 24
+R. Crowsnshaw, b Wigze .. 1
+R. G. Simons, b Fenton .. 31
+A. W. Briers, c Wigze, b Fenton .. 41
+K. R. Imeson, run out .. 11
+F. J. Glenister, c Jarry, b Fenton .. 10
+B. T. L. Cooper, c Wigze, b Jarry .. 0
+P. Carlisle, not out .. 24
 R. F. Crowsnshaw, b Fenton .. 1
-S. Atkins, not out .............. 7
-Extras ............................. 3
+S. Atkins, not out .. 7
+Extras .. 3
 ——
 Total (8 wkts. dec.)... 100
 
@@ -248,14 +248,14 @@ R. Prestland did not bat.
 Bowling: Wigze 1—31, Jarry 1—54, Fenton 5—36.
 
 Old Albanians.
-K. A. Griffiths, not out ........ 61
-R. F. George, c Crowsnshaw, b A. Briers ............................. 32
+K. A. Griffiths, not out .. 61
+R. F. George, c Crowsnshaw, b A. Briers .. 32
 M. A. Wigze, c and b Glenister 1
-P. M. Van Horne, lbw, b A. Briers ............................. 1
-G. E. Jarry, not out ............ 12
-Extras ............................. 7
+P. M. Van Horne, lbw, b A. Briers .. 1
+G. E. Jarry, not out .. 12
+Extras .. 7
 ——
-Total (3 wkts.) ....... 114
+Total (3 wkts.) .. 114
 
 H. T. Harvey, J. S. Owen, T. Dunham, J. R. Shackley, A. D. Gilbert and W. Fenton did not bat.
 Bowling: Glenister 1—20, A. Briers 2—17.
@@ -265,38 +265,38 @@ ST. MICHAEL'S MASTER NORTH MYMMS.
 Excellent fielding and smart work behind the wicket by H. Pearce, who stumped three opponents, were largely responsible for St. Michael's victory by 44 runs over North Mymms, at Verulamium, on Saturday. Scores:—
 
 St. Michael's.
-A. Wigze, c R. Colville, b Bradbeer ............................. 32
-B. Halsey, c R. Colville, b Draper ............................. 2
-H. Pearce, c Sampson, b Draper ............................. 2
-L. Wood, c C. Colville, b Samp. son ............................. 0
-C. Neal, c and b Sampson .... 13
-J. Ardley, b C. Colville ........ 17
-T. Sedgwick, c Game, b C. Colville ............................. 4
-L. Turner, c A. Hall, b Bradbeer ............................. 0
-F. Pearce, c Bradbeer, b C. Colville ............................. 7
-T. Funnell, not out .............. 26
+A. Wigze, c R. Colville, b Bradbeer .. 32
+B. Halsey, c R. Colville, b Draper .. 2
+H. Pearce, c Sampson, b Draper .. 2
+L. Wood, c C. Colville, b Samp. son .. 0
+C. Neal, c and b Sampson .. 13
+J. Ardley, b C. Colville .. 17
+T. Sedgwick, c Game, b C. Colville .. 4
+L. Turner, c A. Hall, b Bradbeer .. 0
+F. Pearce, c Bradbeer, b C. Colville .. 7
+T. Funnell, not out .. 26
 G. Foard, c Bullock, b Bradbeer 3
-Extras ............................. 3
+Extras .. 3
 ——
-Total ........................... 109
+Total .. 109
 
 Bowling: Bradbeer 3—25, C. Colville 3—35, Draper 2—13, Sampson 2—25.
 
 North Mymms.
 R. Colville, c Halsey, b Funnell 1
-H. Couzens, st H. Pearce, b Turner ............................. 0
-C. Colville, b Turner ............ 14
-B. Sampson, c Sedgwick, b Funnell ............................. 2
+H. Couzens, st H. Pearce, b Turner .. 0
+C. Colville, b Turner .. 14
+B. Sampson, c Sedgwick, b Funnell .. 2
 G. Bullock, c and b Turner ... 11
-F. Hall, run out .................. 6
-L. Game, b Funnell ............. 4
-R. Draper, not out .............. 5
-A. Bradbeer, c Sedgwick, b Funnell ............................. 10
+F. Hall, run out .. 6
+L. Game, b Funnell .. 4
+R. Draper, not out .. 5
+A. Bradbeer, c Sedgwick, b Funnell .. 10
 A. Hall, st H. Pearce, b Funnell 1
-A. Hickson, st H. Pearce, b Funnell ............................. 0
-Extras ............................. 6
+A. Hickson, st H. Pearce, b Funnell .. 0
+Extras .. 6
 ——
-Total ........................... 63
+Total .. 63
 
 Bowling: Turner 3—35, Funnell 6—24.
 
@@ -306,37 +306,37 @@ St. Michael's II. beat North Mymms II. by 13 runs, at North Mymms, on Saturday. 
 
 St. Michael's II.
 G. Sindle, c G. Nash, b Toms 12
-H. Fothergill, c Toms .......... 6
+H. Fothergill, c Toms .. 6
 H. Toon, c Colla, b M. Nash... 4
 G. Prior, c Faithfull, b Toms .. 5
 R. Hester, c Hardy, b M. Nash 0
-C. Jareleau, b Toms ............ 0
-J. Fristead, b M. Nash ........... 7
-E. Statham, not out .............. 3
+C. Jareleau, b Toms .. 0
+J. Fristead, b M. Nash .. 7
+E. Statham, not out .. 3
 R. Hathaway, c Hall, b Toms .. 1
-F. Anderson, c Faithfull, b Toms ............................. 0
-R. Mathewson, b Toms ......... 0
-Extras ............................. 3
+F. Anderson, c Faithfull, b Toms .. 0
+R. Mathewson, b Toms .. 0
+Extras .. 3
 ——
-Total ........................... 42
+Total .. 42
 
 Bowling: Toms 7—15, M. Nash 3—14.
 
 North Mymms II.
 M. Nash, v Hester, b Fothergill 0
-T. Dyer, b Fothergill ........... 8
+T. Dyer, b Fothergill .. 8
 G. Nash, c Statham, b Prior .. 5
 W. Mills, c Prior, b Fothergill 0
-W. Saltmarsh, c Prior, b Fothergill ............................. 0
-P. Hardy, b Fothergill ......... 0
-A. Colla, c Toon, b Prior ....... 5
-J. Faithfull, b Fothergill ....... 6
-W. Toms, b Prior ................ 0
-T. Peck, not out ................. 0
-S. Hall, run out ................. 1
-Extras ............................. 4
+W. Saltmarsh, c Prior, b Fothergill .. 0
+P. Hardy, b Fothergill .. 0
+A. Colla, c Toon, b Prior .. 5
+J. Faithfull, b Fothergill .. 6
+W. Toms, b Prior .. 0
+T. Peck, not out .. 0
+S. Hall, run out .. 1
+Extras .. 4
 ——
-Total ........................... 29
+Total .. 29
 
 Bowling: Fothergill 6—8, Prior 3—17.
 
@@ -345,31 +345,31 @@ NEWSAGENTS CAPTURE HARPENDEN TRADERS' CUP.
 Harpenden Newsagents won the Harpenden Traders Cup on Monday, when they beat the Milkmen in the final by seven wickets. Scores:—
 
 Harpenden Dairymen.
-H. Shaw, st Appleby, b W. Kingham ............................. 20
-J. Sygrove, c McHale, b W. Kingham ............................. 7
-L. Madley, st Appleby, b W. Kingham ............................. 0
-J. Dunkley, c Callewaert, b W. Kingham ............................. 0
-J. Lewis, b Day .................. 8
-L. Roberts, b Day ............... 0
-H. Dolby, c Day, b W. King. ham ............................. 4
+H. Shaw, st Appleby, b W. Kingham .. 20
+J. Sygrove, c McHale, b W. Kingham .. 7
+L. Madley, st Appleby, b W. Kingham .. 0
+J. Dunkley, c Callewaert, b W. Kingham .. 0
+J. Lewis, b Day .. 8
+L. Roberts, b Day .. 0
+H. Dolby, c Day, b W. King. ham .. 4
 F. Stubbins, st Appleby, b Day 0
 E. Saunders, b W. Kingham .. 7
-F. Brooks, not out ............... 3
-J. Robinson, b Day .............. 0
-Extras ............................. 8
+F. Brooks, not out .. 3
+J. Robinson, b Day .. 0
+Extras .. 8
 ——
-Total ........................... 57
+Total .. 57
 
 Bowling: W. Kingham 6—19, Day 4—28.
 
 Harpenden Newsagents.
 H. G. Appleby, lbw, b Dunkley 1
-A. Callewaert, not out .......... 10
-A. Kingham, b Dunkley ......... 2
-J. Coates, lbw, b Sygrove ..... 41
-W. Kingham, not out ............ 8
-Extras ............................. 3
+A. Callewaert, not out .. 10
+A. Kingham, b Dunkley .. 2
+J. Coates, lbw, b Sygrove .. 41
+W. Kingham, not out .. 8
+Extras .. 3
 ——
-Total (3 wkts.) ....... 65
+Total (3 wkts.) .. 65
 
 Bowling: Dunkley 2—30, Sygrove 1—26.

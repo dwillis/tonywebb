@@ -44,35 +44,35 @@ Kent averages for all matches:-
 BATTING
 No. of Not Highest Total
 Inns. out Score Runs Aver.
-Ames ................... 46 6 201 1846 46.15
-Fagg ................... 49 6 169* 1812 42.13
+Ames .. 46 6 201 1846 46.15
+Fagg .. 49 6 169* 1812 42.13
 B. H. Valentine ... 45 1 201 1518 36.14
 F. G. H. Chalk ... 44 2 198 1288 30.66
-Todd ................... 45 5 143 1054 27.73
-P. G. Foster .......... 38 2 107 726 20.16
-Wright ................. 32 7 84* 484 19.36
-Spencer ............... 12 1 56 195 17.72
-Sunnucks .............. 17 1 54* 254 15.87
+Todd .. 45 5 143 1054 27.73
+P. G. Foster .. 38 2 107 726 20.16
+Wright .. 32 7 84* 484 19.36
+Spencer .. 12 1 56 195 17.72
+Sunnucks .. 17 1 54* 254 15.87
 W. H. V. Levett... 35 9 51* 320 12.30
-Watt ................... 32 8 34 289 11.62
-Harding ............... 80 4 71 275 10.55
-Evans .................. 7 0 22 50 7.14
+Watt .. 32 8 34 289 11.62
+Harding .. 80 4 71 275 10.55
+Evans .. 7 0 22 50 7.14
 J. G. W. Davies ... 7 1 13* 39 6.50
-Lewis .................. 24 8 27 81 5.06
+Lewis .. 24 8 27 81 5.06
 T. C. Longfield ... 6 0 14 21 3.50
 Also batted:-C. H. Knott, 1-0-9-0; J. W. Martin, 5-0-20-32, and Dovey 6-3-24-2.
 -Signifies not out.
 
 BOWLING
 Overs Mdns. Runs Wkts. Aver.
-Wright ..............534.2 60 2051 131 15.65
-Lewis ..............272.5 53 852 51 16.70
-Watt ...............498 63 1630 76 21.44
-Harding ............393 37 1652 69 23.93
-Todd ...............619.2 89 2045 84 24.33
-J. W. Martin ......76.2 9 263 10 26.30
+Wright .. 534.2 60 2051 131 15.65
+Lewis .. 272.5 53 852 51 16.70
+Watt .. 498 63 1630 76 21.44
+Harding .. 393 37 1652 69 23.93
+Todd .. 619.2 89 2045 84 24.33
+J. W. Martin .. 76.2 9 263 10 26.30
 J. G. W. Davies 56.4 7 208 7 29.71
-Dovey ..............91 20 313 10 31.30
+Dovey .. 91 20 313 10 31.30
 Also bowled.-P. G. Foster, 1-0-7-0; F. G. H. Chalk, 3-0-35-0; C. H. Knott, 2-0-23-0; Ames, 23-2-109-3; B. H. Valentine, 6-0-30-0.
 
 CATCHES
@@ -89,26 +89,26 @@ P. G. FOSTER.-107.
 SEVEN SEASONS' AVERAGES
 BATTING
 1933 '34 '35 '36 '37 '38 '39
-Ames .................. 55 60 32 36 53 46 46
-B. H. Valentine...... 36 27 24 25 24 46 36
-Todd ................... 34 51 35 26 25 25 27
-Fagg ................... 11 32 31 40 - 52 42
-C. H. Knott .......... 40 45 21 19 - 26 9
-J. G. W. Davies ...... - 27 15 14 27 15 6
-F. G. H. Chalk ...... - 38 17 27 36 24 30
-Sunnucks .............. - 30 25 14 19 25 15
-Spencer ............... - - 25 23 14 25 17
-Wright ............... - - 10 20 10 17 19
-Watt ................. - - 17 13 17 7 11
-W. H. V. Levett .... 11 15 13 14 11 8 12
+Ames .. 55 60 32 36 53 46 46
+B. H. Valentine .. 36 27 24 25 24 46 36
+Todd .. 34 51 35 26 25 25 27
+Fagg .. 11 32 31 40 - 52 42
+C. H. Knott .. 40 45 21 19 - 26 9
+J. G. W. Davies .. - 27 15 14 27 15 6
+F. G. H. Chalk .. - 38 17 27 36 24 30
+Sunnucks .. - 30 25 14 19 25 15
+Spencer .. - - 25 23 14 25 17
+Wright .. - - 10 20 10 17 19
+Watt .. - - 17 13 17 7 11
+W. H. V. Levett .. 11 15 13 14 11 8 12
 
 BOWLING
-Watt ................. 33 34 44 23 26 24 21
-Wright .............. 31 42 36 23 29 21 15
-Todd ................ 42 36 23 21 27 27 24
-J. G. W. Davies ...... - 33 29 22 24 26 29
-Lewis ................ 56 30 26 23 52 30 16
-Harding .............. - - - - 34 35 23
+Watt .. 33 34 44 23 26 24 21
+Wright .. 31 42 36 23 29 21 15
+Todd .. 42 36 23 21 27 27 24
+J. G. W. Davies .. - 33 29 22 24 26 29
+Lewis .. 56 30 26 23 52 30 16
+Harding .. - - - - 34 35 23
 
 Generally speaking I can only repeat what I have continually said during the season-that as a whole our bowlers have been more consistent than our batsmen. No really big scores have been amassed against us. In Levett we have had a first-class wicket-keeper and have suffered in no way from the absence of Ames behind the stumps.
 
@@ -141,25 +141,25 @@ Matches played 12, won 5, lost 2, drawn 5.
 BATTING
 No. of Not Highest Total
 Inns. out Score Runs Aver.
-Dovey ................... 5 4 17* 36 36.00
-Davis ................... 10 0 98 342 34.20
-Spencer ................ 5 1 46 130 32.50
-Pocock ................ 10 0 65 258 25.80
-Horrex ................. 7 0 100 151 21.57
-Carter ................. 6 0 68 114 19.00
-Mayes ................. 6 2 16 65 16.25
-Edrich ................. 8 2 30 86 14.33
-Evans ................. 7 1 35 83 13.83
+Dovey .. 5 4 17* 36 36.00
+Davis .. 10 0 98 342 34.20
+Spencer .. 5 1 46 130 32.50
+Pocock .. 10 0 65 258 25.80
+Horrex .. 7 0 100 151 21.57
+Carter .. 6 0 68 114 19.00
+Mayes .. 6 2 16 65 16.25
+Edrich .. 8 2 30 86 14.33
+Evans .. 7 1 35 83 13.83
 Also batted:-G. A. Simpson, 3-1-2-3; G. W. Lees, 2-0-40-61; Sunnucks, 3-0-56-93; A. A. K. Gifford, 2-0-9-10; C. J. Martin, 2-1-47*; Morgan, 2-0-9-10; L. Lines, 2-0-83-145; Regent, 2-0-7-12; D. H. Bingleston, 1-24; J. Anacombe, 1-12* H. F. Reed, 1-10; H. W. Cox, 1-22; P. Pettman, 1-45; Mortley, 1-0; Sterling, 1-4* D. A. Perkins, 1-5; Shaxted, 1-26; Harding, 1-2.
 -Signifies not out.
 
 BOWLING
 Overs Mdns. Runs Wkts. Aver.
-C. J. Martin .............. 29 3 29 5 5.80
-A. A. K. Gifford...... 49 10 76 7 10.85
-Dovey ................... 84.5 16 214 19 11.26
-Edrich ................... 62.4 9 211 18 11.72
-Carter ................... 94.3 11 370 22 16.81
-Mayes ................... 50.1 4 219 11 19.90
-Davis ................... 19 3 89 4 22.25
+C. J. Martin .. 29 3 29 5 5.80
+A. A. K. Gifford .. 49 10 76 7 10.85
+Dovey .. 84.5 16 214 19 11.26
+Edrich .. 62.4 9 211 18 11.72
+Carter .. 94.3 11 370 22 16.81
+Mayes .. 50.1 4 219 11 19.90
+Davis .. 19 3 89 4 22.25
 Also bowled:-Gladdish, 6-0-32-2; Spencer, 6-0-16-2; Sterling, 10-1-68-1; Smith, 7-0-52-1; Mortley, 11-1-44-1; Evans, 2.5-0-9-1; Watt, 8-0-49-1; Lines, 8-1-25-1; Pocock, 1-0-5-1; Sunnucks, 1-0-9-0; Harding, 8-0-46-0.
