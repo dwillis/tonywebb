@@ -1,0 +1,61 @@
+# NORTHAMPTON HERALD: SATURDAY 3 AUGUST 1895-3.
+
+## NORTEAMPTON TOWN LEAGUE FIRST SECTION.
+
+Temperance v. St. Michael's.—The match was de-
+ended on the Borough Ground on Saturday, the Tem-
+perance winning very easily. Their score numbered 157, and St. Andrew's 62. The following batted very well for the victors: W. Pinner (50), W. J. Baker (28), E. Mitchell (14), W. Crack (12), F. Jones (not out, 11), B. C. Smith (11), and W. J. Ricka (10). In the bowling section W. Pinner took six for 19, F. Jones one for 17, and O. Clarke three for 4. For the josees C. Hanzard with 21 was the only double-figure scooter. The chief trundlers were F. Con (two for 56), W. East (six for 64), and J. Rickard (two for 19).
+
+Colte v. Clarence.—These teams met on the Borough Ground on Saturday, and the Clarence had to suffer a severe defeat at the hands of their opponents. The winners' score totalled 158, the chief contributors being A. Partow (56), C. Wood (22), A. Mackness (27), and P. Yeoman (15). The best bowling exhibitions were given by J. Bridges (four for seven), J. Brown (four for 10), and J. Clarke (one for 19). The Clarence, for whom only nine men batted, were only able to put together 44, towards which F. Ridley was the chief scorer with 24. The trundlers were O. Kales (four for 40), F. Ridley (two for 42), W. Varn (one for 19), A. Tomphins (one for 15), and E. Mosley (one for 15).
+
+Star v. St. Michael's.—This match was played on the County Ground on Saturday afternoon, St. Michael's batted first, and compiled 125, but the Star only responded with 66, therefore suffering a rather severe defeat. For the winners St. Gondal played good cricket for 33, W. H. Kingston 24, T. O. Heale 23, and F. T. Tobbutt 11. In the bowling section T. O. Beale took seven wickets for 36, W. Chapman one for 19, and F. T. Tobbutt one for 10. For the Star W. T. Moring played very well for 23 and C. Roberts for 20. The bowlers were O. Squtres (four for 45), W. T. Moring (two for 15), O. Roberts (one for 15), and Cory (one for 30).
+
+Exelior v. Enterprise.—Played on the County Ground on Saturday. The Enterprise won the loss, but the Exelior batted first, and made 152 for six wickets. Their Best between were J. Brown (42), S. Wrigley (not out 42), J. M. Lucas (20), F. Cox (16 not out), and H. Tall (10). For the same team O. J. Thompson bowled exceedingly well, and took six for 28, and F. Kendall secured three for 27. The Enterprise were all dismissed for 56, A. E. Cox (15) and W. Gregg and Bailey (10) batting best. The bowers were A. E.
+
+## Bradford (two for 37), Olney (one for 16), Gregg (one for 17), Squires (one for 18), and Field (one for 42).
+
+## SECOND SECTION.
+
+Teachers v. Doddridge. - Played on the Borough Ground on Saturday afternoon, the result being an easy win for the Teachers. The scores were—Teachers M7, Doddridge 67. For the winners A. Brown scored 58, J. Rose 37, W. Grant 28, and Nightingale 18. In the bowling department U. M. Turner secured four wickets for 30 runs, K. Bailey two for six, and F. Bull three for five. The chief contributors to the Doddridge compilation were W. Thirrily 16, J. Smith, O. Jones, and A. Scott. The bowlers were J. Smith (one for 58), Howletts (one for 38), and U. Sutton (two for 34).
+
+ficient-square v. Victoria-road.—This match was played on the Borough Ground on Saturday, and ended in a win for Regent-square. Regent-square made 83, towards which All. Nind was responsible for 26, not out, and Arthur Nind 23, and A. Garratt 10. The bowling for the winners was performed by W. Garratt (six for 26) and W. Downing (four for 37). Victoria-road compiled 64, W. Garratt being chief scorer with 17. P. Coke (six for 35) and W. Neal (four for nine) were the best bowlers.
+
+Excelior Albions v. Pioneer.—Playe on the Borough Ground on Saturday. The Pioneer made 78, and the Excelior 44. For the winners N. Wilkinson was responsible for a well-played 24, C. Richardson scored 20, and H. Branson 14 not out. Stanford (five for 23) and E. Battle (four for 21) did well in the bowling section. The Excelior's score totalled 44, towards which Irannell was chief batman with 13. The bowlers for the defeated team were J. Cupson (seven for 18), G. Robinson (two for 16), and Tate (one for 14).
+
+### (Position of Clubs up to Saturday, July 27th.)
+
+<table><tr><td></td><td>$ N_{1} $</td><td>$ W_{1} $</td><td>$ I_{0} $</td><td>$ -t_{0} $</td><td>$ I_{0} $</td><td>$ u_{0} $</td><td>$ T_{0} $</td><td>$ P_{0} $</td></tr><tr><td>Temperance</td><td>9</td><td>7</td><td>1</td><td>$ 1 + \frac{1}{2} t $</td><td>1</td><td>$ 1 + \frac{1}{2} t $</td><td>8</td><td>$ \approx $</td></tr><tr><td>Kleeshor</td><td>11</td><td>5</td><td>2</td><td>$ \cdots $</td><td>3</td><td>$ 1 + \frac{1}{2} t $</td><td>4</td><td>$ \cdots $</td></tr><tr><td>NI, Michael&#x27;s</td><td>10</td><td>4</td><td>3</td><td>$ L_{0} $</td><td>3</td><td>$ 1 + \frac{1}{2} t $</td><td>1</td><td>$ \cdots $</td></tr><tr><td>Star</td><td>9</td><td>3</td><td>4</td><td>$ t_{0} $</td><td>2</td><td>$ 1 + \frac{1}{2} t $</td><td>0</td><td>$ \cdots $</td></tr><tr><td>Katerproie</td><td>10</td><td>4</td><td>5</td><td>$ t_{0} $</td><td>1</td><td>$ 1 + \frac{1}{2} t $</td><td>0</td><td>$ \cdots $</td></tr><tr><td>Clarence</td><td>12</td><td>4</td><td>5</td><td>$ t_{0} $</td><td>3</td><td>$ 1 + \frac{1}{2} t $</td><td>0</td><td>$ \cdots $</td></tr><tr><td>NI, Andrew&#x27;s</td><td>9</td><td>2</td><td>6</td><td>$ t_{0} $</td><td>2</td><td>$ 1 + \frac{1}{2} t $</td><td>0</td><td>$ \cdots $</td></tr><tr><td>Cola</td><td>10</td><td>2</td><td>7</td><td>$ t_{0} $</td><td>1</td><td>$ 1 + \frac{1}{2} t $</td><td>0</td><td>$ \cdots $</td></tr></table>
+
+### SECUNO RECTION.
+
+<table><tr><td></td><td>F1</td><td>W1</td><td>T1</td><td>D1</td><td>F1A</td></tr><tr><td>Teachers</td><td>9</td><td>7</td><td>0</td><td>0</td><td>5-0</td></tr><tr><td>Doddridge</td><td>6</td><td>5</td><td>1</td><td>0</td><td>4-0</td></tr><tr><td>Princess-street</td><td>6</td><td>5</td><td>1</td><td>0</td><td>4-0</td></tr><tr><td>Trade</td><td>6</td><td>3</td><td>2</td><td>0</td><td>1-0</td></tr><tr><td>Regent-square</td><td>6</td><td>2</td><td>1</td><td>0</td><td>0-0</td></tr><tr><td>Moss Hose</td><td>6</td><td>3</td><td>2</td><td>0</td><td>0-0</td></tr><tr><td>Artisan Star</td><td>5</td><td>3</td><td>3</td><td>0</td><td>0-1</td></tr><tr><td>Frymative</td><td>5</td><td>2</td><td>3</td><td>0</td><td>0-1</td></tr><tr><td>Kvalifier Albions</td><td>8</td><td>2</td><td>3</td><td>0</td><td>0-1</td></tr><tr><td>Victoria-road</td><td>8</td><td>2</td><td>3</td><td>0</td><td>0-1</td></tr><tr><td>Pioneer-W</td><td>8</td><td>8</td><td>4</td><td>0</td><td>0-0</td></tr><tr><td>St. Katharine&#x27;s</td><td>8</td><td>2</td><td>5</td><td>0</td><td>0-0</td></tr></table>
+
+### THIRD SECTION.
+
+<table><tr><td>Wesleyan Star</td><td>5</td><td>0</td><td>0</td><td>0</td><td>0</td><td>5-</td></tr><tr><td>Gold-street Wesleyan</td><td>4</td><td>4</td><td>0</td><td>0</td><td>0</td><td>4-</td></tr><tr><td>Blue Shield</td><td>5</td><td>3</td><td>2</td><td>0</td><td>0</td><td>1-</td></tr><tr><td>St. Giles</td><td>5</td><td>3</td><td>2</td><td>0</td><td>0</td><td>1-</td></tr><tr><td>St. Andrew&#x27;s Britons</td><td>6</td><td>3</td><td>3</td><td>0</td><td>0</td><td>0-</td></tr><tr><td>N. Lawrence&#x27;s</td><td>5</td><td>2</td><td>3</td><td>0</td><td>0</td><td>0-1</td></tr><tr><td>Y.M.O.A.</td><td>4</td><td>1</td><td>3</td><td>0</td><td>0</td><td>0-2</td></tr><tr><td>N. Nepalche&#x27;s Bible Class</td><td>4</td><td>1</td><td>3</td><td>0</td><td>0</td><td>0-2</td></tr><tr><td>Catholic Alma</td><td>5</td><td>1</td><td>4</td><td>0</td><td>0</td><td>0-3</td></tr><tr><td>N. Nepalese&#x27;s</td><td>5</td><td>1</td><td>4</td><td>0</td><td>0</td><td>0-3</td></tr></table>
+
+The loosee are deducted from the wise; draws do not
+
+## LONG BUCKET V. NORTHAMPTON COUNTY CLUB AND GROUND.
+
+Played at Long Buckby on Saturday last, and resulted in an easy victory for the home team by 68 run. The principal scourers for the winners were T. Horton (52), the Rev. W. P. Kingston (35), E. Seriven (20), the Rev. G. H. Kingston (16), and W. Kennell (11, not out), the total reaching 156. The County bowlers were H. E. and C. A. Kingston, Bedford, and Smith. For the County Club and Ground the chief scourers were O. Jackson, P. Smith, Dedford, and C. A. and H. E. Kingston, the total reaching only 68. For the winners the bowlers were J. G. Jentley (five for 12), W. Kennell (three for 18), and T. Horton (one for 13).
+
+Northampton Licensed Trades' C.C. v. Weedon Garrison.—This match was played at Weedon on Saturday, and resulted in a victory for the visitors, whose total reached 120 to the 61 made by their opponents. The Weedon eleven, thanks to the line bowling of the veteran Joseph Potter, were dismissed for 61. Lieut Strong contributing 29 and Lieut. Haynes 10. On the winning side the chief scowers were J. Lures (48). J. Potter (18), F. Goodyer (16), and M. Butterfield (26). Lieutenants Strong and Harper each obtained four wickets.
+
+Kielingbury v. West End Rover.—Played at Killingbury, on Saturday, and won by Killingbury.
+
+Dallington v. Star Reserve.—Played on the ground of the former on Saturday, and resulted in a win for the home team by 36 runs. Scores:—Dallington, 72; Star Reserve, 36.
+
+Woodford v. Grafton Underwood.—Played at Woodford on Monday, and won by the visitors by 30 runs to 23.
+
+## NORTHAMPTON CRICKET LEAGUE. MATCHES FOR TO-DAY (SATURDAY). FIRST SECTION.
+
+Star v.�. Haelelor, at County Ground. Clarence v. Colte, at County Ground.
+
+## MECON BUTION.
+
+Primitive v. St. Katharine's, at Borough Ground. Artisan Star v. Krosler Albion, at Borough Ground. Kegent-square v. Boot and Bhoe, at Borough Ground.
+
+## THIRD SECTION.
+
+Goldstreet v. Wesleyan Star, at Borough Ground. Y.M.C.A. v. Rt. Neputshre's H.C., at Borough Ground. St. Gilee'v. Catholic Alma, at Borough Ground. Time for drawing stumps 7.30.
