@@ -1,6 +1,7 @@
 """Shared configuration for the Tony Webb indexing toolkit."""
 
 import logging
+import os
 import re
 from dataclasses import dataclass
 
@@ -104,6 +105,13 @@ TRANSCRIBE_RETRY_ATTEMPTS = 3
 TRANSCRIBE_RETRY_BACKOFF = 5.0
 
 DEFAULT_TRANSCRIBE_MODEL = "gpt-5.4"
+
+# PaddleOCR transcription engine (transcribe --engine paddleocr).
+PADDLEOCR_JOB_URL = "https://paddleocr.aistudio-app.com/api/v2/ocr/jobs"
+PADDLEOCR_MODEL = "PaddleOCR-VL-1.6"
+PADDLEOCR_POLL_INTERVAL = 5.0
+PADDLEOCR_JOB_TIMEOUT = 600.0
+PADDLEOCR_TOKEN_ENV = "PADDLEOCR_API_TOKEN"
 DEFAULT_RECONCILE_MODEL = "gemini/gemini-3.5-flash"
 DEFAULT_EXTRACT_MATCHES_MODEL = "qwen3.5:397b-cloud"
 DEFAULT_EXTRACT_STATS_MODEL = "qwen3.5:397b-cloud"
@@ -134,6 +142,18 @@ VALID_CONTENT_TYPES = {
     "umpire information",
     "updates",
 }
+
+
+def paddleocr_token() -> str:
+    """Return the PaddleOCR API token from the environment, or exit clearly."""
+    token = os.environ.get(PADDLEOCR_TOKEN_ENV)
+    if not token:
+        raise SystemExit(
+            f"PaddleOCR engine requires the {PADDLEOCR_TOKEN_ENV} environment "
+            f"variable. Set it to your PaddleOCR API token, e.g.\n"
+            f"  export {PADDLEOCR_TOKEN_ENV}=<your-token>"
+        )
+    return token
 
 
 def safe_model_name(model_id: str) -> str:

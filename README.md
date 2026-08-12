@@ -68,13 +68,48 @@ uv run tonywebb transcribe --model gpt-5.4 --pages 1,3,5-10 --output full_text_o
 
 | Flag | Default | Description |
 |------|---------|-------------|
-| `--model` | `gpt-5.4` | LLM model ID (must support image attachments) |
+| `--engine` | `llm` | OCR engine: `llm` (a vision model) or `paddleocr` (see below) |
+| `--model` | `gpt-5.4` (`PaddleOCR-VL-1.6` for `--engine paddleocr`) | Model ID; for the `llm` engine it must support image attachments |
 | `--pages` | — | Specific pages/ranges, e.g. `1,3,5-10` (overrides `--start-page`/`--end-page`) |
 | `--collection` | 1895 collection | Collection URL or slug, e.g. `tw_newspaper_cuttings_1939` |
 | `--start-page` / `--end-page` | `1` / auto-detected | Page range (bulk mode); explicit `--end-page` overrides auto-detection |
 | `--local-dir` | — | Directory of local JPGs to use instead of fetching |
 | `--output-dir` | `{model}/` (`{model}-{season}/` for non-default `--collection`) | Per-page output directory (bulk mode) |
 | `--output` / `-o` | — | Write a single concatenated file/stdout instead of per-page files |
+
+### PaddleOCR engine
+
+Instead of a vision LLM, `--engine paddleocr` runs each page through the
+[PaddleOCR](https://paddleocr.aistudio-app.com/) async jobs API. It is true OCR
+(no hallucination risk) and writes **raw Markdown** into the same per-page
+`.txt` files, so the rest of the pipeline keeps working.
+
+The engine rebuilds each page from PaddleOCR's layout blocks rather than its
+flattened markdown, so column-wrapped lines are rejoined: each team's scorecard
+lands on one line, matching the LLM transcripts. Headings keep their markdown
+markers, stacked scorecards that PaddleOCR renders as a table come back as an
+HTML `<table>` block, and fixture lists keep one fixture per line. (PaddleOCR
+occasionally mislabels a fixture list as body text, which then reflows into a
+run-on line — harmless for that low-value content.)
+
+PaddleOCR's VL model sometimes degenerates, looping the same word hundreds of
+times on an unparseable region (a masthead or advert border) or a scorecard's
+"..." leader. Those are sanitized: consecutive duplicate words are collapsed,
+dot-leader runs are reduced to a single ` .. `, and a block that is left a
+low-diversity repetition smear (a tiny vocabulary repeated) is dropped. The
+smear test keys on distinct-vocabulary size, not a word ratio, so a
+bowler-dominated innings (where one bowler's name and `b` repeat) is kept.
+
+Set your token first (it is read from the environment, never committed):
+
+```bash
+export PADDLEOCR_API_TOKEN=<your-token>
+uv run tonywebb transcribe --engine paddleocr \
+  --collection tw_newspaper_cuttings_1939 --pages 10-12
+```
+
+Output goes to `PaddleOCR-VL-1.6/` (or `PaddleOCR-VL-1.6-{season}/` for a
+non-default `--collection`), same as any other model.
 
 ## Stage 1b: Clean transcriptions
 

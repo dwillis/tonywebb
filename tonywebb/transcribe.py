@@ -18,7 +18,7 @@ from pathlib import Path
 
 import llm
 
-from . import config
+from . import config, paddle_ocr
 from .images import discover_page_count, fetch_image, new_session
 from .llm_common import no_thinking_kwargs
 from .pipeline import parse_page_spec
@@ -100,12 +100,12 @@ def transcribe_page(
 
 
 def _transcribe_with_retry(
-    model, page_num: int, image_bytes: bytes, media_type: str, season: str = config.SEASON
+    engine, page_num: int, image_bytes: bytes, media_type: str, season: str = config.SEASON
 ) -> str | None:
     text = None
     for attempt in range(1, config.TRANSCRIBE_RETRY_ATTEMPTS + 1):
         try:
-            text = transcribe_page(model, page_num, image_bytes, media_type, season=season)
+            text = engine(page_num, image_bytes, media_type, season)
             break
         except Exception as e:
             print(f"  ⚠ Attempt {attempt}/{config.TRANSCRIBE_RETRY_ATTEMPTS} failed: {e}", file=sys.stderr)
@@ -122,7 +122,15 @@ def register_parser(subparsers):
         help="Transcribe page images via a vision-capable LLM.",
     )
     config.add_collection_arg(p)
-    p.add_argument("--model", default=config.DEFAULT_TRANSCRIBE_MODEL)
+    p.add_argument(
+        "--engine", choices=["llm", "paddleocr"], default="llm",
+        help="OCR engine: 'llm' (vision model, default) or 'paddleocr'.",
+    )
+    p.add_argument(
+        "--model", default=None,
+        help="Model id. Defaults to the LLM transcribe model, or "
+             "PaddleOCR-VL-1.6 when --engine paddleocr.",
+    )
     p.add_argument(
         "--pages",
         default=None,
@@ -162,20 +170,47 @@ def run(args) -> None:
             print(f"{collection.slug}: {end_page} pages")
         page_nums = list(range(args.start_page, end_page + 1))
 
-    model = llm.get_model(args.model)
+    engine, model_name = _build_engine(args.engine, args.model, session)
 
     if args.output is not None:
-        _run_concatenated(model, page_nums, local_dir, session, args.output, collection)
+        _run_concatenated(engine, page_nums, local_dir, session, args.output, collection)
     else:
         default_dir = (
-            args.model if collection == config.DEFAULT_COLLECTION
-            else f"{args.model}-{collection.season}"
+            model_name if collection == config.DEFAULT_COLLECTION
+            else f"{model_name}-{collection.season}"
         )
-        _run_bulk(model, page_nums, local_dir, session, args.output_dir or default_dir, collection)
+        _run_bulk(engine, page_nums, local_dir, session, args.output_dir or default_dir, collection)
+
+
+def _build_engine(engine_name: str, model_arg: str | None, session):
+    """Return an (engine_callable, model_name) pair for the chosen OCR engine.
+
+    The engine callable has a uniform signature so the run loops don't care
+    which backend produced the text:
+        engine(page_num, image_bytes, media_type, season) -> str
+    """
+    if engine_name == "paddleocr":
+        model_name = model_arg or config.PADDLEOCR_MODEL
+        token = config.paddleocr_token()
+
+        def engine(page_num, image_bytes, media_type, season):
+            return paddle_ocr.transcribe_page_paddle(
+                session, token, page_num, image_bytes, media_type, model_name
+            )
+
+        return engine, model_name
+
+    model_name = model_arg or config.DEFAULT_TRANSCRIBE_MODEL
+    model = llm.get_model(model_name)
+
+    def engine(page_num, image_bytes, media_type, season):
+        return transcribe_page(model, page_num, image_bytes, media_type, season=season)
+
+    return engine, model_name
 
 
 def _run_bulk(
-    model, page_nums: list[int], local_dir: Path | None, session, output_dir: str,
+    engine, page_nums: list[int], local_dir: Path | None, session, output_dir: str,
     collection: config.Collection,
 ) -> None:
     out_dir = Path(output_dir)
@@ -196,7 +231,7 @@ def _run_bulk(
             print(f"  ⚠ Could not fetch page {page_num}: {e}")
             continue
 
-        text = _transcribe_with_retry(model, page_num, image_bytes, media_type, season=collection.season)
+        text = _transcribe_with_retry(engine, page_num, image_bytes, media_type, season=collection.season)
         if text is None:
             print(f"  ✗ Skipping page {page_num} after {config.TRANSCRIBE_RETRY_ATTEMPTS} failed attempts")
             continue
@@ -209,7 +244,7 @@ def _run_bulk(
 
 
 def _run_concatenated(
-    model, page_nums: list[int], local_dir: Path | None, session, output: str,
+    engine, page_nums: list[int], local_dir: Path | None, session, output: str,
     collection: config.Collection,
 ) -> None:
     out_fh = sys.stdout if output == "-" else open(output, "w", encoding="utf-8")
@@ -224,7 +259,7 @@ def _run_concatenated(
                 print(f"  ✗ Skipping page {page_num}: {e}", file=sys.stderr)
                 continue
 
-            text = _transcribe_with_retry(model, page_num, image_bytes, media_type, season=collection.season)
+            text = _transcribe_with_retry(engine, page_num, image_bytes, media_type, season=collection.season)
             if text is None:
                 print(f"  ✗ Skipping page {page_num} after {config.TRANSCRIBE_RETRY_ATTEMPTS} failed attempts.",
                       file=sys.stderr)

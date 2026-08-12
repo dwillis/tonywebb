@@ -65,7 +65,10 @@ class TestBackwardCompatibleDefaults:
     def test_transcribe_default_model_and_range(self):
         parser = build_parser()
         args = parser.parse_args(["transcribe"])
-        assert args.model == "gpt-5.4"
+        # --model defaults to None and is resolved in run() based on --engine
+        # (gpt-5.4 for llm, PaddleOCR-VL-1.6 for paddleocr).
+        assert args.model is None
+        assert args.engine == "llm"
         assert args.start_page == 1
         # None means "auto-detect the collection's page count" (see config.Collection).
         assert args.end_page is None

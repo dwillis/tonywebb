@@ -2,7 +2,19 @@
 
 import pytest
 
+from tonywebb import config
 from tonywebb.config import Collection, DEFAULT_COLLECTION
+
+
+def test_paddleocr_token_reads_env(monkeypatch):
+    monkeypatch.setenv(config.PADDLEOCR_TOKEN_ENV, "secret-tok")
+    assert config.paddleocr_token() == "secret-tok"
+
+
+def test_paddleocr_token_missing_exits(monkeypatch):
+    monkeypatch.delenv(config.PADDLEOCR_TOKEN_ENV, raising=False)
+    with pytest.raises(SystemExit, match=config.PADDLEOCR_TOKEN_ENV):
+        config.paddleocr_token()
 
 
 FULL_URL = "https://archive.acscricket.com/research/tw/tw_newspaper_cuttings_1939/index.html"

@@ -76,6 +76,79 @@ def test_transcribe_parser_accepts_collection_url():
     assert args.collection.endswith("1939/index.html")
 
 
+def test_transcribe_parser_engine_defaults_to_llm():
+    from tonywebb.cli import build_parser
+    args = build_parser().parse_args(["transcribe", "--pages", "1"])
+    assert args.engine == "llm"
+
+
+def test_transcribe_parser_accepts_paddleocr_engine():
+    from tonywebb.cli import build_parser
+    args = build_parser().parse_args(
+        ["transcribe", "--pages", "1", "--engine", "paddleocr"]
+    )
+    assert args.engine == "paddleocr"
+
+
+@pytest.mark.parametrize(
+    "collection_arg, expected_dir",
+    [
+        (None, "PaddleOCR-VL-1.6"),
+        ("tw_newspaper_cuttings_1939", "PaddleOCR-VL-1.6-1939"),
+    ],
+)
+def test_run_paddleocr_default_output_dir(monkeypatch, collection_arg, expected_dir):
+    from tonywebb.cli import build_parser
+    import tonywebb.transcribe as transcribe
+
+    captured = {}
+
+    def fake_run_bulk(engine, page_nums, local_dir, session, output_dir, collection):
+        captured["output_dir"] = output_dir
+
+    monkeypatch.setattr(transcribe, "_run_bulk", fake_run_bulk)
+    monkeypatch.setattr(transcribe, "new_session", lambda: object())
+    monkeypatch.setattr(transcribe.config, "paddleocr_token", lambda: "tok")
+
+    argv = ["transcribe", "--pages", "1", "--engine", "paddleocr"]
+    if collection_arg is not None:
+        argv += ["--collection", collection_arg]
+    transcribe.run(build_parser().parse_args(argv))
+
+    assert captured["output_dir"] == expected_dir
+
+
+def test_run_paddleocr_engine_calls_paddle_not_llm(monkeypatch):
+    from tonywebb.cli import build_parser
+    import tonywebb.transcribe as transcribe
+
+    calls = {}
+
+    def fake_run_bulk(engine, *rest):
+        # Exercise the engine the way the loop would.
+        calls["result"] = engine(3, b"img", "image/jpeg", "1895")
+
+    def fake_paddle(session, token, page_num, image_bytes, media_type, model):
+        calls["paddle"] = (token, page_num, model)
+        return "md text"
+
+    def boom_get_model(name):  # llm must not be touched on the paddle path
+        raise AssertionError("llm.get_model should not be called for paddleocr")
+
+    monkeypatch.setattr(transcribe, "_run_bulk", fake_run_bulk)
+    monkeypatch.setattr(transcribe, "new_session", lambda: object())
+    monkeypatch.setattr(transcribe.config, "paddleocr_token", lambda: "tok")
+    monkeypatch.setattr(transcribe.paddle_ocr, "transcribe_page_paddle", fake_paddle)
+    monkeypatch.setattr(transcribe.llm, "get_model", boom_get_model)
+
+    transcribe.run(build_parser().parse_args(
+        ["transcribe", "--pages", "1", "--engine", "paddleocr"]
+    ))
+
+    assert calls["result"] == "md text"
+    assert calls["paddle"] == ("tok", 3, "PaddleOCR-VL-1.6")
+
+
 def test_user_prompt_mentions_collection_season():
     from tonywebb.transcribe import build_user_prompt
     prompt = build_user_prompt(page_num=3, season="1939")
